@@ -5,10 +5,10 @@ Serveur 2012 - Prototype
 Nom du jeu : TA BITE Empire (?)
 
 Règles {{{
-------
+----------
 
 Villes {{{
-^^^^^^
+^^^^^^^^^^
 
 À chaque tour la population augmente du nombre de villes adjacentes.
 
@@ -21,7 +21,7 @@ est au niveau 10, passer au niveau 20 coutera 20 or)
 }}}
 
 Armée {{{
-^^^^^
+^^^^^^^^^
 
 À chaque tour, dans chaque ville, l'armée augmente en fonction de la population.
 La quantité pourra dépendre de la note de réputation et/ou de la spécialisation
@@ -32,7 +32,7 @@ On peut en déplacer une partie ou le tout d'une ville à une autre chaque tour.
 }}}
 
 Mercenaires {{{
-^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 Un joueur peut recruter dans chaque ville un nombre de mercenaire dépendant de
 la population pour compléter son armée.
@@ -49,12 +49,12 @@ comme avec les soldats.
 }}}
 
 Système d'alliance ? {{{
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 }}}
 
 Note de réputation ? {{{
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 La note de réputation sert permet des caractéristiques propres à un joueur :
 
@@ -88,10 +88,10 @@ API
 ---
 
 Constantes {{{
-~~~~~~~~~~
+~~~~~~~~~~~~~~
 
 MERCENAIRE_COUT = 42
-MERCENAIRE_MAX_TOUR = 4224342432 
+MERCENAIRE_MAX_TOUR = 4224342432
 
 ERREURS
 
