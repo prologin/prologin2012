@@ -4,12 +4,12 @@ Serveur 2012 - Prototype
 
 Nom du jeu : TA BITE Empire (?)
 
-----------
-Règles {{{
-----------
+------
+Règles
+------
 
-Villes {{{
-==========
+Villes
+======
 
 À chaque tour la population augmente du nombre de villes adjacentes.
 
@@ -19,10 +19,8 @@ la population maximum qu'elle est capable d'accueillir.
 Augmenter le niveau d'une ville coute de la valeur du niveau suivante (ex. si on
 est au niveau 10, passer au niveau 20 coutera 20 or)
 
-}}}
-
-Armée {{{
-=========
+Armée
+=====
 
 À chaque tour, dans chaque ville, l'armée augmente en fonction de la population.
 La quantité pourra dépendre de la note de réputation et/ou de la spécialisation
@@ -32,10 +30,8 @@ Une ville ne peut pas contenir plus d'armée que de population.
 
 On peut en déplacer une partie ou le tout d'une ville à une autre chaque tour.
 
-}}}
-
-Mercenaires {{{
-===============
+Mercenaires
+===========
 
 Un joueur peut recruter dans chaque ville un nombre de mercenaire dépendant de
 la population pour compléter son armée.
@@ -49,15 +45,14 @@ ville avec le groupe de mercenaires déjà présent. Ils gardent cependant chacu
 le nombre de jours restants. Il n'y a pas de déplacement individuel possible
 comme avec les soldats.
 
-}}}
 
-Système d'alliance {{{
-======================
+Système d'alliance
+==================
 
-}}}
+À définir.
 
-Réputation {{{
-==============
+Réputation
+==========
 
 Chaque joueur possède une caractéristique de réputation sous forme de note.
 Selon cette note, le joueur possède les avantages suivants :
@@ -86,11 +81,7 @@ Diminue
  - Attaquer ses alliés
  - ...
 
-}}}
-
-}}}
-
-Formules {{{
+Formules
 ------------
 
 /!\ Les formules suivantes sont à affiner avec le prototype
@@ -99,11 +90,9 @@ nombre_de_soldat / ville / tour = sup(racine_carree(population))
 nombre_de_mercenaire / ville / tour = sup(racine_carree(population)) / 2
 prix_mercenaire = 10 * coefficient(reputation) <= À trouver
 
-}}}
-
--------
-API {{{
--------
+---
+API
+---
 
 Constantes
 ==========
@@ -114,7 +103,7 @@ MERCENAIRE_MAX_TOUR = 4224342432
 ERREURS
 
 joueur
-------
+======
 
 joueur_mon_id()
   :retourne: L'id du joueur (entier)
@@ -128,7 +117,7 @@ joueur_reputation(joueur_id)
   :retourne: La réputation du joueur (entier relatif)
 
 armee
------
+=====
 
 armee_deplace(depuis_ville_id, vers_ville_id)
   :depuis_ville_id: Identifiant de la ville de départ
@@ -136,7 +125,7 @@ armee_deplace(depuis_ville_id, vers_ville_id)
   :retourne: Succès (bool)
 
 ville
------
+=====
 
 ville_proprietaire(ville_id)
   :ville_id: Un identifiant de ville (entier)
@@ -161,7 +150,7 @@ ville_armee(ville_id)
 ville_routes(ville_id)
   :ville_id: Un identifiant de ville (entier)
   :retourne: Une liste de ville_id accessible depuis cette ville_id (liste
-  d'entiers)
+    d'entiers)
 
 ville_or(ville_id)
   :ville_id: Un identifiant de ville (entier)
@@ -172,7 +161,7 @@ ville_mercenaires(ville_id)
   :retourne: Liste de mercenaires_id
 
 mercenaires
------------
+===========
 
 mercenaires_acheter(ville_id, quantite, nombre_de_tours)
   :ville_id: Un identifiant de ville (entier)
@@ -193,6 +182,4 @@ mercenaires_info(mercenaire_id)
   :mercenaire_id: Un identifiant de mercenaire
   :retourne: Nombre de tours restants pour le mercenaire (entier)
 
-}}}
-
-vim:set tw=80 fdm=marker:
+vim:set tw=80:
