@@ -27,6 +27,8 @@ Armée {{{
 La quantité pourra dépendre de la note de réputation et/ou de la spécialisation
 de la ville.
 
+Une ville ne peut pas contenir plus d'armée que de population.
+
 On peut en déplacer une partie ou le tout d'une ville à une autre chaque tour.
 
 }}}
@@ -48,108 +50,147 @@ comme avec les soldats.
 
 }}}
 
-Système d'alliance ? {{{
+Système d'alliance {{{
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 }}}
 
-Note de réputation ? {{{
+Réputation {{{
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-La note de réputation sert permet des caractéristiques propres à un joueur :
+Chaque joueur possède une caractéristique de réputation sous forme de note.
+Selon cette note, le joueur possède les avantages suivants :
 
-Réputation positive : le joueur gagne plus d'argent et de population
-Réputation négative : le joueur a plus d'armée, peut acheter des mercenaires à
-un meilleur prix
+- Réputation positive : le joueur gagne plus d'argent et de population
+- Réputation négative : le joueur a plus d'armée, peut acheter des mercenaires
+                        à un meilleur prix
 
-Éventuellement la rendre persistante entre les parties.
+!IDÉE! Éventuellement la rendre persistante entre les parties.
 
-Down
-^^^^
+Cette note varie selon les évènements suivants :
 
- - Ne pas prévenir avant d'attaquer
- - Attaquer ses alliés
- - Acheter des mercenaires
- - ...
-
-Up
-^^
+Augmente
+^^^^^^^^
 
  - Prévenant avant d'attaquer
  - S'allier avec un joueur
  - Aider ses alliés
  - ...
 
-}}}
+Diminue
+^^^^^^^
+
+ - Ne pas prévenir avant d'attaquer
+ - Acheter des mercenaires
+ - Attaquer ses alliés
+ - ...
 
 }}}
 
-API
----
+}}}
 
-Constantes {{{
-~~~~~~~~~~~~~~
+Formules {{{
+------------
+
+/!\ Les formules suivantes sont à affiner avec le prototype
+
+nombre_de_soldat / ville / tour = sup(racine_carree(population))
+nombre_de_mercenaire / ville / tour = sup(racine_carree(population)) / 2
+prix_mercenaire = 10 * coefficient(reputation) <= À trouver
+
+}}}
+
+API {{{
+-------
+
+Constantes
+~~~~~~~~~~
 
 MERCENAIRE_COUT = 42
 MERCENAIRE_MAX_TOUR = 4224342432
 
 ERREURS
 
-}}}
-
 joueur
 ~~~~~~
 
 joueur_mon_id()
-  :retourne: l'id du joueur (entier)
+  :retourne: L'id du joueur (entier)
 
 joueur_villes(joueur_id)
-  :retourne: la liste des villes possedés par le joueur_id (liste de city_id)
+  :joueur_id: Identifiant du joueur
+  :retourne: La liste des villes possedés par le joueur_id (liste de city_id)
 
 joueur_reputation(joueur_id)
-  :retourne: la réputation du joueur (entier relatif)
+  :joueur_id: Identifiant du joueur
+  :retourne: La réputation du joueur (entier relatif)
 
 armee
 ~~~~
 
 armee_deplace(depuis_ville_id, vers_ville_id)
+  :depuis_ville_id: Identifiant de la ville de départ
+  :vers_ville_id: Identifiant de la ville d'arrivée
+  :retourne: Succès (bool)
 
 ville
 ~~~~~
 
 ville_proprietaire(ville_id)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: Le player_id du propriétaire de la ville
 
 ville_population(ville_id)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: La population totale de la ville (entier)
 
 ville_ameliorer(ville_id)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: Succès (bool)
 
 ville_specialisation(ville_id)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: La spécialisation de la ville (voir constantes)
 
 ville_armee(ville_id)
-  :ville_id: une ville id (entier)
-  :retourne: la taille actuelle de l'armee pour cette ville_id (entier)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: La taille actuelle de l'armee pour cette ville_id (entier)
 
 ville_routes(ville_id)
-  :ville_id: une ville id (entier)
-  :retourne: une liste de ville_id accessible depuis cette ville_id (liste
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: Une liste de ville_id accessible depuis cette ville_id (liste
   d'entiers)
 
 ville_or(ville_id)
-  :ville_id: une ville id (entier)
-  :retourne: la quantité courante d'or pour cette ville_id (entier)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: La quantité courante d'or pour cette ville_id (entier)
 
 ville_mercenaires(ville_id)
-  :retourne: liste de mercenaires_id
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: Liste de mercenaires_id
 
 mercenaires
 ~~~~~~~~~~~
 
 mercenaires_acheter(ville_id, quantite, nombre_de_tours)
+  :ville_id: Un identifiant de ville (entier)
+  :quantite: Nombre de mercenaires à acheter
+  :nombre_de_tours: Nombre de tours que vont rester les mercenaires
+  :retourne: Succès (bool)
 
 mercenaires_deplace(depuis_ville_id, vers_ville_id)
+  :depuis_ville_id: Identifiant de la ville de départ
+  :vers_ville_id: Identifiant de la ville d'arrivée
+  :retourne: Succès (bool)
 
 mercenaires_restants(ville_id)
+  :ville_id: Un identifiant de ville (entier)
+  :retourne: Nombre de mercenaires restants dans la ville (entier)
 
 mercenaires_info(mercenaire_id)
+  :mercenaire_id: Un identifiant de mercenaire
+  :retourne: Nombre de tours restants pour le mercenaire (entier)
+
+}}}
 
 vim:set tw=80 fdm=marker:
