@@ -4,11 +4,12 @@ Serveur 2012 - Prototype
 
 Nom du jeu : TA BITE Empire (?)
 
+----------
 Règles {{{
 ----------
 
 Villes {{{
-^^^^^^^^^^
+==========
 
 À chaque tour la population augmente du nombre de villes adjacentes.
 
@@ -21,7 +22,7 @@ est au niveau 10, passer au niveau 20 coutera 20 or)
 }}}
 
 Armée {{{
-^^^^^^^^^
+=========
 
 À chaque tour, dans chaque ville, l'armée augmente en fonction de la population.
 La quantité pourra dépendre de la note de réputation et/ou de la spécialisation
@@ -34,7 +35,7 @@ On peut en déplacer une partie ou le tout d'une ville à une autre chaque tour.
 }}}
 
 Mercenaires {{{
-^^^^^^^^^^^^^^^
+===============
 
 Un joueur peut recruter dans chaque ville un nombre de mercenaire dépendant de
 la population pour compléter son armée.
@@ -51,12 +52,12 @@ comme avec les soldats.
 }}}
 
 Système d'alliance {{{
-~~~~~~~~~~~~~~~~~~~~~~~~
+======================
 
 }}}
 
 Réputation {{{
-~~~~~~~~~~~~~~~~~~~~~~~~
+==============
 
 Chaque joueur possède une caractéristique de réputation sous forme de note.
 Selon cette note, le joueur possède les avantages suivants :
@@ -70,7 +71,7 @@ Selon cette note, le joueur possède les avantages suivants :
 Cette note varie selon les évènements suivants :
 
 Augmente
-^^^^^^^^
+--------
 
  - Prévenant avant d'attaquer
  - S'allier avec un joueur
@@ -78,7 +79,7 @@ Augmente
  - ...
 
 Diminue
-^^^^^^^
+-------
 
  - Ne pas prévenir avant d'attaquer
  - Acheter des mercenaires
@@ -100,11 +101,12 @@ prix_mercenaire = 10 * coefficient(reputation) <= À trouver
 
 }}}
 
+-------
 API {{{
 -------
 
 Constantes
-~~~~~~~~~~
+==========
 
 MERCENAIRE_COUT = 42
 MERCENAIRE_MAX_TOUR = 4224342432
@@ -112,7 +114,7 @@ MERCENAIRE_MAX_TOUR = 4224342432
 ERREURS
 
 joueur
-~~~~~~
+------
 
 joueur_mon_id()
   :retourne: L'id du joueur (entier)
@@ -126,7 +128,7 @@ joueur_reputation(joueur_id)
   :retourne: La réputation du joueur (entier relatif)
 
 armee
-~~~~
+-----
 
 armee_deplace(depuis_ville_id, vers_ville_id)
   :depuis_ville_id: Identifiant de la ville de départ
@@ -134,7 +136,7 @@ armee_deplace(depuis_ville_id, vers_ville_id)
   :retourne: Succès (bool)
 
 ville
-~~~~~
+-----
 
 ville_proprietaire(ville_id)
   :ville_id: Un identifiant de ville (entier)
@@ -170,7 +172,7 @@ ville_mercenaires(ville_id)
   :retourne: Liste de mercenaires_id
 
 mercenaires
-~~~~~~~~~~~
+-----------
 
 mercenaires_acheter(ville_id, quantite, nombre_de_tours)
   :ville_id: Un identifiant de ville (entier)
