@@ -2,9 +2,11 @@
 Serveur 2012 - API
 ==================
 
-----------
-Constantes
-----------
+.. default-domain:: c
+
+-------------------
+Constantes et types
+-------------------
 
 *À affiner empiriquement*
 
@@ -17,7 +19,6 @@ Personnages
   ECLAIREUR_DEPLACEMENT = 8
   ECLAIREUR_VIE         = 3
   ECLAIREUR_ATTAQUE     = 3
-
 
 ::
 
@@ -34,38 +35,87 @@ Personnages
   ELITE_VIE         = 3
   ELITE_ATTAQUE     = 2
 
-Case
-====
 
-::
+.. type:: personnage_classe
 
-  CASE_TYPE_HERBE   = 0
-  CASE_TYPE_ROUTE   = 1
-  CASE_TYPE_FORET   = 2
-  CASE_TYPE_MARAIS  = 3
-  CASE_TYPE_COLLINE = 4
-  CASE_TYPE_MUR     = 5
+  Type de personnage.
+
+  .. code-block:: c
+
+    enum personnage_classe {
+      PERSONNAGE_ECLAIREUR,
+      PERSONNAGE_BARBARE,
+      PERSONNAGE_ELITE,
+    }
+
+.. type:: personnage_info
+
+  Structure représentant un personnage.
+
+  .. code-block:: c
+
+    struct personnage_info {
+      int equipe, // l'équipe à laquelle appartient le personnage
+      int vie, // la vie courrante du personnage
+    }
+
+Case et carte
+=============
+
+.. type:: position
+
+  Représente une position sur le terrain de jeu.
+
+  .. code-block:: c
+
+    struct position {
+      int x; // coordonnée en x
+      int y; // coordonnée en y
+    }
+
+.. type:: case_type
+  
+  .. code-block:: c
+
+    enum case_type {
+      CASE_TYPE_HERBE,
+      CASE_TYPE_ROUTE,
+      CASE_TYPE_FORET,
+      CASE_TYPE_MARAIS,
+      CASE_TYPE_COLLINE,
+      CASE_TYPE_MUR
+    }
 
 ---------
 Fonctions
 ---------
 
-carte
-=====
+Namespace carte
+===============
 
-.. function:: carte_taille()
+.. function:: position carte_taille()
 
-  :rtype: taille de la carte : tuple (x, y)
+  Retourne la taille de la carte sous la forme d'une :c:type:`position`
+  correspondant aux coordonées du point extrême.
 
-.. function:: carte_case_type(pos_s)
+.. function:: case_type carte_case_type(position pos)
 
-  :param pos_s: la case désignée : tuple position (x, y)
-  :rtype: la nature de la case : enum_case_type
+  Retourne la natude de la case désignée par ``pos``.
 
-.. function:: carte_case_cadavre(pos_s)
+.. function:: bool carte_case_cadavre(position pos)
   
-  Retourne ``true`` si un cadavre se trouve sur la case ``pos_s``, ``false``
+  Retourne ``true`` si un cadavre se trouve sur la case ``pos``, ``false``
   sinon.
 
-  :param pos_s: tuple position
-  :rtype: bool
+Namespace personnage
+====================
+
+.. function:: personnage_info personnage_info(int personnage_id)
+
+  Retourne la struction personnage_info correspondant au personnage
+  ``personnage_id``.
+
+.. function:: position array personnage_vision(int personnage_id)
+
+  Retourne l'ensembles des cases vue par le personnage désigné par
+  ``personnage_id``.
