@@ -17,30 +17,15 @@ occupant des objectifs.
 Règles
 ------
 
-Carte
-=====
-
-Une carte est un quadrillage de cases carrées représentant différents terrains.
-La taille de cette carte n'est pas définie statiquement et sera donnée au
-joueur au début de la partie.
-
-Les différentes cases que l'on peut rencontrer sur une carte sont :
-
-- Herbe
-- Route (+ déplacement)
-- Forêt (1 portée 1 vision)
-- Marais (- déplacement)
-- Mur (0 portée 0 vision 0 déplacement)
-- Colline (+ portée + vision - déplacement)
-
 Une partie se compose de 2 à 6 joueurs.
 
 Unités
 ======
 
 Les unités sont au nombre de trois par joueur. Chaque unité possède des
-caractéritiques complémentaires et le joueur doit les faire agir en coopération
-pour les rendre efficaces. De plus chacune possède des abilités spéciales.
+caractéristiques complémentaires et le joueur doit les faire agir en
+coopération pour les rendre efficaces. De plus chacune possède des abilités
+spéciales.
 
 Les unités peuvent voir dans un cône de vision situé devant elles. Elles ont
 aussi une force d'attaque et un déplacement différent :
@@ -110,9 +95,99 @@ regarde qui ne sont pas dans *son* cône de vision.
     tireur d'élite.
   :cooldown: 8 tours
 
-Déplacement
-===========
+Champs de vision
+================
 
+Le champs de vision est un cône de la géométrie suivante : ::
+
+  .........
+   .......
+    .....
+     .@.
+
+Ici le personnage a un cône de vision de taille 3.
+
+Carte
+=====
+
+Une carte est un quadrillage de cases carrées représentant différents terrains.
+La taille de cette carte n'est pas définie statiquement et sera donnée au
+joueur au début de la partie.
+
+Les différentes cases que l'on peut rencontrer sur une carte sont :
+
+Herbe
+-----
+
+Zone normale.
+
+
+Route (+ déplacement)
+---------------------
+
+Les personnages sur une route disposent d'un bonus de 1 à leur nombre de cases
+de déplacement.
+
+
+Forêt (1 portée 1 vision)
+-------------------------
+
+Un personnage qui regarde vers la foret ne peut voir qu'une seule case en face
+de lui et un personnage hors de la foret ne peut pas voir l'intérieur de
+celle-ci.
+
+Exemples (``?`` foret, ``@`` personnage, ``.`` case visible) : ::
+
+  Étant donne la foret suivante :
+    ?????
+   ???????
+  ?????????
+   ????????
+   ?????
+
+  Dans la foret :
+    ?????
+   ??.????
+  ???@.????
+   ??.?????
+   ??????
+
+  À la lisière :
+  .........
+   .......
+    .....
+    ?.@.?
+   ???????
+  ?????????
+   ????????
+   ??????
+
+
+  Hors de la foret :
+    ?????
+   ???????
+  ?????????
+   ????????
+   ?????..
+    .....
+     .@.
+
+Marais (- déplacement)
+----------------------
+
+Un personnage qui veut se déplacer dans un marais doit dépenser deux points par
+case traversée.
+
+Mur (0 portée 0 vision 0 déplacement)
+-------------------------------------
+
+Un mur est une case opaque et infranchissable.
+
+Tour de guet (+ portée + vision)
+--------------------------------
+
+Un personnage sur une tour de guet gagne un point de vision et une case de
+portée.
 
 Attaques
 ========
@@ -130,8 +205,8 @@ Un personnage meurt quand la valeur de ses points de vie est négative ou nulle.
 Les points sont attribués selon ces trois règles (données par ordre de
 précédence) :
 
-1. Si deux personnages ont attaqué le même personnage en même temps, aucun
-   point n'est donné.
+1. Si un personnage meurt et alors qu'il s'est fait toucher par un allier et un
+   un adversaire, aucun point n'est accordé.
 
 2. Le personnage qui a tué fait gagner un point à son équipe.
 
@@ -154,6 +229,8 @@ Les cadavres ne sont pas visibles dans la pénombre (à définir).
 HotSpot
 =======
 
+*À débattre.*
+
 On peut définir un endroit spécial de la carte comme étant un "hotspot". C'est
 une zone qui, si une équipe parvient à y rester seule pendant un certain nombre
 de tours, donne un point.
@@ -162,7 +239,7 @@ Déroulement d'une partie
 ========================
 
 Un partie dure un nombre déterminé de tours, donné aux joueurs en début de
-partie. Le vainqueur est celui qui a tué le plus de personnages.
+partie. Le vainqueur est celui qui a le plus de points.
 
 Phase de placement
 ------------------
@@ -226,11 +303,8 @@ peuvent toujours attaquer après *FUS RO DAH*.
 
 Puis les personnages encore vivants se déplacement.
 
-Side-effects des règles
-=======================
-
-Les champions peuvent empêcher l'adversaire de gagner un point en attaquant
-leur propre personnage en même temps que l'adversaire.
+Implication des règles
+======================
 
 *FUS RO DAH* permet de :
 
@@ -238,3 +312,8 @@ leur propre personnage en même temps que l'adversaire.
 - Accélérer le déplacement de ses personnages (avec une possibilité d'attaquer
   plus loin, car *FUS RO DAH* est résolu avant)
 
+Se mettre à côté d'un "point de départ", tirer dès que quelqu'un ressuscite, et
+le tuer en boucle.
+
+Stratégie/alliance : si deux joueurs ont un point de départ proche, ils peuvent
+se tuer en boucle et amasser beaucoup de points rapidement.
