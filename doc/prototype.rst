@@ -27,20 +27,10 @@ joueur au début de la partie.
 Les différentes cases que l'on peut rencontrer sur une carte sont :
 
 - Herbe
-    :Déplacement: 0
-    :Vision: Normale
 - Route
-    :Déplacement: +1
-    :Vision: Normale
 - Forêt
-    :Déplacement: -1
-    :Vision: Les personnages ne peuvent voir que d'une case
 - Marais
-    :Déplacement: -2
-    :Vision: Normale
 - Mur
-    :Déplacement: Obstacle
-    :Vision: Aucune
 
 Unités
 ======
@@ -53,22 +43,48 @@ Les unités peuvent voir dans un cône de vision situé devant elles. Elles ont
 aussi une force d'attaque et un déplacement différent :
 
 - Éclaireur
-    :Vision: 10
-    :Déplacement: 10
-    :Vie: 3
-    :Attaque: Diminue en fonction de la distance, fort \ courte distance
-
 - Barbare
-    :Vision: 5
-    :Déplacement: 5
-    :Vie: 10
-    :Attaque: Arme de zone (lance grenade)
-
 - Tireur d'élite
-    :Vision: 4
-    :Déplacement: 6
-    :Vie: 6
-    :Attaque: Fusil de précision
+
+Déplacement
+===========
+
+Pénombre
+--------
+
+Le déplacement s'effectue d'une case à une autre. Le champion doit donner la
+liste des cases adjacentes qui composent le chemin qu'il souhaite que le
+personnage empreinte. Lorsque le personnage se déplace il regarde
+systématiquement dans la direction du déplacement. On consididère que le
+personnage se retourne instantanément.
+
+Pour chaque case du déplacement on regarde si il y a un personnage énemi dans
+le champs de vision et son emplacement. Si un personnage se déplace en même
+temps qu'un autre, on peut imaginer qu'ils se croisent, il laissera plusieurs
+traces consécutives. Lors de la phase suivante on donne au joueur la liste des
+positions des personnages croisés en chemin. On ne donnera ni le propriétaire
+du personnage ni sa classe.
+
+Pour que la simulation soit correcte on fera se déplacer tous les personnages
+en même temps. Le nombre de tours simulé pour chaque déplacement correspondra
+au nombre de cases qui compose le chemin.  Ainsi si un personnage a parcours
+plus court de les autres il s'arrêtera plus tôt alors les autres personnages
+continuerons de se déplacer.
+
+Attaques
+========
+
+Les types d'attaques/abilités spéciales sont à définir.
+
+Cadavres
+========
+
+Lorsque qu'un personange meurt on lasse sur sa case un "cadavre" afin de
+signaler aux autres personnage sa mort. Cela permet de distinguer si un
+personnage est juste sorti du champs de vision ou si il est mort. Le cadavre
+reste en place un tour (ou plus, à définir).
+
+Les cadavres ne sont pas visibles dans la pénombre (à définir)
 
 Déroulement d'une partie
 ========================
