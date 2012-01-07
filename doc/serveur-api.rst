@@ -86,6 +86,23 @@ Case et carte
       CASE_TYPE_MUR
     }
 
+Jeu
+===
+
+.. type:: erreur
+
+  Énumération représentant une erreur renvoyée par une des fonctions d'action.
+
+  Valeurs :
+
+  +------------------+-------------------------------------+
+  |OK                | lol                                 |
+  +------------------+-------------------------------------+
+  |ID_INVALIDE       | identifiant invalide                |
+  +------------------+-------------------------------------+
+  |POSITION_INVALIDE | la position spécifiée est invalide  |
+  +------------------+-------------------------------------+
+
 ---------
 Fonctions
 ---------
@@ -119,3 +136,7 @@ Namespace personnage
 
   Retourne l'ensembles des cases vue par le personnage désigné par
   ``personnage_id``.
+
+.. function:: erreur personnage_deplace(int personnage_id,\
+                                        position from,\
+                                        postition to)
