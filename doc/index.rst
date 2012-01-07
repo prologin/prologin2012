@@ -2,19 +2,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Prolo-proto
-===========
+Prologin Serveur 2012
+=====================
 
-Contents:
+Pages:
 
 .. toctree::
    :maxdepth: 1
 
-   prototype
-
-Links
-=====
-
-* :ref:`genindex`
-* :ref:`search`
-
+   serveur
+   serveur-api
+   prototype-old
