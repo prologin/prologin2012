@@ -83,8 +83,15 @@ milieu de la carte mais pas forcément). Ils disposent alors d'un nombre fixé d
 tour pour déplacer leurs personnages jusqu'à des endroits de leur choix qui
 seront leurs points de réapparition en cas de mort durant toute la partie.
 
+Lors de cette phase de jeu, les personnages ne peuvent que bouger (ils ne
+peuvent pas se tirer dessus par exemple durant toute la partie).
+
 Phase de jeu
 ------------
+
+La phase de jeu se découpe en tours. Un partie dure un nombre déterminé de
+tours, donné aux joueurs en début de partie.
+
 
 Une case peut accueillir un nombre quelconque de personnages. Tout le monde se
 déplace en même temps
