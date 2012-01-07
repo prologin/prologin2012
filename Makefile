@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = hgblog-build
+SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = build
 
@@ -16,7 +16,9 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
 DEPLOY_DIR     ?= /var/www/prologin.halfr.net
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext deploy
+.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext deploy all
+
+all: html
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
