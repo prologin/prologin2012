@@ -1,0 +1,250 @@
+conf:
+  package_name: prolo2012
+  client_rule_lib: TODO
+  server_rule_lib: TODO
+  player_lib: champion
+  player_filename: prologin
+
+constant:
+# Constantes pour les personnages
+  -
+    cst_name: RANGER_VISION
+    cst_val: 8
+    cst_comment: Vision du Ranger
+  -
+    cst_name: RANGER_DEPLACEMENT
+    cst_val: 8
+    cst_comment: Déplacement du Ranger
+  -
+    cst_name: RANGER_VIE
+    cst_val: 3
+    cst_comment: Vie du Ranger
+  -
+    cst_name: RANGER_ATTAQUE
+    cst_val: 3
+    cst_comment: Attaque du ranger
+  -
+    cst_name: RANGER_ATT_PORTEE
+    cst_val: 1
+    cst_comment: Portée de l'arme du Ranger
+  -
+    cst_name: RANGER_ATT_ZONE
+    cst_val: 1
+    cst_comment: Zone de dégats de l'arme du Ranger
+  -
+    cst_name: BARBARE_VISION
+    cst_val: 8
+    cst_comment: Vision du Barbare
+  -
+    cst_name: BARBARE_DEPLACEMENT
+    cst_val: 8
+    cst_comment: Déplacement du Barbare
+  -
+    cst_name: BARBARE_VIE
+    cst_val: 3
+    cst_comment: Vie du Barbare
+  -
+    cst_name: BARBARE_ATTAQUE
+    cst_val: 5
+    cst_comment: Attaque du Barbare
+  -
+    cst_name: BARBARE_ATT_PORTEE
+    cst_val: 5
+    cst_comment: Portée de l'arme du Barbare
+  -
+    cst_name: BARBARE_ATT_ZONE
+    cst_val: 2
+    cst_comment: Zone de dégats de l'arme du Barbare
+  -
+    cst_name: ELFE_VISION
+    cst_val: 8
+    cst_comment: Vision de l'Elfe
+  -
+    cst_name: ELFE_DEPLACEMENT
+    cst_val: 8
+    cst_comment: Déplacement de l'Elfe
+  -
+    cst_name: ELFE_VIE
+    cst_val: 3
+    cst_comment: Vie de l'Elfe
+  -
+    cst_name: ELFE_ATTAQUE
+    cst_val: 2
+    cst_comment: Attaque de l'Elfe
+  -
+    cst_name: ELFE_ATT_PORTEE
+    cst_val: 8
+    cst_comment: Portée de l'arme de l'Elfe
+  -
+    cst_name: ELFE_ATT_ZONE
+    cst_val: 1
+    cst_comment: Zone de dégats de l'arme de l'Elfe
+
+enum:
+  -
+    enum_name: perso_classe
+    enum_summary:
+      "Type de personnage"
+    enum_field:
+      - [perso_ranger, "Ranger"]
+      - [perso_barbare, "Barbare"]
+      - [perso_elfe, "Elfe"]
+  -
+    enum_name: case_type
+    enum_summary:
+      "Type de case"
+    enum_field:
+      - [case_herbe, "Herbe"]
+      - [case_route, "Route"]
+      - [case_foret, "Forêt"]
+      - [case_marais, "Marais"]
+      - [case_mur, "Mur"]
+      - [case_tour, "Tour de guet"]
+  -
+    enum_name: attaque_type
+    enum_summary:
+      "Type d'attaque"
+    enum_field:
+      - [attaque_normale, "Attaque normale"]
+      - [attaque_palantir, "Attaque 'Palantir' de l'Elfe"]
+      - [attaque_dans_to_dos, "Attaque 'Dans ton dos' de l'Elfe"]
+      - [attaque_bastoooon, "Attaque 'Bastoooon' de du Barbare"]
+      - [attaque_fus_ro_dah, "Attaque 'Fus Ro Dah' du Barbare"]
+      - [attaque_i_see, "Attaque 'I see what you did there.' du Ranger"]
+      - [attaque_loto, "Attaque 'Loto, à qui le tour' du Ranger"]
+  -
+    enum_name: orientation
+    enum_summary:
+      "Orientation du personnage"
+    enum_field:
+      - [orientation_nord, "Orienté au nord"]
+      - [orientation_est, "Orienté à l'est"]
+      - [orientation_sud, "Orienté au sud"]
+      - [orientation_ouest, "Orienté à l'ouest"]
+
+struct:
+  -
+    str_name: position
+    str_summary: Représente une position sur le terrain du jeu
+    str_tuple: yes
+    str_field:
+      - [x, int, coordonnée en X]
+      - [y, int, coordonnée en Y]
+  -
+    str_name: perso_info
+    str_summary: Représente les informations sur un personnage
+    str_tuple: no
+    str_field:
+      - [equipe, int, "L'équipe à laquelle appartient le personnage"]
+      - [classe, perso_classe, "Classe du personnage"]
+      - [vie, int, "La vie courante du personnage"]
+      - [orientation, orientation, "L'orientation du personnage"]
+
+function:
+# Fonctions pour la carte
+  -
+    fct_name: carte_taille
+    fct_summary:
+      Retourne la taille de la carte sous la forme d'une position
+      correspondant aux coordonnées du point extrême.
+    fct_ret_type: position
+    fct_arg: []
+  -
+    fct_name: carte_case_type
+    fct_summary:
+      Retourne la nature de la case désignée par ``pos``.
+    fct_ret_type: case_type
+    fct_arg:
+      - [pos, position, "Position"]
+  -
+    fct_name: carte_case_cadavre
+    fct_summary:
+      Retourne ``true`` si un cadavre se trouve sur la case ``pos``.
+    fct_ret_type: bool
+    fct_arg:
+      - [pos, position, "Position"]
+  -
+    fct_name: carte_case_trainee
+    fct_summary:
+      Retourne ``true`` si une trainée est présente sur la case ``pos``.
+    fct_ret_type: bool
+    fct_arg:
+      - [pos, position, "Position"]
+  -
+    fct_name: carte_case_perso
+    fct_summary:
+      Retourne la liste des personnages sur la case.
+    fct_ret_type: perso_info array
+    fct_arg:
+      - [pos, position, "Position de la case"]
+  -
+    fct_name: chemin
+    fct_summary:
+      Renvoie le chemin le plus court entre deux points (fonction lente)
+    fct_ret_type: position array
+    fct_arg:
+      - [p1, position, "position de départ"]
+      - [p2, position, "position d'arrivée"]
+
+# Fonctions pour les personnages
+  -
+    fct_name: perso_deplace
+    fct_summary:
+      Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la case d'arrivée dans la direction ``orientation``.
+    fct_ret_type: erreur
+    fct_arg:
+      - [perso, perso_info, "Personnage à déplacer"]
+      - [chemin, orientation array, "Tableau d'``orientation`` composants le chemin"]
+      - [orientation, orientation, "Orientation sur la dernière case d'arrivée"]
+  -
+    fct_name: perso_attaque
+    fct_summary:
+      Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la case ``pos``.
+    fct_ret_type: erreur
+    fct_arg:
+      - [perso, perso_info, "Personnage"]
+      - [attaque, attaque_type, "Attaque à utiliser"]
+      - [pos, position, "Case à attaquer"]
+
+# Autre
+  -
+    fct_name: annuler
+    fct_summary:
+      "Annule l'action précédente. Renvoie ``true`` si une action a été annulée,
+       ``false`` sinon."
+    fct_ret_type: bool
+    fct_arg: []
+
+user_function:
+  -
+    fct_name: partie_init
+    fct_summary: Fonction appellée au début de la partie
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: jouer_placement
+    fct_summary: Fonction appellée pendant la phase de placement
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: jouer_tour
+    fct_summary: Fonction appellée pendant la phase principale
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: partie_fin
+    fct_summary: Fonction appellée à la fin de la partie
+    fct_ret_type: void
+    fct_arg: []
+
+infos:
+  -
+    fct_name: unites_energie
+    fct_arg: []
+  -
+    fct_name: trainees_moto
+    fct_arg: []
+  -
+    fct_name: scores
+    fct_arg: []
+
