@@ -1,142 +1,656 @@
-==================
-Serveur 2012 - API
-==================
-
-.. default-domain:: c
-
--------------------
-Constantes et types
--------------------
-
-*À affiner empiriquement*
-
-Personnages
-===========
-
-::
-
-  ECLAIREUR_VISION      = 8
-  ECLAIREUR_DEPLACEMENT = 8
-  ECLAIREUR_VIE         = 3
-  ECLAIREUR_ATTAQUE     = 3
-
-::
-
-  BARBARE_VISION      = 8
-  BARBARE_DEPLACEMENT = 8
-  BARBARE_VIE         = 3
-  BARBARE_ATTAQUE     = 5
 
 
-::
+===
+API
+===
 
-  ELITE_VISION      = 8
-  ELITE_DEPLACEMENT = 8
-  ELITE_VIE         = 3
-  ELITE_ATTAQUE     = 2
+..
+   Ce fichier a été généré avec gen/make_sphinx.rsphinx
+   Ne faites pas l'autiste, ne le modifiez pas directement
+
+Constantes
+==========
 
 
-.. type:: personnage_classe
+.. c:var:: RANGER_VISION
 
-  Type de personnage.
+  :Valeur: 8
+  :Description:
+    Vision du Ranger
 
-  .. code-block:: c
+    
 
-    enum personnage_classe {
-      PERSONNAGE_ECLAIREUR,
-      PERSONNAGE_BARBARE,
-      PERSONNAGE_ELITE,
-    }
+.. c:var:: RANGER_DEPLACEMENT
 
-.. type:: personnage_info
+  :Valeur: 8
+  :Description:
+    Déplacement du Ranger
 
-  Structure représentant un personnage.
+    
 
-  .. code-block:: c
+.. c:var:: RANGER_VIE
 
-    struct personnage_info {
-      int equipe, // l'équipe à laquelle appartient le personnage
-      int vie, // la vie courrante du personnage
-    }
+  :Valeur: 3
+  :Description:
+    Vie du Ranger
 
-Case et carte
-=============
+    
 
-.. type:: position
+.. c:var:: RANGER_ATTAQUE
 
-  Représente une position sur le terrain de jeu.
+  :Valeur: 3
+  :Description:
+    Attaque du ranger
+
+    
+
+.. c:var:: RANGER_ATT_PORTEE
+
+  :Valeur: 1
+  :Description:
+    Portée de l'arme du Ranger
+
+    
+
+.. c:var:: RANGER_ATT_ZONE
+
+  :Valeur: 1
+  :Description:
+    Zone de dégats de l'arme du Ranger
+
+    
+
+.. c:var:: BARBARE_VISION
+
+  :Valeur: 8
+  :Description:
+    Vision du Barbare
+
+    
+
+.. c:var:: BARBARE_DEPLACEMENT
+
+  :Valeur: 8
+  :Description:
+    Déplacement du Barbare
+
+    
+
+.. c:var:: BARBARE_VIE
+
+  :Valeur: 3
+  :Description:
+    Vie du Barbare
+
+    
+
+.. c:var:: BARBARE_ATTAQUE
+
+  :Valeur: 5
+  :Description:
+    Attaque du Barbare
+
+    
+
+.. c:var:: BARBARE_ATT_PORTEE
+
+  :Valeur: 5
+  :Description:
+    Portée de l'arme du Barbare
+
+    
+
+.. c:var:: BARBARE_ATT_ZONE
+
+  :Valeur: 2
+  :Description:
+    Zone de dégats de l'arme du Barbare
+
+    
+
+.. c:var:: ELFE_VISION
+
+  :Valeur: 8
+  :Description:
+    Vision de l'Elfe
+
+    
+
+.. c:var:: ELFE_DEPLACEMENT
+
+  :Valeur: 8
+  :Description:
+    Déplacement de l'Elfe
+
+    
+
+.. c:var:: ELFE_VIE
+
+  :Valeur: 3
+  :Description:
+    Vie de l'Elfe
+
+    
+
+.. c:var:: ELFE_ATTAQUE
+
+  :Valeur: 2
+  :Description:
+    Attaque de l'Elfe
+
+    
+
+.. c:var:: ELFE_ATT_PORTEE
+
+  :Valeur: 8
+  :Description:
+    Portée de l'arme de l'Elfe
+
+    
+
+.. c:var:: ELFE_ATT_ZONE
+
+  :Valeur: 1
+  :Description:
+    Zone de dégats de l'arme de l'Elfe
+
+    
+
+
+Énumérations
+============
+
+
+
+.. c:type:: perso_classe
+
+  :Description:
+      Type de personnage
+  :Valeurs:
+    
+      :PERSO_RANGER:
+        Ranger
+
+    
+      :PERSO_BARBARE:
+        Barbare
+
+    
+      :PERSO_ELFE:
+        Elfe
+
+    
+
+
+.. c:type:: case_type
+
+  :Description:
+      Type de case
+  :Valeurs:
+    
+      :CASE_HERBE:
+        Herbe
+
+    
+      :CASE_ROUTE:
+        Route
+
+    
+      :CASE_FORET:
+        Forêt
+
+    
+      :CASE_MARAIS:
+        Marais
+
+    
+      :CASE_MUR:
+        Mur
+
+    
+      :CASE_TOUR:
+        Tour de guet
+
+    
+
+
+.. c:type:: attaque_type
+
+  :Description:
+      Type d'attaque
+  :Valeurs:
+    
+      :ATTAQUE_NORMALE:
+        Attaque normale
+
+    
+      :ATTAQUE_PALANTIR:
+        Attaque 'Palantir' de l'Elfe
+
+    
+      :ATTAQUE_DANS_TO_DOS:
+        Attaque 'Dans ton dos' de l'Elfe
+
+    
+      :ATTAQUE_BASTOOOON:
+        Attaque 'Bastoooon' de du Barbare
+
+    
+      :ATTAQUE_FUS_RO_DAH:
+        Attaque 'Fus Ro Dah' du Barbare
+
+    
+      :ATTAQUE_I_SEE:
+        Attaque 'I see what you did there.' du Ranger
+
+    
+      :ATTAQUE_LOTO:
+        Attaque 'Loto, à qui le tour' du Ranger
+
+    
+
+
+.. c:type:: orientation
+
+  :Description:
+      Orientation du personnage
+  :Valeurs:
+    
+      :ORIENTATION_NORD:
+        Orienté au nord
+
+    
+      :ORIENTATION_EST:
+        Orienté à l'est
+
+    
+      :ORIENTATION_SUD:
+        Orienté au sud
+
+    
+      :ORIENTATION_OUEST:
+        Orienté à l'ouest
+
+    
+
+
+Structures
+==========
+
+
+
+.. c:type:: position
 
   .. code-block:: c
 
     struct position {
-      int x; // coordonnée en x
-      int y; // coordonnée en y
-    }
+        int x;
+        int y;
+    };
 
-.. type:: case_type
-  
+  :Description: Représente une position sur le terrain du jeu
+
+  :Champs:
+    :x: coordonnée en X
+    :y: coordonnée en Y
+    
+
+
+.. c:type:: perso_info
+
   .. code-block:: c
 
-    enum case_type {
-      CASE_TYPE_HERBE,
-      CASE_TYPE_ROUTE,
-      CASE_TYPE_FORET,
-      CASE_TYPE_MARAIS,
-      CASE_TYPE_COLLINE,
-      CASE_TYPE_MUR
-    }
+    struct perso_info {
+        int equipe;
+        perso_classe classe;
+        int vie;
+        orientation orientation;
+    };
 
-Jeu
-===
+  :Description: Représente les informations sur un personnage
 
-.. type:: erreur
+  :Champs:
+    :equipe: L'équipe à laquelle appartient le personnage
+    :classe: Classe du personnage
+    :vie: La vie courante du personnage
+    :orientation: L'orientation du personnage
+    
 
-  Énumération représentant une erreur renvoyée par une des fonctions d'action.
 
-  Valeurs :
-
-  +------------------+-------------------------------------+
-  |OK                | lol                                 |
-  +------------------+-------------------------------------+
-  |ID_INVALIDE       | identifiant invalide                |
-  +------------------+-------------------------------------+
-  |POSITION_INVALIDE | la position spécifiée est invalide  |
-  +------------------+-------------------------------------+
-
----------
 Fonctions
----------
+=========
 
-Namespace carte
-===============
 
-.. function:: position carte_taille()
 
-  Retourne la taille de la carte sous la forme d'une :c:type:`position`
-  correspondant aux coordonées du point extrême.
+.. c:function:: position carte_taille()
 
-.. function:: case_type carte_case_type(position pos)
+    Retourne la taille de la carte sous la forme d'une position correspondant aux coordonnées du point extrême.
 
-  Retourne la natude de la case désignée par ``pos``.
+    
 
-.. function:: bool carte_case_cadavre(position pos)
+
+
   
-  Retourne ``true`` si un cadavre se trouve sur la case ``pos``, ``false``
-  sinon.
 
-Namespace personnage
-====================
 
-.. function:: personnage_info personnage_info(int personnage_id)
+.. c:function:: case_type carte_case_type(position pos)
 
-  Retourne la struction personnage_info correspondant au personnage
-  ``personnage_id``.
+    Retourne la nature de la case désignée par ``pos``.
 
-.. function:: position array personnage_vision(int personnage_id)
+    
 
-  Retourne l'ensembles des cases vue par le personnage désigné par
-  ``personnage_id``.
 
-.. function:: erreur personnage_deplace(int personnage_id,\
-                                        position from,\
-                                        postition to)
+    
+
+    
+      
+    :param pos: Position
+      
+    
+
+
+  
+
+
+.. c:function:: bool carte_case_cadavre(position pos)
+
+    Retourne ``true`` si un cadavre se trouve sur la case ``pos``.
+
+    
+
+
+    
+
+    
+      
+    :param pos: Position
+      
+    
+
+
+  
+
+
+.. c:function:: bool carte_case_trainee(position pos)
+
+    Retourne ``true`` si une trainée est présente sur la case ``pos``.
+
+    
+
+
+    
+
+    
+      
+    :param pos: Position
+      
+    
+
+
+  
+
+
+.. c:function:: perso_info array carte_case_perso(position pos)
+
+    Retourne la liste des personnages sur la case.
+
+    
+
+
+    
+
+    
+      
+    :param pos: Position de la case
+      
+    
+
+
+  
+
+
+.. c:function:: position array chemin(position p1, position p2)
+
+    Renvoie le chemin le plus court entre deux points (fonction lente)
+
+    
+
+
+    
+
+    
+      
+    :param p1: position de départ
+      
+    
+      
+    :param p2: position d'arrivée
+      
+    
+
+
+  
+
+
+.. c:function:: erreur perso_deplace(perso_info perso, orientation array chemin, orientation orientation)
+
+    Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la case d'arrivée dans la direction ``orientation``.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage à déplacer
+      
+    
+      
+    :param chemin: Tableau d'``orientation`` composants le chemin
+      
+    
+      
+    :param orientation: Orientation sur la dernière case d'arrivée
+      
+    
+
+
+  
+
+
+.. c:function:: position array perso_penombre(perso_info perso, position case)
+
+    Récupère la liste des cases sur lesquelles des personnages ont été aperçus dans la pénombre par ``perso`` lors de son passage sur une ``case`` de son déplacement.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+      
+    :param case: Case de son déplacement
+      
+    
+
+
+  
+
+
+.. c:function:: position array perso_penombre_case(perso_info perso)
+
+    Récupère la liste des cases sur lesquelles un personnage est passé au tour précédent.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+
+
+  
+
+
+.. c:function:: erreur perso_attaque(perso_info perso, attaque_type attaque, position pos)
+
+    Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la case ``pos``.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+      
+    :param attaque: Attaque à utiliser
+      
+    
+      
+    :param pos: Case à attaquer
+      
+    
+
+
+  
+
+
+.. c:function:: int perso_attaque_recharge(perso_info perso, attaque_type attaque)
+
+    Retourne le temps de recharge restant pour l'attaque ``attaque`` du personnage ``perso``.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+      
+    :param attaque: Attaque à vérifier
+      
+    
+
+
+  
+
+
+.. c:function:: bool annuler()
+
+    Annule l'action précédente. Renvoie ``true`` si une action a été annulée, ``false`` sinon.
+
+    
+
+
+
+  
+
+
+.. c:function:: int mon_equipe()
+
+    Retourne le numéro de votre équipe
+
+    
+
+
+
+  
+
+
+.. c:function:: int array scores()
+
+    Retourne les scores de chaque équipe
+
+    
+
+
+
+  
+
+
+.. c:function:: int nombre_equipes()
+
+    Retourne le nombre d'équipes sur le terrain
+
+    
+
+
+
+  
+
+
+.. c:function:: int tour_actuel()
+
+    Retourne le numéro du tour actuel
+
+    
+
+
+
+  
+
+
+Fonctions utilisateur
+=====================
+
+
+
+.. c:function:: void partie_init()
+
+    Fonction appellée au début de la partie
+
+    
+
+
+
+  
+
+
+.. c:function:: void jouer_placement()
+
+    Fonction appellée pendant la phase de placement
+
+    
+
+
+
+  
+
+
+.. c:function:: void jouer_tour()
+
+    Fonction appellée pendant la phase principale
+
+    
+
+
+
+  
+
+
+.. c:function:: void partie_fin()
+
+    Fonction appellée à la fin de la partie
+
+    
+
+
+
+  
+

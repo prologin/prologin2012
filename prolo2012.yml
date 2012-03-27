@@ -190,21 +190,59 @@ function:
   -
     fct_name: perso_deplace
     fct_summary:
-      Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la case d'arrivée dans la direction ``orientation``.
+      Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné
+      sous forme d'une suite d'``orientation``, orientant le personnage sur la
+      case d'arrivée dans la direction ``orientation``.
     fct_ret_type: erreur
     fct_arg:
       - [perso, perso_info, "Personnage à déplacer"]
       - [chemin, orientation array, "Tableau d'``orientation`` composants le chemin"]
       - [orientation, orientation, "Orientation sur la dernière case d'arrivée"]
   -
+    fct_name: perso_penombre
+    fct_summary:
+      Récupère la liste des cases sur lesquelles des personnages ont été aperçus
+      dans la pénombre par ``perso`` lors de son passage sur une ``case``
+      de son déplacement.
+    fct_ret_type: position array
+    fct_arg:
+      - [perso, perso_info, "Personnage"]
+      - [case, position, "Case de son déplacement"]
+  -
+    fct_name: perso_penombre_case
+    fct_summary:
+      Récupère la liste des cases sur lesquelles un personnage est passé au
+      tour précédent.
+    fct_ret_type: position array
+    fct_arg:
+      - [perso, perso_info, "Personnage"]
+  -
+    fct_name: perso_vision
+    fct_summary:
+      Récupère la liste des cases sur lesquelles ``perso`` voit d'autre
+      personnages.
+    fct_ret_type: position array
+    fct_arg:
+      - [perso, perso_info, "Personnage"]
+  -
     fct_name: perso_attaque
     fct_summary:
-      Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la case ``pos``.
+      Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la case
+      ``pos``.
     fct_ret_type: erreur
     fct_arg:
       - [perso, perso_info, "Personnage"]
       - [attaque, attaque_type, "Attaque à utiliser"]
       - [pos, position, "Case à attaquer"]
+  -
+    fct_name: perso_attaque_recharge
+    fct_summary:
+      Retourne le temps de recharge restant pour l'attaque ``attaque`` du
+      personnage ``perso``.
+    fct_ret_type: int
+    fct_arg:
+      - [perso, perso_info, "Personnage"]
+      - [attaque, attaque_type, "Attaque à vérifier"]
 
 # Autre
   -
@@ -213,6 +251,26 @@ function:
       "Annule l'action précédente. Renvoie ``true`` si une action a été annulée,
        ``false`` sinon."
     fct_ret_type: bool
+    fct_arg: []
+  -
+    fct_name: mon_equipe
+    fct_summary: Retourne le numéro de votre équipe
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: scores
+    fct_summary: Retourne les scores de chaque équipe
+    fct_ret_type: int array
+    fct_arg: []
+  -
+    fct_name: nombre_equipes
+    fct_summary: "Retourne le nombre d'équipes sur le terrain"
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: tour_actuel
+    fct_summary: Retourne le numéro du tour actuel
+    fct_ret_type: int
     fct_arg: []
 
 user_function:
