@@ -164,13 +164,6 @@ function:
     fct_arg:
       - [pos, position, "Position"]
   -
-    fct_name: carte_case_trainee
-    fct_summary:
-      Retourne ``true`` si une trainée est présente sur la case ``pos``.
-    fct_ret_type: bool
-    fct_arg:
-      - [pos, position, "Position"]
-  -
     fct_name: carte_case_perso
     fct_summary:
       Retourne la liste des personnages sur la case.
