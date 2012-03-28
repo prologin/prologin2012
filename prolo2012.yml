@@ -278,8 +278,13 @@ user_function:
     fct_ret_type: void
     fct_arg: []
   -
-    fct_name: jouer_tour
-    fct_summary: Fonction appellée pendant la phase principale
+    fct_name: jouer_deplacement
+    fct_summary: Fonction appellée pendant la phase de déplacement
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: jouer_attaque
+    fct_summary: Fonction appellée pendant la phase d'attaque
     fct_ret_type: void
     fct_arg: []
   -
