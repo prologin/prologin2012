@@ -274,6 +274,30 @@ Constantes
     
 
 
+.. c:type:: erreur
+
+  :Description:
+      Erreurs possibles
+  :Valeurs:
+    
+      :POSITION_IMPOSSIBLE:
+        La position n'existe pas
+
+    
+      :PERSONNAGE_IMPOSSIBLE:
+        Le personnage n'existe pas ou ne vous appartient pas
+
+    
+      :CHEMIN_IMPOSSIBLE:
+        Le chemin est impossible
+
+    
+      :ATTAQUE_INDISPONIBLE:
+        L'attaque n'est pas utilisable pour le moment
+
+    
+
+
 Structures
 ==========
 
@@ -310,10 +334,10 @@ Structures
   :Description: Représente les informations sur un personnage
 
   :Champs:
-    :equipe: L'équipe à laquelle appartient le personnage
+    :equipe: Équipe à laquelle appartient le personnage
     :classe: Classe du personnage
-    :vie: La vie courante du personnage
-    :orientation: L'orientation du personnage
+    :vie: Vie courante du personnage
+    :orientation: Orientation du personnage
     
 
 
@@ -355,25 +379,6 @@ Fonctions
 .. c:function:: bool carte_case_cadavre(position pos)
 
     Retourne ``true`` si un cadavre se trouve sur la case ``pos``.
-
-    
-
-
-    
-
-    
-      
-    :param pos: Position
-      
-    
-
-
-  
-
-
-.. c:function:: bool carte_case_trainee(position pos)
-
-    Retourne ``true`` si une trainée est présente sur la case ``pos``.
 
     
 
@@ -485,6 +490,25 @@ Fonctions
 .. c:function:: position array perso_penombre_case(perso_info perso)
 
     Récupère la liste des cases sur lesquelles un personnage est passé au tour précédent.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+
+
+  
+
+
+.. c:function:: position array perso_vision(perso_info perso)
+
+    Récupère la liste des cases sur lesquelles ``perso`` voit d'autre personnages.
 
     
 
@@ -633,9 +657,20 @@ Fonctions utilisateur
   
 
 
-.. c:function:: void jouer_tour()
+.. c:function:: void jouer_deplacement()
 
-    Fonction appellée pendant la phase principale
+    Fonction appellée pendant la phase de déplacement
+
+    
+
+
+
+  
+
+
+.. c:function:: void jouer_attaque()
+
+    Fonction appellée pendant la phase d'attaque
 
     
 
