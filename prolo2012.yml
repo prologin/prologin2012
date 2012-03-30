@@ -144,10 +144,10 @@ struct:
     str_summary: Représente les informations sur un personnage
     str_tuple: no
     str_field:
-      - [equipe, int, "L'équipe à laquelle appartient le personnage"]
+      - [equipe, int, "Équipe à laquelle appartient le personnage"]
       - [classe, perso_classe, "Classe du personnage"]
-      - [vie, int, "La vie courante du personnage"]
-      - [orientation, orientation, "L'orientation du personnage"]
+      - [vie, int, "Vie courante du personnage"]
+      - [orientation, orientation, "Orientation du personnage"]
 
 function:
 # Fonctions pour la carte
