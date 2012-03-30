@@ -121,6 +121,15 @@ enum:
       - [orientation_est, "Orienté à l'est"]
       - [orientation_sud, "Orienté au sud"]
       - [orientation_ouest, "Orienté à l'ouest"]
+  -
+    enum_name: erreur
+    enum_summary:
+      "Erreurs possibles"
+    enum_field:
+      - [position_impossible, "La position n'existe pas"]
+      - [personnage_impossible, "Le personnage n'existe pas ou ne vous appartient pas"]
+      - [chemin_impossible, "Le chemin est impossible"]
+      - [attaque_indisponible, "L'attaque n'est pas utilisable pour le moment"]
 
 struct:
   -
