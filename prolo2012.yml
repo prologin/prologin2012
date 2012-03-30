@@ -8,29 +8,29 @@ conf:
 constant:
 # Constantes pour les personnages
   -
-    cst_name: RANGER_VISION
+    cst_name: VOLEUR_VISION
     cst_val: 8
-    cst_comment: Vision du Ranger
+    cst_comment: Vision du Voleur
   -
-    cst_name: RANGER_DEPLACEMENT
+    cst_name: VOLEUR_DEPLACEMENT
     cst_val: 8
-    cst_comment: Déplacement du Ranger
+    cst_comment: Déplacement du Voleur
   -
-    cst_name: RANGER_VIE
+    cst_name: VOLEUR_VIE
     cst_val: 3
-    cst_comment: Vie du Ranger
+    cst_comment: Vie du Voleur
   -
-    cst_name: RANGER_ATTAQUE
+    cst_name: VOLEUR_ATTAQUE
     cst_val: 3
-    cst_comment: Attaque du ranger
+    cst_comment: Attaque du voleur
   -
-    cst_name: RANGER_ATT_PORTEE
+    cst_name: VOLEUR_ATT_PORTEE
     cst_val: 1
-    cst_comment: Portée de l'arme du Ranger
+    cst_comment: Portée de l'arme du Voleur
   -
-    cst_name: RANGER_ATT_ZONE
+    cst_name: VOLEUR_ATT_ZONE
     cst_val: 1
-    cst_comment: Zone de dégats de l'arme du Ranger
+    cst_comment: Zone de dégats de l'arme du Voleur
   -
     cst_name: BARBARE_VISION
     cst_val: 8
@@ -86,7 +86,7 @@ enum:
     enum_summary:
       "Type de personnage"
     enum_field:
-      - [perso_ranger, "Ranger"]
+      - [perso_voleur, "Voleur"]
       - [perso_barbare, "Barbare"]
       - [perso_elfe, "Elfe"]
   -
@@ -110,8 +110,8 @@ enum:
       - [attaque_dans_to_dos, "Attaque 'Dans ton dos' de l'Elfe"]
       - [attaque_bastoooon, "Attaque 'Bastoooon' de du Barbare"]
       - [attaque_fus_ro_dah, "Attaque 'Fus Ro Dah' du Barbare"]
-      - [attaque_i_see, "Attaque 'I see what you did there.' du Ranger"]
-      - [attaque_loto, "Attaque 'Loto, à qui le tour' du Ranger"]
+      - [attaque_i_see, "Attaque 'I see what you did there.' du Voleur"]
+      - [attaque_loto, "Attaque 'Loto, à qui le tour' du Voleur"]
   -
     enum_name: orientation
     enum_summary:

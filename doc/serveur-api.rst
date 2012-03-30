@@ -12,51 +12,51 @@ Constantes
 ==========
 
 
-.. c:var:: RANGER_VISION
+.. c:var:: VOLEUR_VISION
 
   :Valeur: 8
   :Description:
-    Vision du Ranger
+    Vision du Voleur
 
     
 
-.. c:var:: RANGER_DEPLACEMENT
+.. c:var:: VOLEUR_DEPLACEMENT
 
   :Valeur: 8
   :Description:
-    Déplacement du Ranger
+    Déplacement du Voleur
 
     
 
-.. c:var:: RANGER_VIE
+.. c:var:: VOLEUR_VIE
 
   :Valeur: 3
   :Description:
-    Vie du Ranger
+    Vie du Voleur
 
     
 
-.. c:var:: RANGER_ATTAQUE
+.. c:var:: VOLEUR_ATTAQUE
 
   :Valeur: 3
   :Description:
-    Attaque du ranger
+    Attaque du voleur
 
     
 
-.. c:var:: RANGER_ATT_PORTEE
+.. c:var:: VOLEUR_ATT_PORTEE
 
   :Valeur: 1
   :Description:
-    Portée de l'arme du Ranger
+    Portée de l'arme du Voleur
 
     
 
-.. c:var:: RANGER_ATT_ZONE
+.. c:var:: VOLEUR_ATT_ZONE
 
   :Valeur: 1
   :Description:
-    Zone de dégats de l'arme du Ranger
+    Zone de dégats de l'arme du Voleur
 
     
 
@@ -168,8 +168,8 @@ Constantes
       Type de personnage
   :Valeurs:
     
-      :PERSO_RANGER:
-        Ranger
+      :PERSO_VOLEUR:
+        Voleur
 
     
       :PERSO_BARBARE:
@@ -241,11 +241,11 @@ Constantes
 
     
       :ATTAQUE_I_SEE:
-        Attaque 'I see what you did there.' du Ranger
+        Attaque 'I see what you did there.' du Voleur
 
     
       :ATTAQUE_LOTO:
-        Attaque 'Loto, à qui le tour' du Ranger
+        Attaque 'Loto, à qui le tour' du Voleur
 
     
 
@@ -490,6 +490,25 @@ Fonctions
 .. c:function:: position array perso_penombre_case(perso_info perso)
 
     Récupère la liste des cases sur lesquelles un personnage est passé au tour précédent.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+
+
+  
+
+
+.. c:function:: position array perso_vision(perso_info perso)
+
+    Récupère la liste des cases sur lesquelles ``perso`` voit d'autre personnages.
 
     
 
