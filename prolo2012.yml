@@ -90,16 +90,16 @@ enum:
       - [perso_barbare, "Barbare"]
       - [perso_elfe, "Elfe"]
   -
-    enum_name: case_type
+    enum_name: zone_type
     enum_summary:
-      "Type de case"
+      "Type de zone"
     enum_field:
-      - [case_herbe, "Herbe"]
-      - [case_route, "Route"]
-      - [case_foret, "Forêt"]
-      - [case_marais, "Marais"]
-      - [case_mur, "Mur"]
-      - [case_tour, "Tour de guet"]
+      - [zone_herbe, "Herbe"]
+      - [zone_route, "Route"]
+      - [zone_foret, "Forêt"]
+      - [zone_marais, "Marais"]
+      - [zone_mur, "Mur"]
+      - [zone_tour, "Tour de guet"]
   -
     enum_name: attaque_type
     enum_summary:
@@ -159,26 +159,26 @@ function:
     fct_ret_type: position
     fct_arg: []
   -
-    fct_name: carte_case_type
+    fct_name: carte_zone_type
     fct_summary:
-      Retourne la nature de la case désignée par ``pos``.
-    fct_ret_type: case_type
+      Retourne la nature de la zone désignée par ``pos``.
+    fct_ret_type: zone_type
     fct_arg:
       - [pos, position, "Position"]
   -
-    fct_name: carte_case_cadavre
+    fct_name: carte_zone_cadavre
     fct_summary:
-      Retourne ``true`` si un cadavre se trouve sur la case ``pos``.
+      Retourne ``true`` si un cadavre se trouve sur la zone ``pos``.
     fct_ret_type: bool
     fct_arg:
       - [pos, position, "Position"]
   -
-    fct_name: carte_case_perso
+    fct_name: carte_zone_perso
     fct_summary:
-      Retourne la liste des personnages sur la case.
+      Retourne la liste des personnages sur la zone.
     fct_ret_type: perso_info array
     fct_arg:
-      - [pos, position, "Position de la case"]
+      - [pos, position, "Position de la zone"]
   -
     fct_name: chemin
     fct_summary:
@@ -194,26 +194,26 @@ function:
     fct_summary:
       Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné
       sous forme d'une suite d'``orientation``, orientant le personnage sur la
-      case d'arrivée dans la direction ``orientation``.
+      zone d'arrivée dans la direction ``orientation``.
     fct_ret_type: erreur
     fct_arg:
       - [perso, perso_info, "Personnage à déplacer"]
       - [chemin, orientation array, "Tableau d'``orientation`` composants le chemin"]
-      - [orientation, orientation, "Orientation sur la dernière case d'arrivée"]
+      - [orientation, orientation, "Orientation sur la dernière zone d'arrivée"]
   -
     fct_name: perso_penombre
     fct_summary:
-      Récupère la liste des cases sur lesquelles des personnages ont été aperçus
-      dans la pénombre par ``perso`` lors de son passage sur une ``case``
+      Récupère la liste des zones sur lesquelles des personnages ont été aperçus
+      dans la pénombre par ``perso`` lors de son passage sur une ``zone``
       de son déplacement.
     fct_ret_type: position array
     fct_arg:
       - [perso, perso_info, "Personnage"]
-      - [case, position, "Case de son déplacement"]
+      - [zone, position, "Zone de son déplacement"]
   -
-    fct_name: perso_penombre_case
+    fct_name: perso_penombre_zone
     fct_summary:
-      Récupère la liste des cases sur lesquelles un personnage est passé au
+      Récupère la liste des zones sur lesquelles un personnage est passé au
       tour précédent.
     fct_ret_type: position array
     fct_arg:
@@ -221,7 +221,7 @@ function:
   -
     fct_name: perso_vision
     fct_summary:
-      Récupère la liste des cases sur lesquelles ``perso`` voit d'autre
+      Récupère la liste des zones sur lesquelles ``perso`` voit d'autre
       personnages.
     fct_ret_type: position array
     fct_arg:
@@ -229,13 +229,13 @@ function:
   -
     fct_name: perso_attaque
     fct_summary:
-      Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la case
+      Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la zone
       ``pos``.
     fct_ret_type: erreur
     fct_arg:
       - [perso, perso_info, "Personnage"]
       - [attaque, attaque_type, "Attaque à utiliser"]
-      - [pos, position, "Case à attaquer"]
+      - [pos, position, "Zone à attaquer"]
   -
     fct_name: perso_attaque_recharge
     fct_summary:
