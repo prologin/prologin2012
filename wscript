@@ -9,13 +9,11 @@ def configure(cfg):
 def build(bld):
     bld.shlib(
         source = '''
-            src/api.cc
-            src/client.cc
-            src/game.cc
-            src/map.cc
-            src/server.cc
-            src/square.cc
         ''',
         target = 'prolo2012',
         use = ['net', 'rules'],
     )
+
+    bld.install_files('${PREFIX}/share/stechec2/prologin2012', [
+        'prolo2012.yml',
+    ])
