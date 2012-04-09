@@ -147,7 +147,7 @@ struct:
       - [equipe, int, "Équipe à laquelle appartient le personnage"]
       - [classe, perso_classe, "Classe du personnage"]
       - [vie, int, "Vie courante du personnage"]
-      - [orientation, orientation, "Orientation du personnage"]
+      - [direction, orientation, "Orientation du personnage"]
 
 function:
 # Fonctions pour la carte
