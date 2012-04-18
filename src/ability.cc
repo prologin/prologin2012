@@ -3,11 +3,14 @@
 #include "map.hh"
 #include "ability.hh"
 
-int Ability::check(Map*, Unit*, Position) const
+
+erreur Ability::check(Map* map, Unit*, Position p) const
 {
     if (cooldown_ > 0)
-        return 1;
-    return 0;
+        return ATTAQUE_IMPOSSIBLE;
+    if (!map->isPositionValid(p))
+        return POSITION_IMPOSSIBLE;
+    return OK;
 }
 
 void Ability::apply(Map*, Unit*, Position)
@@ -15,16 +18,24 @@ void Ability::apply(Map*, Unit*, Position)
     cooldown_ = cost_;
 }
 
-int BasicAttack::check(Map* map, Unit* attacker, Position target) const
+uint8_t Ability::getCooldown() const
 {
-    int err;
+    return cooldown_;
+}
 
-    err = Ability::check(map, attacker, target);
-    if (err != 0)
+void Ability::resetCooldown()
+{
+    cooldown_ = 0;
+}
+
+erreur BasicAttack::check(Map* map, Unit* attacker, Position target) const
+{
+    erreur err;
+    if ((err = Ability::check(map, attacker, target)) != OK)
         return err;
 
     // TODO
-    return 0;
+    return OK;
 }
 
 void BasicAttack::apply(Map* map, Unit* attacker, Position target)

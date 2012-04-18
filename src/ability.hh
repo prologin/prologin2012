@@ -2,6 +2,7 @@
 # define ABILITY_HH_
 
 # include "position.hh"
+# include "erreur.hh"
 
 class Map;
 class Unit;
@@ -13,8 +14,16 @@ public:
         : cooldown_(0), cost_(cost)
     {};
 
-    int check(Map* map, Unit* attacker, Position target) const;
+    /*
+     * check:
+     *  - cooldown > 0
+     *  - target is on the map
+     */
+    erreur check(Map* map, Unit* attacker, Position target) const;
     void apply(Map* map, Unit* attacker, Position target);
+
+    uint8_t getCooldown() const;
+    void resetCooldown();
 
 private:
     // when ability is used, cooldown_ = cost
@@ -29,7 +38,7 @@ public:
         : Ability(0), damages_(damages), range_(range)
     {};
 
-    int check(Map* map, Unit* attacker, Position target) const;
+    erreur check(Map* map, Unit* attacker, Position target) const;
     void apply(Map* map, Unit* attacker, Position target);
 
 private:

@@ -15,16 +15,18 @@ def build(bld):
             src/ability.cc
         ''',
         target = 'prolo2012',
-        use = ['net', 'rules'],
+        use = ['net', 'rules', 'utils'],
+        defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
     )
 
-    for test in ['unit', 'cell', 'map']:
+    for test in ['unit', 'cell', 'ability', 'map']:
         bld.program(
             features = 'gtest',
             source = 'src/tests/test-%s.cc' % test,
             target = 'prologin2012-test-%s' % test,
-            use = ['prolo2012'],
-            includes = ['.']
+            use = ['prolo2012', 'utils'],
+            includes = ['.'],
+            defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
         )
 
     bld.install_files('${PREFIX}/share/stechec2/prologin2012', [

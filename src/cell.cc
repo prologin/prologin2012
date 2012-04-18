@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 
 #include <utils/log.hh>
@@ -15,6 +16,11 @@ uint8_t  Cell::getCost() const
 uint8_t Cell::getRangeBonus() const
 {
     return range_bonus_;
+}
+
+CellType Cell::getType() const
+{
+    return type_;
 }
 
 std::vector<Unit*> Cell::getUnits() const
@@ -52,6 +58,11 @@ int Cell::removeUnit(Unit* unit)
 uint16_t Cell::getPopulation() const
 {
     return units_.size();
+}
+
+bool Cell::isUnitOnCell(Unit* unit) const
+{
+    return find(units_.begin(), units_.end(), unit) != units_.end();
 }
 
 std::vector<displacement>* Cell::getVision(uint8_t vision) const

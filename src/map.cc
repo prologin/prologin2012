@@ -9,6 +9,7 @@
 #include "cell.hh"
 #include "position.hh"
 #include "unit.hh"
+#include "erreur.hh"
 
 Map::~Map()
 {
@@ -37,19 +38,29 @@ Map::~Map()
 int Map::load(std::istream& s)
 {
     std::string line;
+    uint32_t start_x, start_y;
 
-    s >> height_ >> width_;
+    s >> width_ >> height_;
+    INFO("map: width=%d height=%d ", width_, height_);
     s >> player_count_;
-    s >> start_x_ >> start_y_;
+    INFO("map: player_count=%d", player_count_);
+    s >> start_x >> start_y;
+    start_position_ = Position(start_x, start_y);
+    INFO("map start: x=%d y=%d", start_x, start_y);
 
     for (uint32_t y = 0; y < height_; ++y)
     {
         s >> line;
-        CHECK(line.length() == width_);
+
+        if (line.length() != width_)
+            FATAL("map: line %d is too short (is %d long, should be %d)",
+                    y + 4, line.length(), width_);
+
+        std::vector<Cell*>* cell_line = new std::vector<Cell*>();
 
         for (uint32_t x = 0; x < width_; ++x)
         {
-            Cell* cell;
+            Cell* cell = NULL;
 
             switch (line[x])
             {
@@ -76,48 +87,61 @@ int Map::load(std::istream& s)
                 break;
             }
 
-            (*map_[y])[x] = cell;
+            cell_line->push_back(cell);
         }
+
+        map_.push_back(cell_line);
     }
 
     return 0;
 }
 
-// factory for new cells
-// set walking cost, vision and range bonus
-Cell* Map::newCell(uint32_t y, uint32_t x, CellType type)
+uint32_t Map::getWidth() const
 {
-    Cell* cell;
+    return width_;
+}
 
-    switch (type)
-    {
-    case WALL:
-        cell = new Wall(y, x);
-        break;
-    case ROAD:
-        cell = new Road(y, x);
-        break;
-    case GRASS:
-        cell = new Grass(y, x);
-        break;
-    case SWAMP:
-        cell = new Swamp(y, x);
-        break;
-    case FOREST:
-        cell = new Forest(y, x);
-        break;
-    case TOWER:
-        cell = new Tower(y, x);
-        break;
-    default:
-        FATAL("not in enum");
-        break;
-    }
+uint32_t Map::getHeight() const
+{
+    return height_;
+}
 
-    return cell;
+Position Map::getStartingPos() const
+{
+    return start_position_;
+}
+
+Cell* Map::getCell(Position p) const
+{
+    return (*map_[p.y])[p.x];
 }
 
 std::vector<Unit*> Map::getUnitsOn(Position cell) const
 {
-    return (*map_[cell.y])[cell.x]->getUnits();
+    return getCell(cell)->getUnits();
+}
+
+bool Map::isPositionValid(Position p) const
+{
+    return p.x < width_ && p.y < height_;
+}
+
+void Map::moveUnit(Unit* unit, Position from, Position to)
+{
+     getCell(from)->removeUnit(unit);
+     getCell(to)->addUnit(unit);
+}
+
+erreur Map::checkMove(Unit* unit, path_t path) const
+{
+    Position from = path.front();
+    Position to = path.back();
+
+    if (!isPositionValid(from) || !isPositionValid(to))
+        return POSITION_IMPOSSIBLE;
+
+    if (!getCell(from)->isUnitOnCell(unit))
+        return PERSONNAGE_IMPOSSIBLE;
+
+    return OK;
 }

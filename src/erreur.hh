@@ -1,0 +1,13 @@
+#ifndef ERREUR_HH_
+# define ERREUR_HH_
+
+enum erreur
+{
+    OK,
+    POSITION_IMPOSSIBLE,
+    PERSONNAGE_IMPOSSIBLE,
+    CHEMIN_IMPOSSIBLE,
+    ATTAQUE_IMPOSSIBLE,
+};
+
+#endif // !ERREUR_HH_
