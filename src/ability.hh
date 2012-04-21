@@ -6,13 +6,17 @@
 
 # include "constant.hh"
 
-class Map;
 class Unit;
+
+typedef std::shared_ptr<Unit> Unit_sptr;
+typedef std::list<Unit_sptr> UnitList;
+
+class Map;
 
 class Ability
 {
 public:
-    Ability(uint8_t cost)
+    Ability(int cost)
         : cooldown_(0), cost_(cost)
     {};
 
@@ -21,31 +25,35 @@ public:
      *  - cooldown > 0
      *  - target is on the map
      */
-    erreur check(Map* map, Unit* attacker, position target) const;
-    void apply(Map* map, Unit* attacker, position target);
+    erreur check(Map* map, Unit_sptr attacker, position target) const;
+    /*
+     * apply:
+     *  - add decrease life points
+     */
+    void apply(Map* map, Unit_sptr attacker, position target);
 
-    uint8_t getCooldown() const;
+    int getCooldown() const;
     void resetCooldown();
 
 private:
     // when ability is used, cooldown_ = cost
-    uint8_t cooldown_;
-    uint8_t cost_;
+    int cooldown_;
+    int cost_;
 };
 
 class BasicAttack : public Ability
 {
 public:
-    BasicAttack(uint8_t damages, uint8_t range)
+    BasicAttack(int damages, int range)
         : Ability(0), damages_(damages), range_(range)
     {};
 
-    erreur check(Map* map, Unit* attacker, position target) const;
-    void apply(Map* map, Unit* attacker, position target);
+    erreur check(Map* map, Unit_sptr attacker, position target) const;
+    void apply(Map* map, Unit_sptr attacker, position target);
 
 private:
-    uint8_t damages_;
-    uint8_t range_;
+    int damages_;
+    int range_;
 };
 
 typedef std::shared_ptr<Ability> Ability_sptr;

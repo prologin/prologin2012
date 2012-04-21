@@ -123,6 +123,7 @@ typedef enum zone_type {
   ZONE_MARAIS, /* <- Marais */
   ZONE_MUR, /* <- Mur */
   ZONE_TOUR, /* <- Tour de guet */
+  ZONE_ERREUR /* <- Erreur, mauvaise position */
 } zone_type;
 
 

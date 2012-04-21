@@ -9,17 +9,32 @@
 # include "ability.hh"
 # include "constant.hh"
 
+class Unit;
+
+typedef std::shared_ptr<Unit> Unit_sptr;
+typedef std::list<Unit_sptr> UnitList;
+
 class Unit
 {
 public:
-    Unit(uint8_t player_id, uint8_t move_points)
-        : abilities_(), player_id_(player_id), spawn_(position {0, 0}),
-        life_max_(10), life_current_(10), move_points_(move_points),
-        attackers_()
+    Unit(int player_id, int move_points, perso_classe classe)
+        : abilities_(), player_id_(player_id), classe_(classe),
+        spawn_(position {0, 0}), life_max_(10), life_current_(10),
+        move_points_(move_points), attackers_()
     {}
 
-    uint8_t getCurrentLife() const;
+    Unit(int player_id, int move_points)
+        : Unit(player_id, move_points, PERSO_VOLEUR)
+    {}
+
+    int getPlayer() const;
+    perso_classe getClasse() const;
+
+    int getCurrentLife() const;
     void resetLife();
+
+    orientation getOrientation() const;
+    void setOrientation(orientation direction);
 
     position getSpawn();
     void setSpawn(position p);
@@ -30,31 +45,32 @@ public:
      */
     void respawn();
 
-    void useAbility(uint8_t ability_id, Map* map, position* target);
-    uint8_t getAbilityCooldown(uint8_t ability_id);
+    void useAbility(int ability_id, Map* map, position* target);
+    int getAbilityCooldown(int ability_id);
 
     /**
      * reduce life
      * add attacker to attackers list
      */
-    void attacked(uint8_t damages, Unit* attacker);
-    std::vector<Unit*> getAttackers() const;
+    void attacked(int damages, Unit_sptr attacker);
+    UnitList getAttackers() const;
     bool isDead();
 
 protected:
     AbilityList abilities_;
 
 private:
-    uint8_t player_id_;
+    int player_id_;
+    perso_classe classe_;
 
     position spawn_;
 
-    uint8_t life_max_;
-    uint8_t life_current_;
+    int life_max_;
+    int life_current_;
 
-    uint8_t move_points_;
+    int move_points_;
 
-    std::vector<Unit*> attackers_;
+    UnitList attackers_;
 
     orientation orientation_;
 };
@@ -62,22 +78,19 @@ private:
 class Voleur : public Unit
 {
 public:
-    Voleur(uint8_t player_id);
+    Voleur(int player_id);
 };
 
 class Barbare : public Unit
 {
 public:
-    Barbare(uint8_t player_id);
+    Barbare(int player_id);
 };
 
 class Elfe : public Unit
 {
 public:
-    Elfe(uint8_t player_id);
+    Elfe(int player_id);
 };
-
-typedef std::shared_ptr<Unit> Unit_sptr;
-typedef std::list<Unit_sptr> UnitList;
 
 #endif // !UNIT_HH_

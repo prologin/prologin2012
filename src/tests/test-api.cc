@@ -7,8 +7,6 @@
 #include "../game.hh"
 #include "../constant.hh"
 
-extern Api* api;
-
 class ApiTest : public ::testing::Test
 {
 protected:
@@ -32,29 +30,48 @@ protected:
 
         gamestate_->init();
 
-        Api(gamestate_, NULL);
+        api_ = new Api(gamestate_, NULL);
     }
 
     virtual void TearDown()
     {
          delete gamestate_;
-         delete map_;
+         delete api_;
     }
 
     std::stringstream f;
 
+    Api* api_;
     Map* map_;
     GameState* gamestate_;
 };
 
 TEST_F(ApiTest, carte_taille)
 {
-    position taille = api->carte_taille();
+    position taille = api_->carte_taille();
     EXPECT_EQ(10, taille.x);
     EXPECT_EQ(9, taille.y);
 }
 
 TEST_F(ApiTest, carte_zone_type)
 {
-    EXPECT_EQ(ZONE_MUR, api->carte_zone_type(position {0, 0}));
+    EXPECT_EQ(ZONE_ERREUR, api_->carte_zone_type(position {42, 42}));
+    EXPECT_EQ(ZONE_MUR, api_->carte_zone_type(position {0, 0}));
+    EXPECT_EQ(ZONE_FORET, api_->carte_zone_type(position {1, 1}));
+    EXPECT_EQ(ZONE_HERBE, api_->carte_zone_type(position {5, 1}));
+    EXPECT_EQ(ZONE_TOUR, api_->carte_zone_type(position {7, 2}));
+    EXPECT_EQ(ZONE_ROUTE, api_->carte_zone_type(position {4, 2}));
+    EXPECT_EQ(ZONE_MARAIS, api_->carte_zone_type(position {1, 5}));
 }
+
+TEST_F(ApiTest, carte_zone_cadavre)
+{
+    // TODO: check after end of turn
+    EXPECT_FALSE(api_->carte_zone_cadavre(position {1, 1}));
+}
+
+TEST_F(ApiTest, carte_zone_perso)
+{
+    EXPECT_EQ((size_t)6, api_->carte_zone_perso(position {5, 4}).size());
+}
+

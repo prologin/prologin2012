@@ -1,7 +1,17 @@
 #include "unit.hh"
 #include "constant.hh"
 
-uint8_t Unit::getCurrentLife() const
+int Unit::getPlayer() const
+{
+    return player_id_;
+}
+
+perso_classe Unit::getClasse() const
+{
+    return classe_;
+}
+
+int Unit::getCurrentLife() const
 {
     return life_current_;
 }
@@ -9,6 +19,16 @@ uint8_t Unit::getCurrentLife() const
 void Unit::resetLife()
 {
     life_current_ = life_max_;
+}
+
+orientation Unit::getOrientation() const
+{
+    return orientation_;
+}
+
+void Unit::setOrientation(orientation direction)
+{
+    orientation_ = direction;
 }
 
 position Unit::getSpawn()
@@ -29,13 +49,13 @@ void Unit::respawn()
     resetLife();
 }
 
-void Unit::attacked(uint8_t damages, Unit* attacker)
+void Unit::attacked(int damages, Unit_sptr attacker)
 {
     life_current_ -= damages;
     attackers_.push_back(attacker);
 }
 
-std::vector<Unit*> Unit::getAttackers() const
+UnitList Unit::getAttackers() const
 {
     return attackers_;
 }
@@ -50,8 +70,8 @@ bool Unit::isDead()
  * Voleur
  * */
 
-Voleur::Voleur(uint8_t player_id)
-    : Unit(player_id, VOLEUR_DEPLACEMENT)
+Voleur::Voleur(int player_id)
+    : Unit(player_id, VOLEUR_DEPLACEMENT, PERSO_VOLEUR)
 {
     abilities_.push_back(Ability_sptr(new BasicAttack(VOLEUR_ATTAQUE, VOLEUR_ATT_PORTEE)));
 }
@@ -60,8 +80,8 @@ Voleur::Voleur(uint8_t player_id)
  * Barbare
  * */
 
-Barbare::Barbare(uint8_t player_id)
-    : Unit(player_id, BARBARE_DEPLACEMENT)
+Barbare::Barbare(int player_id)
+    : Unit(player_id, BARBARE_DEPLACEMENT, PERSO_BARBARE)
 {
     abilities_.push_back(Ability_sptr(new BasicAttack(BARBARE_ATTAQUE, BARBARE_ATT_PORTEE)));
 }
@@ -70,8 +90,8 @@ Barbare::Barbare(uint8_t player_id)
  * Elfe
  * */
 
-Elfe::Elfe(uint8_t player_id)
-    : Unit(player_id, ELFE_DEPLACEMENT)
+Elfe::Elfe(int player_id)
+    : Unit(player_id, ELFE_DEPLACEMENT, PERSO_ELFE)
 {
     abilities_.push_back(Ability_sptr(new BasicAttack(ELFE_ATTAQUE, ELFE_ATT_PORTEE)));
 }

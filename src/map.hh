@@ -35,7 +35,7 @@ public:
     position getStartingPos() const;
 
     Cell* getCell(position p) const;
-    std::vector<Unit*> getUnitsOn(position cell) const;
+    UnitList getUnitsOn(position cell) const;
 
     // checks
     /*
@@ -44,10 +44,10 @@ public:
      *  - path is contiguous,
      *  - unit have enought movePoints
      */
-    erreur checkMove(Unit* unit, path_t path) const;
+    erreur checkMove(Unit_sptr unit, path_t path) const;
     bool isPositionValid(position p) const;
 
-    void moveUnit(Unit* unit, position from, position to);
+    void moveUnit(Unit_sptr unit, position from, position to);
 
 
 protected:

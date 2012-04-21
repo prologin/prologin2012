@@ -7,13 +7,13 @@
 #include "cell.hh"
 
 // Return the cost of walking on this cell
-uint8_t  Cell::getCost() const
+int Cell::getCost() const
 {
     return cost_;
 }
 
 // Return the range bonus given to the units on this cell
-uint8_t Cell::getRangeBonus() const
+int Cell::getRangeBonus() const
 {
     return range_bonus_;
 }
@@ -23,20 +23,20 @@ zone_type Cell::getType() const
     return type_;
 }
 
-std::vector<Unit*> Cell::getUnits() const
+UnitList Cell::getUnits() const
 {
     return units_;
 }
 
 // Add unit in this cell
-void Cell::addUnit(Unit* unit)
+void Cell::addUnit(Unit_sptr unit)
 {
     units_.push_back(unit);
 }
 
 // Remove unit from this cell
 // return: 1 if not found
-int Cell::removeUnit(Unit* unit)
+int Cell::removeUnit(Unit_sptr unit)
 {
     auto it = units_.begin();
 
@@ -55,18 +55,33 @@ int Cell::removeUnit(Unit* unit)
     return 0;
 }
 
-uint16_t Cell::getPopulation() const
+int Cell::getPopulation() const
 {
     return units_.size();
 }
 
-bool Cell::isUnitOnCell(Unit* unit) const
+bool Cell::isUnitOnCell(Unit_sptr unit) const
 {
     return find(units_.begin(), units_.end(), unit) != units_.end();
 }
 
-std::vector<position>* Cell::getVision(uint8_t vision) const
+std::vector<position>* Cell::getVision(int vision) const
 {
     // TODO
     return new std::vector<position> {{1, 0}, {-1, 0}};
+}
+
+void Cell::setCorpse()
+{
+    corpse_ = true;
+}
+
+void Cell::resetCorpse()
+{
+    corpse_ = false;
+}
+
+bool Cell::isCorpse() const
+{
+    return corpse_;
 }
