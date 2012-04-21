@@ -154,6 +154,7 @@ std::string convert_to_string(erreur in){
     case PERSONNAGE_IMPOSSIBLE: return "\"personnage_impossible\"";
     case CHEMIN_IMPOSSIBLE: return "\"chemin_impossible\"";
     case ATTAQUE_INDISPONIBLE: return "\"attaque_indisponible\"";
+    case OK; return "\"ok\"";
   }
   return "bad value";
 }

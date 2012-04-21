@@ -12,12 +12,19 @@
 
 #include <stdlib.h>
 
-#include "Api.hh"
+#include <rules/game-state.hh>
+#include <rules/player.hh>
+
+#include "api.hh"
+#include "constant.hh"
+
+#include "game.hh"
+#include "map.hh"
 
 // global used in interface.cc
 Api* api;
 
-Api::Api(GameState* game_state, Player* player)
+Api::Api(GameState* game_state, rules::Player* player)
     : game_state_(game_state),
       player_(player)
 {
@@ -26,11 +33,12 @@ Api::Api(GameState* game_state, Player* player)
 
 ///
 // Retourne la taille de la carte sous la forme d'une position correspondant aux coordonnées du point extrême.
+// XXX: ÇA NE CORRESPOND PAS VRAIMENT À LA DÉFINITION D'UNE TAILLE
 //
 position Api::carte_taille()
 {
-  // TODO
-  abort();
+    Map* map = game_state_->getMap();
+    return position {map->getWidth(), map->getHeight()};
 }
 
 ///
@@ -38,8 +46,8 @@ position Api::carte_taille()
 //
 zone_type Api::carte_zone_type(position pos)
 {
-  // TODO
-  abort();
+    Map* map = game_state_->getMap();
+    return map->getCell(pos)->getType();
 }
 
 ///

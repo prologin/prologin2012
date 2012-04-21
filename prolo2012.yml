@@ -130,6 +130,7 @@ enum:
       - [personnage_impossible, "Le personnage n'existe pas ou ne vous appartient pas"]
       - [chemin_impossible, "Le chemin est impossible"]
       - [attaque_indisponible, "L'attaque n'est pas utilisable pour le moment"]
+      - [ok, "Pas d'erreur"]
 
 struct:
   -

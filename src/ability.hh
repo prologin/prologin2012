@@ -1,8 +1,10 @@
 #ifndef ABILITY_HH_
 # define ABILITY_HH_
 
-# include "position.hh"
-# include "erreur.hh"
+# include <memory>
+# include <list>
+
+# include "constant.hh"
 
 class Map;
 class Unit;
@@ -19,8 +21,8 @@ public:
      *  - cooldown > 0
      *  - target is on the map
      */
-    erreur check(Map* map, Unit* attacker, Position target) const;
-    void apply(Map* map, Unit* attacker, Position target);
+    erreur check(Map* map, Unit* attacker, position target) const;
+    void apply(Map* map, Unit* attacker, position target);
 
     uint8_t getCooldown() const;
     void resetCooldown();
@@ -38,12 +40,15 @@ public:
         : Ability(0), damages_(damages), range_(range)
     {};
 
-    erreur check(Map* map, Unit* attacker, Position target) const;
-    void apply(Map* map, Unit* attacker, Position target);
+    erreur check(Map* map, Unit* attacker, position target) const;
+    void apply(Map* map, Unit* attacker, position target);
 
 private:
     uint8_t damages_;
     uint8_t range_;
 };
+
+typedef std::shared_ptr<Ability> Ability_sptr;
+typedef std::list<Ability_sptr> AbilityList;
 
 #endif // !ABILITY_HH_

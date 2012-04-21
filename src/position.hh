@@ -6,27 +6,20 @@
 class Position
 {
 public:
-    Position(uint32_t x, uint32_t y)
+    Position(int x, int y)
         : x(x), y(y)
     {}
 
-    uint32_t x;
-    uint32_t y;
+    int x;
+    int y;
 };
 
-struct displacement
+typedef struct displacement
 {
-    int32_t dx;
-    int32_t dy;
-};
+    int dx;
+    int dy;
+} displacement;
 
-typedef struct displacement displacement;
-
-enum orientation {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
-};
+typedef std::vector<Position> path_t;
 
 #endif // !POSITION_HH_

@@ -7,22 +7,21 @@
 
 #include "map.hh"
 #include "cell.hh"
-#include "position.hh"
 #include "unit.hh"
-#include "erreur.hh"
+#include "constant.hh"
+
+// TODO
+// copy constructor
 
 Map::~Map()
 {
-    for (uint32_t y = 0; y < height_; ++y)
+    for (int y = 0; y < height_; ++y)
     {
-        for (uint32_t x = 0; x < width_; ++x)
+        for (int x = 0; x < width_; ++x)
         {
             // delete cell
-            delete (*map_[y])[x];
+            delete map_[y][x];
         }
-
-        // delete row vector
-        delete map_[y];
     }
 }
 
@@ -42,91 +41,90 @@ int Map::load(std::istream& s)
 
     s >> width_ >> height_;
     INFO("map: width=%d height=%d ", width_, height_);
-    s >> player_count_;
-    INFO("map: player_count=%d", player_count_);
     s >> start_x >> start_y;
-    start_position_ = Position(start_x, start_y);
+    start_position_ = position {start_x, start_y};
     INFO("map start: x=%d y=%d", start_x, start_y);
 
-    for (uint32_t y = 0; y < height_; ++y)
+    map_.resize(height_);
+
+    for (int y = 0; y < height_; ++y)
     {
         s >> line;
 
-        if (line.length() != width_)
-            FATAL("map: line %d is too short (is %d long, should be %d)",
+        if (line.length() != (size_t)width_)
+            FATAL("map: line %d is too short or too long (is %d long, should be %d)",
                     y + 4, line.length(), width_);
 
-        std::vector<Cell*>* cell_line = new std::vector<Cell*>();
+        std::vector<Cell*>& cell_line = map_[y];
+        cell_line.resize(width_);
 
-        for (uint32_t x = 0; x < width_; ++x)
+        for (int x = 0; x < width_; ++x)
         {
-            Cell* cell = NULL;
+            Cell* cell;
 
             switch (line[x])
             {
             case '#':
-                cell = newCell(y, x, WALL);
+                cell = newCell(y, x, ZONE_MUR);
                 break;
             case '_':
-                cell = newCell(y, x, ROAD);
+                cell = newCell(y, x, ZONE_ROUTE);
                 break;
             case '.':
-                cell = newCell(y, x, GRASS);
+                cell = newCell(y, x, ZONE_HERBE);
                 break;
             case '~':
-                cell = newCell(y, x, SWAMP);
+                cell = newCell(y, x, ZONE_MARAIS);
                 break;
             case 'F':
-                cell = newCell(y, x, FOREST);
+                cell = newCell(y, x, ZONE_FORET);
                 break;
             case 'T':
-                cell = newCell(y, x, TOWER);
+                cell = newCell(y, x, ZONE_TOUR);
                 break;
             default:
                 FATAL("Invalid cell");
                 break;
             }
 
-            cell_line->push_back(cell);
+            cell_line[x] = cell;
         }
-
-        map_.push_back(cell_line);
     }
 
     return 0;
 }
 
-uint32_t Map::getWidth() const
+int Map::getWidth() const
 {
     return width_;
 }
 
-uint32_t Map::getHeight() const
+int Map::getHeight() const
 {
     return height_;
 }
 
-Position Map::getStartingPos() const
+position Map::getStartingPos() const
 {
     return start_position_;
 }
 
-Cell* Map::getCell(Position p) const
+Cell* Map::getCell(position p) const
 {
-    return (*map_[p.y])[p.x];
+    return map_[p.y][p.x];
 }
 
-std::vector<Unit*> Map::getUnitsOn(Position cell) const
+std::vector<Unit*> Map::getUnitsOn(position cell) const
 {
     return getCell(cell)->getUnits();
 }
 
-bool Map::isPositionValid(Position p) const
+bool Map::isPositionValid(position p) const
 {
     return p.x < width_ && p.y < height_;
 }
 
-void Map::moveUnit(Unit* unit, Position from, Position to)
+void Map::moveUnit(Unit* unit, position from, position to)
 {
      getCell(from)->removeUnit(unit);
      getCell(to)->addUnit(unit);
@@ -134,8 +132,8 @@ void Map::moveUnit(Unit* unit, Position from, Position to)
 
 erreur Map::checkMove(Unit* unit, path_t path) const
 {
-    Position from = path.front();
-    Position to = path.back();
+    position from = path.front();
+    position to = path.back();
 
     if (!isPositionValid(from) || !isPositionValid(to))
         return POSITION_IMPOSSIBLE;

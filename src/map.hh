@@ -9,36 +9,33 @@
 # include <utils/log.hh>
 
 # include "cell.hh"
-# include "position.hh"
-# include "erreur.hh"
+# include "constant.hh"
 
-typedef std::vector<Position> path_t;
+typedef std::vector<position> path_t;
 
 class Map
 {
 public:
     Map()
-        : map_(), start_position_(0, 0)
-    {};
+        : map_(), start_position_({0, 0})
+    {}
+
+    Map(const Map& copy_from);
 
     ~Map();
 
     int load(std::istream& s);
 
-    uint32_t getWidth() const;
-    uint32_t getHeight() const;
+    int getWidth() const;
+    int getHeight() const;
 
     /*
-     * @return where all unit starts
+     * @return where all unit starts on turn 0
      */
-    Position getStartingPos() const;
+    position getStartingPos() const;
 
-    Cell* getCell(Position p) const;
-    std::vector<Unit*> getUnitsOn(Position cell) const;
-
-    bool isPositionValid(Position p) const;
-
-    void moveUnit(Unit* unit, Position from, Position to);
+    Cell* getCell(position p) const;
+    std::vector<Unit*> getUnitsOn(position cell) const;
 
     // checks
     /*
@@ -48,30 +45,34 @@ public:
      *  - unit have enought movePoints
      */
     erreur checkMove(Unit* unit, path_t path) const;
+    bool isPositionValid(position p) const;
+
+    void moveUnit(Unit* unit, position from, position to);
+
 
 protected:
-    static Cell* newCell(uint32_t y, uint32_t x, CellType type)
+    static Cell* newCell(int y, int x, zone_type type)
     {
         Cell* cell;
 
         switch (type)
         {
-        case WALL:
+        case ZONE_MUR:
             cell = new Wall(y, x);
             break;
-        case ROAD:
+        case ZONE_ROUTE:
             cell = new Road(y, x);
             break;
-        case GRASS:
+        case ZONE_HERBE:
             cell = new Grass(y, x);
             break;
-        case SWAMP:
+        case ZONE_MARAIS:
             cell = new Swamp(y, x);
             break;
-        case FOREST:
+        case ZONE_FORET:
             cell = new Forest(y, x);
             break;
-        case TOWER:
+        case ZONE_TOUR:
             cell = new Tower(y, x);
             break;
         default:
@@ -83,12 +84,11 @@ protected:
     }
 
 private:
-    std::vector< std::vector<Cell* >* > map_;
+    std::vector<std::vector<Cell*>> map_;
 
-    uint32_t height_;
-    uint32_t width_;
-    uint8_t player_count_;
-    Position start_position_;
+    int height_;
+    int width_;
+    position start_position_;
 };
 
 #endif // !MAP_HH_

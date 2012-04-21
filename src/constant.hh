@@ -159,6 +159,7 @@ typedef enum erreur {
   PERSONNAGE_IMPOSSIBLE, /* <- Le personnage n'existe pas ou ne vous appartient pas */
   CHEMIN_IMPOSSIBLE, /* <- Le chemin est impossible */
   ATTAQUE_INDISPONIBLE, /* <- L'attaque n'est pas utilisable pour le moment */
+  OK, /* <- Pas d'erreur */
 } erreur;
 
 

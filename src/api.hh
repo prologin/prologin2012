@@ -14,23 +14,25 @@
 # define API_HH_
 
 # include <vector>
-# include <lib/rules/game-state.hh>
+# include <rules/player.hh>
 
-# include "Constant.hh"
+# include "constant.hh"
+# include "game.hh"
+
+class Game;
 
 /*!
 ** Method of this call are called by the candidat, throught 'interface.cc'
 */
 class Api
 {
-
 public:
-    Api(GameState* game_state, Player* player);
-    virtual ~Api() { }
+    Api(GameState* game_state, rules::Player* player);
+    virtual ~Api() { };
 
 private:
     GameState* game_state_;
-    Player* player_;
+    rules::Player* player_;
 
 public:
 

@@ -13,13 +13,15 @@ def build(bld):
             src/unit.cc
             src/cell.cc
             src/ability.cc
+            src/game.cc
+            src/api.cc
         ''',
         target = 'prolo2012',
         use = ['net', 'rules', 'utils'],
         defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
     )
 
-    for test in ['unit', 'cell', 'ability', 'map']:
+    for test in ['unit', 'cell', 'ability', 'map', 'api']:
         bld.program(
             features = 'gtest',
             source = 'src/tests/test-%s.cc' % test,

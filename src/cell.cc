@@ -3,7 +3,7 @@
 
 #include <utils/log.hh>
 
-#include "position.hh"
+#include "constant.hh"
 #include "cell.hh"
 
 // Return the cost of walking on this cell
@@ -18,7 +18,7 @@ uint8_t Cell::getRangeBonus() const
     return range_bonus_;
 }
 
-CellType Cell::getType() const
+zone_type Cell::getType() const
 {
     return type_;
 }
@@ -65,8 +65,8 @@ bool Cell::isUnitOnCell(Unit* unit) const
     return find(units_.begin(), units_.end(), unit) != units_.end();
 }
 
-std::vector<displacement>* Cell::getVision(uint8_t vision) const
+std::vector<position>* Cell::getVision(uint8_t vision) const
 {
     // TODO
-    return new std::vector<displacement> {{1, 0}, {-1, 0}};
+    return new std::vector<position> {{1, 0}, {-1, 0}};
 }

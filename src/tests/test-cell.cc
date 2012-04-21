@@ -5,7 +5,7 @@
 
 TEST(CellBasic, CellUnitManagement)
 {
-    Unit u0(0), u1(0);
+    Unit u0(0, 0), u1(0, 0);
     Grass c(0, 0);
 
     ASSERT_EQ(0, c.getPopulation()) << "Empty cell population is not 0";

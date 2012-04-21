@@ -3,23 +3,41 @@
 
 # include <vector>
 
-class Map;
+# include <rules/game-state.hh>
+# include <rules/player.hh>
 
-class Game
+# include "unit.hh"
+
+class Map;
+class Player;
+
+class GameState : public rules::GameState
 {
 public:
-    Game(Map* map)
-        : map_(map), players_()
+    GameState(Map* map, int player_count)
+        : rules::GameState(), map_(map), player_count_(player_count),
+        players_()
     {}
+
+    GameState(const GameState& copy_from);
+
+    virtual rules::GameState* copy() const;
+
+    ~GameState();
+
+    void init();
 
     void resolveMoves();
     void resolveAttacks();
 
-    ~Game();
+    Map* getMap();
+    size_t getPlayerCount();
 
 private:
     Map* map_;
-    std::vector<Player*> players_;
-}
+    int player_count_;
+    rules::PlayerList players_;
+    UnitList units_;
+};
 
 #endif // !GAME_HH_
