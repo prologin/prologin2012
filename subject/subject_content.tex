@@ -31,9 +31,9 @@ Et n'oubliez pas Chevalier~:
 
 Bien que d'origine 100\%{} naturelle\footnote{et élevée en plein air,
   label rouge}, la Terre du Centre se découpe admirablement bien en
-cases carrées. Parce que notre bon Roy est également fin stratège, il
-vous indiquera à chaque fois quelle zone vous devrez conquérir et
-défendre.
+cases carrées, se groupant elles-mêmes en zones. Parce que notre bon
+Roy est également fin stratège, il vous indiquera à chaque fois quelle
+zone vous devrez conquérir et défendre.
 \newpage
 
 \section{Les Règles de l'Engagement}
@@ -65,18 +65,24 @@ cases, pour différents terrains. Vous serez ainsi amené à rencontrer :
     bonus en distance de vision et portée de tir.
 \end{itemize}
 
+Chaque case peut accueillir un nombre illimité de personnages (amis et ennemis).
+
 \subsection{Vos hommes}
 \prolocitation{}
 
-Toutes les unités peuvent attaquer, au maximum une fois par tour.
+Toutes les unités peuvent attaquer, au maximum une fois par
+tour. Elles ont également deux capacités spéciales chacune, décrites
+un peu plus loin.
 
 \begin{itemize}
 
 \item \textbf{Le voleur}
 
-\prolocitation{Citation not found}
+\prolocitation{Je ne suis pas un voleur, je suis président de la République}
 
-Le voleur
+Le voleur, agile par nature, se déplace rapidement (FIXME nb Pt /
+case). Son champ de vision est plus important que les autres unités
+(FIXME cases, image).
 
 Points d'Action : //FIXME
 
@@ -100,15 +106,43 @@ Type d'attaque : dégâts de zone
 
 \item \textbf{Le tireur d'élite}
 
-\prolocitation{Citation not found}
+\prolocitation{--- Alors, qu'est-ce que tu as gagné ave ton niveau ?\\
+--- Je crois que je tire mieux à l'arc.\\
+--- Hahaha !\\
+--- Ben quoi, c'est drôle ?\\
+--- Ouais, c'est assez drôle quand tu dis ça.}
 
-Le tireur d'élite est une unité lente
+Le tireur d'élite est une unité lente mais efficace. Il peut se
+déplacer à hauteur de (FIXME nb Pt / case), et dispose d'un champ de
+vision standard (FIXME cases, image).
 
 Points d'Actions : //FIXME
 
-Type d'attaque :
+Type d'attaque : distance (FIXME)
 
 \end{itemize}
+
+\subsection{La Mort}
+\prolocitation{Tagazok !}
+
+Cruelle destinée, la mort n'en est pas moins indispensable : c'est en
+effet grâce aux décès des uns et des autres que les champions gagnent
+des points\footnote{Les malheurs des uns font le bonheur des autres\ldots{}}.\\
+
+Posons tout d'abord une base importante : un personnage meurt lorsque
+la valeur de ses points de vie devient négative ou nulle.
+
+Trois règles déterminent les points attribués à la mort d'un
+personnage. Les voici par ordre de précédence :
+
+\begin{enumerate}
+\item Le personnage meurt suite aux attaques d'un adversaire
+  \textsc{et} d'un allié : aucun point n'est accordé.
+\item Le personnage meurt suite à un dommage collatéral uniquement : un point est
+  retiré à son champion.
+\item Le personnage meurt suite à un tir adverse uniquement : un point
+  est attribué à l'attaquant.
+\end{enumerate}
 
 \subsection{Le champ de vision}
 \prolocitation{Loin des yeux, loin du c\oe{}ur\ldots{}}
@@ -116,10 +150,120 @@ Type d'attaque :
 \subsection{Les déplacements}
 \prolocitation{--- Descendez l'escalier, et c'est tout droit.\\
 --- Mais ça veut dire que\ldots{} Si on avait pris tout droit en
-entrant, on serait arrivé ici directement ?
+entrant, on serait arrivé ici directement ?\\
 --- Bien sûr !}
+
+\subsection{Les capacités spéciales}
+
+\begin{itemize}
+\item \textbf{Le voleur}
+  \begin{itemize}
+  \item \textit{Palantir}
+
+    Description de Palantir
+
+    Délai entre chaque utilisation : 3 tours
+  \item \textit{Dans ton dos}
+
+    Description de Dans ton dos
+
+    Délai entre chaque utilisation : 8 tours
+  \end{itemize}
+\item \textbf{Le barbare}
+  \begin{itemize}
+  \item \textit{Bastoooon}
+
+    Description de Bastoooon
+
+    Délai entre chaque utilisation : 3 tours
+  \item \textit{Fus ro dah!}
+
+    Description de Fus ro dah!
+
+    Délai entre chaque utilisation : 10 tours
+  \end{itemize}
+\item \textbf{Le tireur d'élite}
+  \begin{itemize}
+  \item \textit{I see what you did there}
+
+    Description de I see what you did there
+
+    Délai entre chaque utilisation : 5 tours
+  \item \textit{Loto, à qui le tour}
+
+    Description de Loto, à qui le tour
+
+    Délai entre chaque utilisation : 8 tours
+  \end{itemize}
+\end{itemize}
+
+\newpage
+\section{Le déroulement d'un match}
+
+Chaque match se décompose en deux phases d'égale importance : le
+placement et le jeu.
+
+\subsection[La fin du jeu]{La fin du jeu\protect\footnote{Oui, on sait...}}
+
+Un match dure //FIXME tours. Est déclaré vainqueur le champion ayant
+gagné le plus de points.
+
+\subsection{La phase de placement}
+La phase de placement n'intervient qu'une seule fois, au début du
+match. C'est une phase exclusivement pacifique, où les personnages se
+déplacent jusqu'à atteindre un emplacement stratégique\footnote{C'est
+  en tout cas tout le mal que l'on vous souhaite !}.
+Au démarrage de chaque match, les trois personnages des trois joueurs
+sont placés sur une même case (généralement au centre de la carte,
+mais pas forcément).
+
+À l'issue des //FIXME tours attribués pour le placement, la position
+courante de chacune des unités devient son point de réapparition après
+la mort.
+
+Choisissez bien votre chemin, ce sont les derniers instants de
+tranquillité dont vous disposez !
+
+\subsection{La phase de jeu}
+Chaque tour de jeu est divisé en deux étapes, le jour et la nuit, où
+vous pourrez donner différents types d'ordres à vos
+personnages. Néanmoins, les ordres des deux phases sont donnés au
+début de chaque tour. L'état intermédiaire entre les deux reste inconnu.
+
+\subsubsection{Étape 1 : attaques}
+\prolocitation{Aux armes, citoyens\\
+Formez vos bataillons}
+
+Les attaques ont lieu en plein jour. Tout ce que les personnages ont
+pu apercevoir lors de la nuit précédente devient disponible à ce moment-là.
+
+Les ordres d'attaque doivent donc tenir compte des déplacements de la
+nuit précédente.\\
+
+Les attaques sont portées contre des cases : il est donc possible de
+blesser un allié se trouvant au même endroit, voir même de s'infliger
+des dégâts. La case ciblée n'est pas identifiée par ses coordonnées
+absolues, mais par ses coordonnées relatives à la position de l'attaquant.\\
+
+Toutes les attaques sont lancées en même temps, à l'exception de Fus
+ro dah!, qui est prioritaire.
+
+\subsubsection{Étape 2 : déplacements}
+\prolocitation{Marchons, marchons !}
+
+La nuit est en revanche propice aux déplacements d'unités. Protégés par
+l'obscurité, l'allégance et le type des unités rencontrées en chemin
+resteront secrets. Le lendemain, vous n'aurez accès qu'au chemin
+emprunté par vos rencontres nocturnes.
+
+Les personnages se déplacent en même temps. Les plus rapides
+attendront donc les plus lents\footnote{Les plus casaniers attendront
+  donc les grands voyageurs, ça marche aussi.}.
+
 
 \newpage
 \section{Conclusion}
 
-\prolocitation{End of Line, man.}
+\prolocitation{Voix off --- Vous pensez peut-être que c'est terminé ?\\
+Ranger --- Bah ouais.\\
+--- Et bien oui.}
