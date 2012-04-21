@@ -9,23 +9,31 @@
 GameState::GameState(const GameState& copy_from)
     : player_count_(copy_from.player_count_)
 {
-    
 }
 
-GameState::~GameState() {}
+GameState::~GameState()
+{
+    delete map_;
+}
 
 void GameState::init()
 {
     size_t player_count = getPlayerCount();
     for (uint32_t player_id = 0; player_id < player_count; ++player_id)
     {
-        rules::Player* p = new rules::Player(player_id, 0);
-        players_.push_back(rules::Player_sptr(p));
+        rules::Player_sptr p(new rules::Player(player_id, 0));
+        players_.push_back(p);
         
         // Add units and abilities
         units_.push_back(Unit_sptr(new Voleur(player_id)));
         units_.push_back(Unit_sptr(new Barbare(player_id)));
         units_.push_back(Unit_sptr(new Elfe(player_id)));
+    }
+
+    Cell* starting_cell = map_->getCell(map_->getStartingPos());
+    for (auto it = units_.begin(); it != units_.end(); ++it)
+    {
+        starting_cell->addUnit(*it);
     }
 }
 

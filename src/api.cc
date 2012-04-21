@@ -20,6 +20,7 @@
 
 #include "game.hh"
 #include "map.hh"
+#include "api.hh"
 
 // global used in interface.cc
 Api* api;
@@ -47,6 +48,9 @@ position Api::carte_taille()
 zone_type Api::carte_zone_type(position pos)
 {
     Map* map = game_state_->getMap();
+    if (!map->isPositionValid(pos))
+        return ZONE_ERREUR;
+
     return map->getCell(pos)->getType();
 }
 
@@ -55,8 +59,8 @@ zone_type Api::carte_zone_type(position pos)
 //
 bool Api::carte_zone_cadavre(position pos)
 {
-  // TODO
-  abort();
+    Map* map = game_state_->getMap();
+    return map->getCell(pos)->isCorpse();
 }
 
 ///
@@ -64,8 +68,22 @@ bool Api::carte_zone_cadavre(position pos)
 //
 std::vector<perso_info> Api::carte_zone_perso(position pos)
 {
-  // TODO
-  abort();
+    Map* map = game_state_->getMap();
+    UnitList units = map->getUnitsOn(pos);
+
+    std::vector<perso_info> persos;
+
+    for (auto it  = units.begin(); it != units.end(); ++it)
+    {
+        persos.push_back(perso_info {
+                .equipe = (*it)->getPlayer(),
+                .classe = (*it)->getClasse(),
+                .vie = (*it)->getCurrentLife(),
+                .direction = (*it)->getOrientation(),
+                });
+    }
+
+    return persos;
 }
 
 ///
@@ -82,8 +100,13 @@ std::vector<position> Api::chemin(position p1, position p2)
 //
 erreur Api::perso_deplace(perso_info perso, std::vector<orientation> chemin, orientation direction)
 {
-  // TODO
-  abort();
+    ActionMove move(perso, chemin, direction);
+    if ((erreur err = move.check(game_state_)) != OK)
+        return err;
+
+    game_state_ = move.apply(game_state_);
+
+    return OK;
 }
 
 ///

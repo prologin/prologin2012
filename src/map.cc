@@ -37,7 +37,7 @@ Map::~Map()
 int Map::load(std::istream& s)
 {
     std::string line;
-    uint32_t start_x, start_y;
+    int start_x, start_y;
 
     s >> width_ >> height_;
     INFO("map: width=%d height=%d ", width_, height_);
@@ -114,7 +114,7 @@ Cell* Map::getCell(position p) const
     return map_[p.y][p.x];
 }
 
-std::vector<Unit*> Map::getUnitsOn(position cell) const
+UnitList Map::getUnitsOn(position cell) const
 {
     return getCell(cell)->getUnits();
 }
@@ -124,13 +124,13 @@ bool Map::isPositionValid(position p) const
     return p.x < width_ && p.y < height_;
 }
 
-void Map::moveUnit(Unit* unit, position from, position to)
+void Map::moveUnit(Unit_sptr unit, position from, position to)
 {
      getCell(from)->removeUnit(unit);
      getCell(to)->addUnit(unit);
 }
 
-erreur Map::checkMove(Unit* unit, path_t path) const
+erreur Map::checkMove(Unit_sptr unit, path_t path) const
 {
     position from = path.front();
     position to = path.back();

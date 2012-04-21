@@ -2,9 +2,9 @@
 
 #include "map.hh"
 #include "ability.hh"
+#include "unit.hh"
 
-
-erreur Ability::check(Map* map, Unit*, position p) const
+erreur Ability::check(Map* map, Unit_sptr, position p) const
 {
     if (cooldown_ > 0)
         return ATTAQUE_INDISPONIBLE;
@@ -13,12 +13,12 @@ erreur Ability::check(Map* map, Unit*, position p) const
     return OK;
 }
 
-void Ability::apply(Map*, Unit*, position)
+void Ability::apply(Map*, Unit_sptr, position)
 {
     cooldown_ = cost_;
 }
 
-uint8_t Ability::getCooldown() const
+int Ability::getCooldown() const
 {
     return cooldown_;
 }
@@ -28,7 +28,7 @@ void Ability::resetCooldown()
     cooldown_ = 0;
 }
 
-erreur BasicAttack::check(Map* map, Unit* attacker, position target) const
+erreur BasicAttack::check(Map* map, Unit_sptr attacker, position target) const
 {
     erreur err;
     if ((err = Ability::check(map, attacker, target)) != OK)
@@ -38,11 +38,11 @@ erreur BasicAttack::check(Map* map, Unit* attacker, position target) const
     return OK;
 }
 
-void BasicAttack::apply(Map* map, Unit* attacker, position target)
+void BasicAttack::apply(Map* map, Unit_sptr attacker, position target)
 {
     Ability::apply(map, attacker, target);
 
-    std::vector<Unit*> units = map->getUnitsOn(target);
+    UnitList units = map->getUnitsOn(target);
 
     for (auto it = units.begin(); it != units.end(); ++it)
     {
