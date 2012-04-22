@@ -30,8 +30,10 @@ public:
     void resolveMoves();
     void resolveAttacks();
 
-    Map* getMap();
+    Map* getMap() const;
     size_t getPlayerCount();
+
+    Unit_sptr getUnit(const unit_info perso) const;
 
 private:
     Map* map_;

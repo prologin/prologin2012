@@ -72,6 +72,8 @@ TEST_F(ApiTest, carte_zone_cadavre)
 
 TEST_F(ApiTest, carte_zone_perso)
 {
-    EXPECT_EQ((size_t)6, api_->carte_zone_perso(position {5, 4}).size());
+    std::vector<perso_info> persos = api_->carte_zone_perso(position {5, 4});
+    EXPECT_EQ((size_t)6, persos.size());
+    EXPECT_EQ(0, persos[0].equipe);
 }
 

@@ -200,7 +200,7 @@ function:
     fct_ret_type: erreur
     fct_arg:
       - [perso, perso_info, "Personnage à déplacer"]
-      - [chemin, orientation array, "Tableau d'``orientation`` composants le chemin"]
+      - [chemin, position array, "Tableau de ``position`` composants le chemin"]
       - [direction, orientation, "Orientation sur la dernière zone d'arrivée"]
   -
     fct_name: perso_penombre

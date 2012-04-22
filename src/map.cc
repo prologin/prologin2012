@@ -114,7 +114,7 @@ Cell* Map::getCell(position p) const
     return map_[p.y][p.x];
 }
 
-UnitList Map::getUnitsOn(position cell) const
+UnitVect Map::getUnitsOn(position cell) const
 {
     return getCell(cell)->getUnits();
 }
@@ -124,13 +124,13 @@ bool Map::isPositionValid(position p) const
     return p.x < width_ && p.y < height_;
 }
 
-void Map::moveUnit(Unit_sptr unit, position from, position to)
+void Map::moveUnit(unit_info unit, position from, position to)
 {
      getCell(from)->removeUnit(unit);
      getCell(to)->addUnit(unit);
 }
 
-erreur Map::checkMove(Unit_sptr unit, path_t path) const
+erreur Map::checkMove(unit_info unit, path_t path) const
 {
     position from = path.front();
     position to = path.back();

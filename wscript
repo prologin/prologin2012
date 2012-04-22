@@ -15,6 +15,7 @@ def build(bld):
             src/ability.cc
             src/game.cc
             src/api.cc
+            src/action-move.cc
         ''',
         target = 'prolo2012',
         use = ['net', 'rules', 'utils'],

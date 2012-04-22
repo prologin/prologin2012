@@ -20,7 +20,8 @@
 
 #include "game.hh"
 #include "map.hh"
-#include "api.hh"
+
+#include "action-move.hh"
 
 // global used in interface.cc
 Api* api;
@@ -69,17 +70,23 @@ bool Api::carte_zone_cadavre(position pos)
 std::vector<perso_info> Api::carte_zone_perso(position pos)
 {
     Map* map = game_state_->getMap();
-    UnitList units = map->getUnitsOn(pos);
+
+    // invalid position, return something considered null
+    if (!map->isPositionValid(pos))
+        return std::vector<perso_info>();
+
+    UnitVect units = map->getUnitsOn(pos);
 
     std::vector<perso_info> persos;
-
     for (auto it  = units.begin(); it != units.end(); ++it)
     {
+        Unit_sptr unit = game_state_->getUnit(*it);
+
         persos.push_back(perso_info {
-                .equipe = (*it)->getPlayer(),
-                .classe = (*it)->getClasse(),
-                .vie = (*it)->getCurrentLife(),
-                .direction = (*it)->getOrientation(),
+                .equipe = unit->getPlayer(),
+                .classe = unit->getClasse(),
+                .vie = unit->getCurrentLife(),
+                .direction = unit->getOrientation(),
                 });
     }
 
@@ -100,9 +107,13 @@ std::vector<position> Api::chemin(position p1, position p2)
 erreur Api::perso_deplace(perso_info perso, std::vector<orientation> chemin, orientation direction)
 {
     ActionMove move(perso, chemin, direction);
-    if ((erreur err = move.check(game_state_)) != OK)
+
+    erreur err;
+
+    if ((err = (erreur)move.check(game_state_)) != OK)
         return err;
 
+    // wait what, where is the action stored?
     game_state_ = move.apply(game_state_);
 
     return OK;

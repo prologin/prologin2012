@@ -107,9 +107,9 @@
 // Type de personnage
 //
 typedef enum perso_classe {
-  PERSO_VOLEUR, /* <- Voleur */
-  PERSO_BARBARE, /* <- Barbare */
-  PERSO_ELFE, /* <- Elfe */
+  PERSO_VOLEUR = 0, /* <- Voleur */
+  PERSO_BARBARE = 1, /* <- Barbare */
+  PERSO_ELFE = 2, /* <- Elfe */
 } perso_classe;
 
 

@@ -1,35 +1,35 @@
 #ifndef CELL_HH_
 # define CELL_HH_
 
-#include <vector>
-#include <cstdint>
+# include <vector>
+# include <cstdint>
 
-#include "constant.hh"
-#include "unit.hh"
-#include "safety.hh"
+# include "constant.hh"
+# include "safety.hh"
+# include "unit.hh"
 
 class Cell
 {
 public:
-    Cell(int y, int x, int cost,
-            int range_bonus, zone_type type)
-        : x_(x), y_(y), type_(type), units_(), cost_(cost),
-        range_bonus_(range_bonus), corpse_(false)
+    Cell(int y, int x, int cost, zone_type type)
+        : x_(x), y_(y), type_(type), units_(), cost_(cost), corpse_(false)
     {};
 
+    // return the cost in movement points to walk on this cell
     int getCost() const;
-    int getRangeBonus() const;
     zone_type getType() const;
     int getPopulation() const;
 
-    void addUnit(Unit_sptr unit);
-    int removeUnit(Unit_sptr unit);
-    UnitList getUnits() const;
+    void addUnit(unit_info unit);
+    int removeUnit(unit_info unit);
+    UnitVect getUnits() const;
 
-    std::vector<position>* getVision(int vision) const;
+    std::vector<position> getVision(int vision) const;
 
-    bool isUnitOnCell(Unit_sptr unit) const;
+    bool isUnitOnCell(unit_info unit) const;
 
+    // corpse stuff, must be reset after each turn, before
+    // GameState::attackResolve
     void setCorpse();
     void resetCorpse();
     bool isCorpse() const;
@@ -42,10 +42,9 @@ private:
 
     zone_type type_;
 
-    UnitList units_;
+    UnitVect units_;
 
     int cost_;
-    int range_bonus_;
 
     bool corpse_;
 };
@@ -55,7 +54,7 @@ class Wall : public Cell
 {
 public:
     Wall(int y, int x)
-        : Cell(y, x, 255, 0, ZONE_MUR)
+        : Cell(y, x, 255, ZONE_MUR)
     {}
 };
 
@@ -63,7 +62,7 @@ class Road : public Cell
 {
 public:
     Road(int y, int x)
-        : Cell(y, x, 1, 0, ZONE_ROUTE)
+        : Cell(y, x, 1, ZONE_ROUTE)
     {}
 };
 
@@ -71,7 +70,7 @@ class Grass : public Cell
 {
 public:
     Grass(int y, int x)
-        : Cell(y, x, 2, 0, ZONE_HERBE)
+        : Cell(y, x, 2, ZONE_HERBE)
     {}
 };
 
@@ -79,7 +78,7 @@ class Swamp : public Cell
 {
 public:
     Swamp(int y, int x)
-        : Cell(y, x, 4, 0, ZONE_MARAIS)
+        : Cell(y, x, 4, ZONE_MARAIS)
     {}
 };
 
@@ -87,7 +86,7 @@ class Forest : public Cell
 {
 public:
     Forest(int y, int x)
-        : Cell(y, x, 2, 0, ZONE_FORET)
+        : Cell(y, x, 2, ZONE_FORET)
     {}
 };
 
@@ -95,7 +94,7 @@ class Tower : public Cell
 {
 public:
     Tower(int y, int x)
-        : Cell(y, x, 2, 0, ZONE_TOUR)
+        : Cell(y, x, 2, ZONE_TOUR)
     {}
 };
 

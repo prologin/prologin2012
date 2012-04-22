@@ -1,5 +1,17 @@
+#include <utils/log.hh>
+
 #include "unit.hh"
+#include "ability.hh"
 #include "constant.hh"
+
+/*******************************************************************************
+ * Unit
+ */
+
+unit_info Unit::getUnitInfo() const
+{
+    return unit_info { .player_id = player_id_, .classe = classe_};
+}
 
 int Unit::getPlayer() const
 {
@@ -19,6 +31,16 @@ int Unit::getCurrentLife() const
 void Unit::resetLife()
 {
     life_current_ = life_max_;
+}
+
+position Unit::getPosition() const
+{
+    return current_position_;
+}
+
+void Unit::setPosition(position p)
+{
+    current_position_ = p;
 }
 
 orientation Unit::getOrientation() const
@@ -47,15 +69,23 @@ void Unit::respawn()
         (*it)->resetCooldown();
 
     resetLife();
+    current_position_ = getSpawn();
 }
 
-void Unit::attacked(int damages, Unit_sptr attacker)
+int Unit::getAbilityCooldown(int ability_id) const
+{
+    CHECK((size_t)ability_id < abilities_.size());
+
+    return abilities_[ability_id]->getCooldown();
+}
+
+void Unit::attacked(int damages, unit_info attacker)
 {
     life_current_ -= damages;
     attackers_.push_back(attacker);
 }
 
-UnitList Unit::getAttackers() const
+UnitVect Unit::getAttackers() const
 {
     return attackers_;
 }
@@ -68,30 +98,30 @@ bool Unit::isDead()
 
 /******************************************************************************
  * Voleur
- * */
+ **/
 
 Voleur::Voleur(int player_id)
     : Unit(player_id, VOLEUR_DEPLACEMENT, PERSO_VOLEUR)
 {
-    abilities_.push_back(Ability_sptr(new BasicAttack(VOLEUR_ATTAQUE, VOLEUR_ATT_PORTEE)));
+    abilities_.push_back(new BasicAttack(VOLEUR_ATTAQUE, VOLEUR_ATT_PORTEE));
 }
 
 /******************************************************************************
  * Barbare
- * */
+ **/
 
 Barbare::Barbare(int player_id)
     : Unit(player_id, BARBARE_DEPLACEMENT, PERSO_BARBARE)
 {
-    abilities_.push_back(Ability_sptr(new BasicAttack(BARBARE_ATTAQUE, BARBARE_ATT_PORTEE)));
+    abilities_.push_back(new BasicAttack(BARBARE_ATTAQUE, BARBARE_ATT_PORTEE));
 }
 
 /******************************************************************************
  * Elfe
- * */
+ **/
 
 Elfe::Elfe(int player_id)
     : Unit(player_id, ELFE_DEPLACEMENT, PERSO_ELFE)
 {
-    abilities_.push_back(Ability_sptr(new BasicAttack(ELFE_ATTAQUE, ELFE_ATT_PORTEE)));
+    abilities_.push_back(new BasicAttack(ELFE_ATTAQUE, ELFE_ATT_PORTEE));
 }

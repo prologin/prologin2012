@@ -78,21 +78,23 @@ TEST_F(MapTest, MapMoveUnit)
     map.load(f);
 
     Unit_sptr u0(new Unit(0, 1));
-    map.getCell(position {1, 1})->addUnit(u0);
-    map.moveUnit(u0, position {1, 1}, position {1, 2});
+    unit_info ui0 = u0->getUnitInfo();
+
+    map.getCell(position {1, 1})->addUnit(ui0);
+    map.moveUnit(ui0, position {1, 1}, position {1, 2});
 
     // check unit not in cell
-    ASSERT_EQ(PERSONNAGE_IMPOSSIBLE, map.checkMove(u0,
+    ASSERT_EQ(PERSONNAGE_IMPOSSIBLE, map.checkMove(ui0,
                 path_t {position {1, 1}, position {2, 1}}));
 
     // check bad position
-    ASSERT_EQ(POSITION_IMPOSSIBLE, map.checkMove(u0,
+    ASSERT_EQ(POSITION_IMPOSSIBLE, map.checkMove(ui0,
                 path_t {position {1, 2}, position {42, 42}}));
 
-    ASSERT_EQ(OK, map.checkMove(u0, path_t {position {1, 2}, position {1, 3}}));
+    ASSERT_EQ(OK, map.checkMove(ui0, path_t {position {1, 2}, position {1, 3}}));
 
-    ASSERT_FALSE(map.getCell(position {0, 0})->isUnitOnCell(u0));
-    ASSERT_TRUE(map.getCell(position {1, 2})->isUnitOnCell(u0));
+    ASSERT_FALSE(map.getCell(position {0, 0})->isUnitOnCell(ui0));
+    ASSERT_TRUE(map.getCell(position {1, 2})->isUnitOnCell(ui0));
 }
 
 TEST_F(MapTest, MapGetPath)

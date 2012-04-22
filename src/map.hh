@@ -12,6 +12,16 @@
 # include "cell.hh"
 # include "constant.hh"
 
+inline bool operator==(const position& a, const position& b)
+{
+    return a.x == b.x && a.y == b.y;
+}
+
+inline bool operator!=(const position& a, const position& b)
+{
+    return !(a == b);
+}
+
 typedef std::vector<position> path_t;
 
 class Map
@@ -36,7 +46,7 @@ public:
     position getStartingPos() const;
 
     Cell* getCell(position p) const;
-    UnitList getUnitsOn(position cell) const;
+    UnitVect getUnitsOn(position cell) const;
 
     // checks
     /*
@@ -45,10 +55,10 @@ public:
      *  - path is contiguous,
      *  - unit have enought movePoints
      */
-    erreur checkMove(Unit_sptr unit, path_t path) const;
+    erreur checkMove(unit_info unit, path_t path) const;
     bool isPositionValid(position p) const;
 
-    void moveUnit(Unit_sptr unit, position from, position to);
+    void moveUnit(unit_info unit, position from, position to);
 
     /*
      * Calculate all pairs shortest path and store it.

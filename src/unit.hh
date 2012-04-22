@@ -6,32 +6,65 @@
 # include <cstdint>
 # include <memory>
 
-# include "ability.hh"
 # include "constant.hh"
+# include "safety.hh"
 
-class Unit;
+/*******************************************************************************
+ * unit_info
+ */
 
-typedef std::shared_ptr<Unit> Unit_sptr;
-typedef std::list<Unit_sptr> UnitList;
+// Used as a basic descriptor for an unit, easily copyable, used to refer to an
+// Unit in a Cell
+typedef struct unit_info
+{
+    int player_id;
+    perso_classe classe;
+} unit_info;
+
+typedef std::vector<unit_info> UnitVect;
+
+inline bool operator==(const unit_info& a, const unit_info& b)
+{
+    return a.player_id == b.player_id && a.classe == b.classe;
+}
+
+inline bool operator!=(const unit_info& a, const unit_info& b)
+{
+    return !(a == b);
+}
+
+/*******************************************************************************
+ * Unit
+ */
+
+class Ability;
 
 class Unit
 {
 public:
     Unit(int player_id, int move_points, perso_classe classe)
         : abilities_(), player_id_(player_id), classe_(classe),
-        spawn_(position {0, 0}), life_max_(10), life_current_(10),
-        move_points_(move_points), attackers_()
+        spawn_(position {0, 0}), current_position_(position {0, 0}),
+        life_max_(10), life_current_(10), move_points_(move_points),
+        attackers_()
     {}
 
     Unit(int player_id, int move_points)
         : Unit(player_id, move_points, PERSO_VOLEUR)
     {}
 
+    unit_info getUnitInfo() const;
+
+    DISALLOW_COPY_AND_ASSIGN(Unit);
+
     int getPlayer() const;
     perso_classe getClasse() const;
 
     int getCurrentLife() const;
     void resetLife();
+
+    position getPosition() const;
+    void setPosition(position p);
 
     orientation getOrientation() const;
     void setOrientation(orientation direction);
@@ -41,39 +74,48 @@ public:
     /**
      * reset cooldown on all abilities
      * reset life
-     * does not move unit
+     * reset its position but does not move the unit on the map TODO
      */
     void respawn();
 
-    void useAbility(int ability_id, Map* map, position* target);
-    int getAbilityCooldown(int ability_id);
+    int getAbilityCooldown(int ability_id) const;
 
     /**
      * reduce life
      * add attacker to attackers list
      */
-    void attacked(int damages, Unit_sptr attacker);
-    UnitList getAttackers() const;
+    void attacked(int damages, unit_info attacker);
+    UnitVect getAttackers() const;
     bool isDead();
 
 protected:
-    AbilityList abilities_;
+    std::vector<Ability*> abilities_;
 
 private:
     int player_id_;
     perso_classe classe_;
 
     position spawn_;
+    position current_position_;
 
     int life_max_;
     int life_current_;
 
     int move_points_;
 
-    UnitList attackers_;
+    // TODO Cleaned at the end of the turn?
+    UnitVect attackers_;
 
     orientation orientation_;
 };
+
+typedef std::shared_ptr<Unit> Unit_sptr;
+typedef std::vector<Unit_sptr> UnitList;
+
+
+/*******************************************************************************
+ * Voleur
+ */
 
 class Voleur : public Unit
 {
@@ -81,11 +123,19 @@ public:
     Voleur(int player_id);
 };
 
+/*******************************************************************************
+ * Barbare
+ */
+
 class Barbare : public Unit
 {
 public:
     Barbare(int player_id);
 };
+
+/*******************************************************************************
+ * Elfe
+ */
 
 class Elfe : public Unit
 {
