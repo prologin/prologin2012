@@ -1,7 +1,5 @@
 \section{Introduction}
 
-
-
 \newpage
 
 \subsection{Votre mission}
@@ -78,7 +76,7 @@ un peu plus loin.
 
 \subsubsection{Le voleur}
 
-\prolocitation{Je ne suis pas un voleur, je suis président de la République.}
+\prolocitation{\og{}Je ne suis pas un voleur, je suis président de la République.\fg{}}
 
 Le voleur peut se déplacer rapidement et voir à une longue distance.
 
@@ -86,15 +84,13 @@ Le voleur, agile par nature, se déplace rapidement. Son champ de vision est plu
 
 Il a une arme de corps à corps et donc une portée de 1.
 
-\paragraph{Palantír} Le voleur peut poser une lanterne qui lui donne une vision à distance jusqu'à la fin de la partie. Deux \emph{palantíri}\footnote{Pluriel de \emph{palantír}, cf. \emph{Lexique des règles typographiques en usage à l’Imprimerie nationale}.} étant trop pour un seul elfe, la dernière posée remplace la première.
+\paragraph{Palantír} Le voleur peut poser une lanterne qui lui donne une vision à distance jusqu'à la fin de la partie. Deux \emph{palantíri}\footnote{Pluriel de \emph{palantír}, cf. \emph{Lexique des règles typographiques en usage à l’Imprimerie nationale}.} étant trop pour un seul voleur, la dernière posée remplace la première.
 
     Délai entre chaque utilisation : 3 tours
 
 \paragraph{Traîtrise} Le voleur peut tuer instantanément un personnage s'il se trouve derrière lui.
 
     Délai entre chaque utilisation : 8 tours
-
-%Type d'attaque : corps-à-corps (1 case)
 
 \subsubsection{Le barbare}
 
@@ -117,29 +113,23 @@ Il a une arme de dégât de zone (zone + portée à définir) qu’il peut utili
 
     Délai entre chaque utilisation : 10 tours
 
+\subsubsection{L'elfe}
+
 \prolocitation{--- Alors, qu'est-ce que tu as gagné avec ton niveau ?\\
 --- Je crois que je tire mieux à l'arc.\\
 --- Hahaha !\\
 --- Ben quoi, c'est drôle ?\\
 --- Ouais, c'est assez drôle quand tu dis ça.}
 
-Le tireur d'élite est une unité lente mais efficace. Il peut se
-déplacer à hauteur de (FIXME nb Pt / case), et dispose d'un champ de
-vision standard (FIXME cases, image).
-
-\subsubsection{L'elfe}
-
 L'elfe peut se déplacer de manière lente et voir à une distance moyenne.
 
 Il peut tirer sur toutes les cases visibles dans la direction vers laquelle il regarde qui ne sont pas dans son cône de vision.
 
-%Type d'attaque : distance (FIXME)
-
-\paragraph{\emph{I see what you did there.}} Le tireur d’élite peut révéler une zone (géométrie à définir) de la carte. Elle sera visible au tour suivant.
+\paragraph{\emph{I see what you did there.}} L'elfe peut révéler une zone (géométrie à définir) de la carte. Elle sera visible au tour suivant.
 
     Délai entre chaque utilisation : 5 tours
 
-\paragraph{Loto, à qui le tour ?} Le tireur d’élite peut tirer sur n’importe quelle case de la carte, sauf son cône de vision. Cette compétence remplace l’attaque normale du tireur d’élite.
+\paragraph{Loto, à qui le tour ?} L'elfe peut tirer sur n’importe quelle case de la carte, sauf son cône de vision. Cette compétence remplace l’attaque normale.
 
     Délai entre chaque utilisation : 8 tours
 
@@ -182,7 +172,7 @@ entrant, on serait arrivé ici directement ?\\
 \section{Le déroulement d'un match}
 
 Chaque match se décompose en deux phases d'égale importance : le
-placement et le jeu.
+placement et le jeu. Il oppose trois adversaires.
 
 \subsection[La fin du jeu]{La fin du jeu\protect\footnote{Oui, on sait...}}
 
@@ -206,16 +196,30 @@ Choisissez bien votre chemin, ce sont les derniers instants de
 tranquillité dont vous disposez !
 
 \subsection{La phase de jeu}
-Chaque tour de jeu est divisé en deux étapes, le jour et la nuit, où
-vous pourrez donner différents types d'ordres à vos
-personnages. Néanmoins, les ordres des deux phases sont donnés au
-début de chaque tour. L'état intermédiaire entre les deux reste inconnu.
+Chaque tour de jeu est divisé en deux étapes : il commence la nuit
+avec le déplacement de vos unités, et se termine avec le jour où les
+combats font rage. Les ordres doivent être donnés au début de chaque
+étape, et peuvent\footnote{doivent ?} tenir compte de la précédente
+étape.
 
-\subsubsection{Étape 1 : attaques}
-\prolocitation{Aux armes, citoyens\\
-Formez vos bataillons}
+\subsubsection{Étape 1 : déplacements}
+\prolocitation{--- Affligeant\ldots{} Il nous faut commencer à courir à
+  présent !}
 
-Les attaques ont lieu en plein jour. Tout ce que les personnages ont
+La nuit est en revanche propice aux déplacements d'unités. Protégés par
+l'obscurité, l'allégeance et le type des unités rencontrées en chemin
+resteront secrets. Le lendemain, vous n'aurez accès qu'au chemin
+emprunté par vos rencontres nocturnes.
+
+Les personnages se déplacent en même temps. Les plus rapides
+attendront donc les plus lents\footnote{Les plus casaniers attendront
+  donc les grands voyageurs, ça marche aussi.}.
+
+\subsubsection{Étape 2 : attaques}
+\prolocitation{404}
+
+Les attaques ont lieu en plein jour\footnote{\og{}Heu\ldots{} c'est
+  officiel\ldots{} non, je ne sais pas me battre en aveugle.\fg{}}. Tout ce que les personnages ont
 pu apercevoir lors de la nuit précédente devient disponible à ce moment-là.
 
 Les ordres d'attaque doivent donc tenir compte des déplacements de la
@@ -228,19 +232,6 @@ absolues, mais par ses coordonnées relatives à la position de l'attaquant.\\
 
 Toutes les attaques sont lancées en même temps, à l'exception de Fus
 ro dah!, qui est prioritaire.
-
-\subsubsection{Étape 2 : déplacements}
-\prolocitation{Marchons, marchons !}
-
-La nuit est en revanche propice aux déplacements d'unités. Protégés par
-l'obscurité, l'allégeance et le type des unités rencontrées en chemin
-resteront secrets. Le lendemain, vous n'aurez accès qu'au chemin
-emprunté par vos rencontres nocturnes.
-
-Les personnages se déplacent en même temps. Les plus rapides
-attendront donc les plus lents\footnote{Les plus casaniers attendront
-  donc les grands voyageurs, ça marche aussi.}.
-
 
 \newpage
 \section{Conclusion}
