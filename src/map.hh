@@ -5,6 +5,7 @@
 # include <utility>
 # include <vector>
 # include <cstdint>
+# include <memory>
 
 # include <utils/log.hh>
 
@@ -49,6 +50,15 @@ public:
 
     void moveUnit(Unit_sptr unit, position from, position to);
 
+    /*
+     * Calculate all pairs shortest path and store it.
+     * MUST be called before any call to the getPath function.
+     */
+    void calculateShortestPaths();
+    /*
+     * @return the path from 'from' to 'to'
+     */
+    std::vector<position> getPath(position from, position to);
 
 protected:
     static Cell* newCell(int y, int x, zone_type type)
@@ -85,6 +95,9 @@ protected:
 
 private:
     std::vector<std::vector<Cell*>> map_;
+    std::shared_ptr<std::vector<std::vector<int>>> paths_;
+
+    int initializeDistance(int from, int to);
 
     int height_;
     int width_;

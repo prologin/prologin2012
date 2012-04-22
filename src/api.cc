@@ -91,8 +91,7 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
 //
 std::vector<position> Api::chemin(position p1, position p2)
 {
-  // TODO
-  abort();
+  return game_state_->getMap()->getPath(p1, p2);
 }
 
 ///

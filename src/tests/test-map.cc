@@ -94,3 +94,25 @@ TEST_F(MapTest, MapMoveUnit)
     ASSERT_FALSE(map.getCell(position {0, 0})->isUnitOnCell(u0));
     ASSERT_TRUE(map.getCell(position {1, 2})->isUnitOnCell(u0));
 }
+
+TEST_F(MapTest, MapGetPath)
+{
+  Map map;
+  map.load(f);
+  map.calculateShortestPaths();
+
+  std::vector<position> path1 = map.getPath(position({0,0}), position({1,1}));
+  std::vector<position> path2 = map.getPath(position({5,5}), position({1,1}));
+
+  EXPECT_TRUE(path1.empty());
+
+  EXPECT_EQ(8, path2.size());
+  EXPECT_TRUE(path2[0].x == 4 && path2[0].y == 5);
+  EXPECT_TRUE(path2[1].x == 4 && path2[1].y == 4);
+  EXPECT_TRUE(path2[2].x == 4 && path2[2].y == 3);
+  EXPECT_TRUE(path2[3].x == 4 && path2[3].y == 2);
+  EXPECT_TRUE(path2[4].x == 4 && path2[4].y == 1);
+  EXPECT_TRUE(path2[5].x == 3 && path2[5].y == 1);
+  EXPECT_TRUE(path2[6].x == 2 && path2[6].y == 1);
+  EXPECT_TRUE(path2[7].x == 1 && path2[7].y == 1);
+}

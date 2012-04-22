@@ -143,3 +143,75 @@ erreur Map::checkMove(Unit_sptr unit, path_t path) const
 
     return OK;
 }
+
+int Map::initializeDistance(int from, int to)
+{
+  (*paths_)[from][to] = from;
+  return map_[from % height_][from / height_]->getCost();
+}
+
+// Calculate the all pairs shortest paths using Floyd-Warshall algorithm
+// Results are stored in paths_, they represents the previous link table.
+// To avoid useless and expensive copy, paths_ is actually a shared pointer
+// (the table is (width_ * height_)^2).
+// WARNING: the arbitrary value 255 is used as a max because wall currently
+// have this weigth.
+void Map::calculateShortestPaths()
+{
+  int size = height_ * width_;
+  std::vector<std::vector<int>> distance(size, std::vector<int>(size, 255));
+  paths_.reset(new std::vector<std::vector<int>>(size, std::vector<int>(size, -1)));
+
+  for (int i = 0; i < size; ++i)
+  {
+    distance[i][i] = 0;
+    if (i / height_ > 0)
+      distance[i][i - height_] = initializeDistance(i, i - height_);
+    if (i / height_ < width_ - 1)
+      distance[i][i + height_] = initializeDistance(i, i + height_);
+    if (i % height_ > 0)
+      distance[i][i - 1] = initializeDistance(i, i - 1);
+    if (i % height_ < height_ - 1)
+      distance[i][i + 1] = initializeDistance(i, i + 1);
+  }
+
+  for (int k = 0; k < size; ++k)
+    for (int i = 0; i < size; ++i)
+      for (int j = 0; j < size; ++j)
+      {
+        int newDistance = distance[i][k] + distance[k][j];
+
+        if (newDistance < distance[i][j])
+        {
+          distance[i][j] = newDistance;
+          (*paths_)[i][j] = k;
+        }
+      }
+}
+
+// Get the path from 'from' to 'to' using the previous link table calculated by
+// the function calculateShortestPaths.
+// It would be useless to already store the vector in a table because we return
+// it by copy.
+std::vector<position> Map::getPath(position from, position to)
+{
+  std::vector<position> path;
+
+  if (!isPositionValid(from) || !isPositionValid(to))
+    return path;
+
+  int fromID = from.y + from.x * height_;
+  int toID = to.y + to.x * height_;
+
+  while ((*paths_)[toID][fromID] != toID && (*paths_)[toID][fromID] != -1)
+  {
+    fromID = (*paths_)[toID][fromID];
+    path.push_back(position({ fromID / height_, fromID % height_ }));
+  }
+  path.push_back(to);
+
+  if ((*paths_)[fromID][toID] == -1)
+    path.clear();
+
+  return path;
+}

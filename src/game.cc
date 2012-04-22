@@ -23,7 +23,7 @@ void GameState::init()
     {
         rules::Player_sptr p(new rules::Player(player_id, 0));
         players_.push_back(p);
-        
+
         // Add units and abilities
         units_.push_back(Unit_sptr(new Voleur(player_id)));
         units_.push_back(Unit_sptr(new Barbare(player_id)));
@@ -35,6 +35,9 @@ void GameState::init()
     {
         starting_cell->addUnit(*it);
     }
+
+    // Initialize the shortest path calcul
+    map_->calculateShortestPaths();
 }
 
 rules::GameState* GameState::copy() const { return new GameState(*this); }
