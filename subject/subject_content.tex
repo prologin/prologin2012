@@ -1,10 +1,12 @@
 \section{Introduction}
 
+
+
 \newpage
 
 \subsection{Votre mission}
 
-\enluminure{C}{hevalier, votre mission}, car vous l'avez acceptée~: mener à bien
+\enluminure{C}{hevalier, votre mission,}car vous l'avez acceptée~: mener à bien
 pour notre Roy une mission de la plus haute importance.
 
 \begin{center}
@@ -29,7 +31,7 @@ Et n'oubliez pas Chevalier~:
 
 \subsection{Le champ de bataille}
 
-Bien que d'origine 100\%{} naturelle\footnote{et élevée en plein air,
+Bien que d'origine 100 \%{} naturelle\footnote{et élevée en plein air,
   label rouge}, la Terre du Centre se découpe admirablement bien en
 cases carrées, se groupant elles-mêmes en zones. Parce que notre bon
 Roy est également fin stratège, il vous indiquera à chaque fois quelle
@@ -74,21 +76,27 @@ Toutes les unités peuvent attaquer, au maximum une fois par
 tour. Elles ont également deux capacités spéciales chacune, décrites
 un peu plus loin.
 
-\begin{itemize}
+\subsubsection{Le voleur}
 
-\item \textbf{Le voleur}
+\prolocitation{Je ne suis pas un voleur, je suis président de la République.}
 
-\prolocitation{Je ne suis pas un voleur, je suis président de la République}
+Le voleur peut se déplacer rapidement et voir à une longue distance.
 
-Le voleur, agile par nature, se déplace rapidement (FIXME nb Pt /
-case). Son champ de vision est plus important que les autres unités
-(FIXME cases, image).
+Le voleur, agile par nature, se déplace rapidement. Son champ de vision est plus important que les autres unités (FIXME cases, image).
 
-Points d'Action : //FIXME
+Il a une arme de corps à corps et donc une portée de 1.
 
-Type d'attaque : corps-à-corps (1 case)
+\paragraph{Palantír} Le voleur peut poser une lanterne qui lui donne une vision à distance jusqu'à la fin de la partie. Deux \emph{palantíri}\footnote{Pluriel de \emph{palantír}, cf. \emph{Lexique des règles typographiques en usage à l’Imprimerie nationale}.} étant trop pour un seul elfe, la dernière posée remplace la première.
 
-\item \textbf{Le barbare}
+    Délai entre chaque utilisation : 3 tours
+
+\paragraph{Traîtrise} Le voleur peut tuer instantanément un personnage s'il se trouve derrière lui.
+
+    Délai entre chaque utilisation : 8 tours
+
+%Type d'attaque : corps-à-corps (1 case)
+
+\subsubsection{Le barbare}
 
 \prolocitation{--- Tiens donc, un paysan\\
 --- Chuis un barbare~!\\
@@ -97,16 +105,19 @@ Type d'attaque : corps-à-corps (1 case)
     mineurs parmi notre public, nous avons fait le choix de ne pas
     diffuser ces images. Merci de votre compréhension.})}
 
-Le barbare se déplace à vitesse normale (FIXME nb Pt / case), et a un
-champ de vision standard (FIXME cases, image).
+Le barbare peut se déplacer de manière moyenne et voir à une distance moyenne.
 
-Points d'Action : //FIXME
+Il a une arme de dégât de zone (zone + portée à définir) qu’il peut utiliser dans son cône de vision.
 
-Type d'attaque : dégâts de zone
+\paragraph{Bastoooon} Si le barbare est sur la même case qu’un autre joueur, il peut lui infliger des dégâts.
 
-\item \textbf{Le tireur d'élite}
+    Délai entre chaque utilisation : 3 tours
 
-\prolocitation{--- Alors, qu'est-ce que tu as gagné ave ton niveau ?\\
+\paragraph{FUS RO DAH !} Le barbare repousse tous les personnages de son champ de vision. Cette attaque est prioritaire sur toutes les autres.
+
+    Délai entre chaque utilisation : 10 tours
+
+\prolocitation{--- Alors, qu'est-ce que tu as gagné avec ton niveau ?\\
 --- Je crois que je tire mieux à l'arc.\\
 --- Hahaha !\\
 --- Ben quoi, c'est drôle ?\\
@@ -116,13 +127,24 @@ Le tireur d'élite est une unité lente mais efficace. Il peut se
 déplacer à hauteur de (FIXME nb Pt / case), et dispose d'un champ de
 vision standard (FIXME cases, image).
 
-Points d'Actions : //FIXME
+\subsubsection{L'elfe}
 
-Type d'attaque : distance (FIXME)
+L'elfe peut se déplacer de manière lente et voir à une distance moyenne.
 
-\end{itemize}
+Il peut tirer sur toutes les cases visibles dans la direction vers laquelle il regarde qui ne sont pas dans son cône de vision.
+
+%Type d'attaque : distance (FIXME)
+
+\paragraph{\emph{I see what you did there.}} Le tireur d’élite peut révéler une zone (géométrie à définir) de la carte. Elle sera visible au tour suivant.
+
+    Délai entre chaque utilisation : 5 tours
+
+\paragraph{Loto, à qui le tour ?} Le tireur d’élite peut tirer sur n’importe quelle case de la carte, sauf son cône de vision. Cette compétence remplace l’attaque normale du tireur d’élite.
+
+    Délai entre chaque utilisation : 8 tours
 
 \subsection{La Mort}
+
 \prolocitation{Tagazok !}
 
 Cruelle destinée, la mort n'en est pas moins indispensable : c'est en
@@ -132,8 +154,10 @@ des points\footnote{Les malheurs des uns font le bonheur des autres\ldots{}}.\\
 Posons tout d'abord une base importante : un personnage meurt lorsque
 la valeur de ses points de vie devient négative ou nulle.
 
+Le personnage renaît sur son point de réapparition tandis que son cadavre reste sur la carte encore quelques tours.\\
+
 Trois règles déterminent les points attribués à la mort d'un
-personnage. Les voici par ordre de précédence :
+personnage. Les voici par ordre de priorité :
 
 \begin{enumerate}
 \item Le personnage meurt suite aux attaques d'un adversaire
@@ -145,6 +169,7 @@ personnage. Les voici par ordre de précédence :
 \end{enumerate}
 
 \subsection{Le champ de vision}
+
 \prolocitation{Loin des yeux, loin du c\oe{}ur\ldots{}}
 
 \subsection{Les déplacements}
@@ -152,50 +177,6 @@ personnage. Les voici par ordre de précédence :
 --- Mais ça veut dire que\ldots{} Si on avait pris tout droit en
 entrant, on serait arrivé ici directement ?\\
 --- Bien sûr !}
-
-\subsection{Les capacités spéciales}
-
-\begin{itemize}
-\item \textbf{Le voleur}
-  \begin{itemize}
-  \item \textit{Palantir}
-
-    Description de Palantir
-
-    Délai entre chaque utilisation : 3 tours
-  \item \textit{Dans ton dos}
-
-    Description de Dans ton dos
-
-    Délai entre chaque utilisation : 8 tours
-  \end{itemize}
-\item \textbf{Le barbare}
-  \begin{itemize}
-  \item \textit{Bastoooon}
-
-    Description de Bastoooon
-
-    Délai entre chaque utilisation : 3 tours
-  \item \textit{Fus ro dah!}
-
-    Description de Fus ro dah!
-
-    Délai entre chaque utilisation : 10 tours
-  \end{itemize}
-\item \textbf{Le tireur d'élite}
-  \begin{itemize}
-  \item \textit{I see what you did there}
-
-    Description de I see what you did there
-
-    Délai entre chaque utilisation : 5 tours
-  \item \textit{Loto, à qui le tour}
-
-    Description de Loto, à qui le tour
-
-    Délai entre chaque utilisation : 8 tours
-  \end{itemize}
-\end{itemize}
 
 \newpage
 \section{Le déroulement d'un match}
@@ -252,7 +233,7 @@ ro dah!, qui est prioritaire.
 \prolocitation{Marchons, marchons !}
 
 La nuit est en revanche propice aux déplacements d'unités. Protégés par
-l'obscurité, l'allégance et le type des unités rencontrées en chemin
+l'obscurité, l'allégeance et le type des unités rencontrées en chemin
 resteront secrets. Le lendemain, vous n'aurez accès qu'au chemin
 emprunté par vos rencontres nocturnes.
 
