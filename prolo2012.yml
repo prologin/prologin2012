@@ -106,13 +106,13 @@ enum:
     enum_summary:
       "Type d'attaque"
     enum_field:
-      - [attaque_normale, "Attaque normale"]
-      - [attaque_palantir, "Attaque 'Palantir' de l'Elfe"]
-      - [attaque_dans_to_dos, "Attaque 'Dans ton dos' de l'Elfe"]
+      - [attaque_normale, "Attaque normale dont les dégats dépendent du personnage"]
+      - [attaque_palantir, "Attaque 'Palantir' du Voleur"]
+      - [attaque_dans_to_dos, "Attaque 'Dans ton dos' du Voleur"]
       - [attaque_bastoooon, "Attaque 'Bastoooon' de du Barbare"]
       - [attaque_fus_ro_dah, "Attaque 'Fus Ro Dah' du Barbare"]
-      - [attaque_i_see, "Attaque 'I see what you did there.' du Voleur"]
-      - [attaque_loto, "Attaque 'Loto, à qui le tour' du Voleur"]
+      - [attaque_i_see, "Attaque 'I see what you did there.' de l'Elfe"]
+      - [attaque_loto, "Attaque 'Loto, à qui le tour' de l'Elfe"]
   -
     enum_name: orientation
     enum_summary:
