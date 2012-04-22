@@ -1,8 +1,6 @@
-============
-Serveur 2012
-============
-
-Nom du jeu : ProloWars (?)
+==================================
+Finale Prologin 2012 - Casus Belli
+==================================
 
 -----
 Intro
@@ -11,7 +9,7 @@ Intro
 Le sujet serveur Prologin 2012 est un RPG ou chaque joueur contrôle une équipe
 de trois personnages ayant chacun des caractéristiques les différenciant. Le
 but est de gagner le plus de point en tuant un maximum d'adversaire ou en
-occupant des objectifs.
+occupant des objectifs. FIXME comment gagner des points
 
 ------
 Règles
@@ -28,35 +26,35 @@ coopération pour les rendre efficaces. De plus chacune possède des abilités
 spéciales.
 
 Les unités peuvent voir dans un cône de vision situé devant elles. Elles ont
-aussi une force d'attaque et un déplacement différent :
+aussi une force d'attaque et un déplacement différent.
 
-On peut utiliser autant d'abilités spéciales en plus de l'attaque de base par
-tour dans la limite des cooldown.
+On peut utiliser une abilité spéciale ou une attaque de base par unité et par
+tour dans la limite des cooldowns;
 
-Éclaireur
----------
+Voleur
+------
 
-L'éclaireur peut se déplacer rapidement et voir à une longue distance.
+Le Voleur peut se déplacer rapidement et voir à une longue distance.
 
 Il a une arme de corps à corps et donc une portée de 1.
 
-*Palantir*
-  :description: L'éclaireur peut poser des lanternes qui lui donne une vision à
-    distance. Nombre limité au nombre de 3, au delà la dernière posée remplace
-    la permière. Durée limitée dans le temps.
+*Palantír*
+  :description: Le Voleur peut poser un palantír sur la case qu'il occupe qui
+    lui donne une vision à distance. Elle reste sur le terrain jusqu'à ce que
+    le Voleur pose un autr palantír.
   :cooldown: 3 tours
 
-*DANS TON DOS*
-  :description: L'éclaireur peut tuer instantanément un personnage si il se
-    trouve dans son dos. Cette abilité remplace l'attaque normale.
+*Traîtrise*
+  :description: Le Voleur peut tuer instantanément un personnage si il se
+    trouve dans son dos, c'est à dire sur la même case que lui.
   :cooldown: 8 tours
 
 Barbare
 -------
 
-Le barbare peut se déplacer de manière moyenne et voir à une distance moyenne.
+Le Barbare peut se déplacer de manière moyenne et voir à une distance moyenne.
 
-Il a une arme de dégat de zone (zone + portée à définir) qu'il peut utiliser
+Il a une arme de dégât de zone (zone + portée à définir) qu'il peut utiliser
 dans son cône de vision.
 
 ::
@@ -66,8 +64,8 @@ dans son cône de vision.
           +
 
 *Bastoooon*
-  :description: Si le barbare est sur la même case qu'un autre joueur, il peut
-    lui infliger des dégats.
+  :description: Si le Barbare est sur la même case qu'un autre joueur, il peut
+    lui infliger des dégâts.
   :cooldown: 3 tours
 
 *Fus ro dah!*
@@ -75,30 +73,30 @@ dans son cône de vision.
     vision. Voir `Résolution du tour`_.
   :cooldown: 10 tours
 
-Tireur d'élite
---------------
+Elfe
+----
 
-Le tireur d'élite peut se déplacer de manière lente et voir à une distance
-moyenne.
+L'Elfe peut se déplacer de manière lente et voir à une distance moyenne.
 
-Il peut tirer sur toutes les cases visibles dans la direction vers laquelle il
-regarde qui ne sont pas dans *son* cône de vision.
+Il peut tirer sur toutes les cases visibles qui ne sont pas dans *son* cône de
+vision. C'est à dire qu'il peut tirer dans le champs de vision des autres
+personnage de son équipe.
 
 *I see what you did there.*
   :description: Le tireur d'élite peut réveler une zone (géométrie à définir)
-    de la carte. Elle sera visible au tour suivant.
+    de la carte. Elle sera visible au tour suivant uniquement.
   :cooldown: 5 tours
 
 *Loto, à qui le tour*
   :description: Le tireur d'élite peut tirer sur n'importe quelle case de la
-    carte, sauf son cône de vision. Cette abilité remplace l'attaque normale du
-    tireur d'élite.
+    carte, sauf son cône de vision.
   :cooldown: 8 tours
 
 Champs de vision
 ================
 
-Le champs de vision est un cône de la géométrie suivante : ::
+Le champs de vision définit les cases visible par un personnage. C'est un cône
+de la géométrie suivante : ::
 
   .........
    .......
@@ -122,11 +120,12 @@ Herbe
 Zone normale.
 
 
-Route (+ déplacement)
----------------------
+Route (+ rapide)
+-----------------------------------------
 
-Les personnages sur une route disposent d'un bonus de 1 à leur nombre de cases
-de déplacement.
+Les personnages sur une route peuvent se déplacer deux fois plus rapidement que
+sur l'herbe, c'est à dire qu'ils consoment 1 point de déplacement au lieu de
+2.
 
 
 Forêt (1 portée 1 vision)
@@ -172,28 +171,27 @@ Exemples (``?`` foret, ``@`` personnage, ``.`` case visible) : ::
     .....
      .@.
 
-Marais (- déplacement)
+Marais (- rapide)
 ----------------------
 
-Un personnage qui veut se déplacer dans un marais doit dépenser deux points par
-case traversée.
+Un personnage qui veut se déplacer dans un marais doit dépenser quatre points
+par case traversée.
 
 Mur (0 portée 0 vision 0 déplacement)
 -------------------------------------
 
 Un mur est une case opaque et infranchissable.
 
-Tour de guet (+ portée + vision)
+Tour de guet (+ vision)
 --------------------------------
 
-Un personnage sur une tour de guet gagne un point de vision et une case de
-portée.
+Un personnage sur une tour de guet gagne une vision circulaire de même taille
+que sa vision naturelle.
 
 Attaques
 ========
 
-Les attaques sont données en position relative par rapport au personnage. Cela
-permet de donner de l'intéret au *Fus ro dah*.
+Les attaques sont données en position absolue sur la carte.
 
 On peut attaquer ses propres personnages.
 
@@ -310,7 +308,7 @@ Implication des règles
 
 - Fucker les attaques des autres personnages
 - Accélérer le déplacement de ses personnages (avec une possibilité d'attaquer
-  plus loin, car *FUS RO DAH* est résolu avant)
+  plus loin, car *FUS RO DAH* est résolu avant les autres attaques)
 
 Se mettre à côté d'un "point de départ", tirer dès que quelqu'un ressuscite, et
 le tuer en boucle.
