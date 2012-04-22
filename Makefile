@@ -14,7 +14,7 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) doc
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-DEPLOY_DIR     ?= /var/www/prologin.halfr.net
+DEPLOYDIR     ?= /var/www/prologin.halfr.net
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext deploy all
 
@@ -157,6 +157,6 @@ doctest:
 	      "results in $(BUILDDIR)/doctest/output.txt."
 
 deploy: html
-	cp -r build/html/* /var/www/prologin.halfr.net
+	cp -r build/html/* $(DEPLOYDIR)
 
 # EOF
