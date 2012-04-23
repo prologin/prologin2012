@@ -46,7 +46,7 @@ TEST_F(AbilityTest, AbilityCreate)
     ASSERT_EQ(0, a.getCooldown());
 }
 
-TEST_F(AbilityTest, BasicAbility)
+TEST_F(AbilityTest, BasicAbilityCheck)
 {
     unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
     Unit_sptr attacker = gamestate_->getUnit(attacker_unit);
@@ -62,4 +62,29 @@ TEST_F(AbilityTest, BasicAbility)
             attack.check(*gamestate_, attacker_unit, position {1, 2}));
     EXPECT_EQ(POSITION_IMPOSSIBLE,
             attack.check(*gamestate_, attacker_unit, position {0, 3}));
+}
+
+TEST_F(AbilityTest, BasicAbilityApply)
+{
+    unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
+    Unit_sptr attacker = gamestate_->getUnit(attacker_unit);
+
+    BasicAttack attack = BasicAttack(3, 2);
+    position target = position {5, 4};
+
+    ASSERT_EQ(OK, attack.check(*gamestate_, attacker_unit, target));
+    attack.apply(gamestate_, attacker_unit, target);
+
+    // BasicAttack has no cooldown
+    EXPECT_EQ(0, attack.getCooldown());
+
+    UnitVect units_on_target = gamestate_->getMap()->getUnitsOn(target);
+    for (auto it = units_on_target.begin(); it != units_on_target.end(); ++it)
+    {
+        if (*it == attacker_unit)
+            EXPECT_EQ(VOLEUR_VIE, attacker->getCurrentLife());
+        else
+            EXPECT_EQ(7 /* _VIE - dmg = 10 - 3 */,
+                    gamestate_->getUnit(*it)->getCurrentLife());
+    }
 }

@@ -64,6 +64,9 @@ void BasicAttack::apply(GameState* st, unit_info attacker, position target)
 
     for (auto it = units.begin(); it != units.end(); ++it)
     {
+        if (*it == attacker)
+            continue;
+
         st->getUnit(*it)->attacked(damages_, attacker);
     }
 }
