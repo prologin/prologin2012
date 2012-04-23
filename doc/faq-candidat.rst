@@ -23,6 +23,11 @@ Si mon personnage est sur une tour, peut-il voir dans une forêt ?
 Non, par contre vous pourrez voir au-delà de la forêt si c'est toujours dans la
 vision de la tour.
 
+Un palantir sur une tour de guet profite-t-il du bonus de vision ?
+------------------------------------------------------------------
+
+Oui.
+
 Attaques
 ========
 
