@@ -37,6 +37,7 @@ void GameState::init()
                 .player_id = (*it)->getPlayer(),
                 .classe = (*it)->getClasse()
                 });
+        (*it)->setPosition(map_->getStartingPos());
     }
 
     // Initialize the shortest path calcul
