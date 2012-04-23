@@ -94,7 +94,7 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
 }
 
 ///
-// Renvoie le chemin le plus court entre deux points (fonction lente)
+// Renvoie le chemin le plus court entre deux points (fonction pas lente)
 //
 std::vector<position> Api::chemin(position p1, position p2)
 {

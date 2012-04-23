@@ -184,7 +184,7 @@ function:
   -
     fct_name: chemin
     fct_summary:
-      Renvoie le chemin le plus court entre deux points (fonction lente)
+      Renvoie le chemin le plus court entre deux points
     fct_ret_type: position array
     fct_arg:
       - [p1, position, "position de départ"]
