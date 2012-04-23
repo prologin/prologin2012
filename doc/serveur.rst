@@ -44,9 +44,9 @@ Le Voleur peut se déplacer rapidement et voir à une longue distance.
 Il a une arme de corps à corps et donc une portée de 1.
 
 *Palantír*
-  :description: Le Voleur peut poser un palantír sur la case qu'il occupe qui
-    lui donne une vision à distance. Elle reste sur le terrain jusqu'à ce que
-    le Voleur pose un autr palantír.
+  :description: Le Voleur peut poser un palantír qui lui donne une vision à
+    distance. Elle reste sur le terrain jusqu'à ce que le Voleur pose un autre
+   palantír.
   :cooldown: 5 tours
 
 *Traîtrise*
