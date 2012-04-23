@@ -15,7 +15,7 @@ TEST(Unit, UnitDamage)
 
     u0->attacked(3, u1->getUnitInfo());
     ASSERT_EQ(7, u0->getCurrentLife());
-    ASSERT_EQ((size_t)1, u0->getAttackers().size());
+    ASSERT_EQ(u1->getUnitInfo(), u0->getAttackers()[0]);
 }
 
 TEST(Unit, UnitDie)
