@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 
 #include <gtest/gtest.h>
 
@@ -117,4 +118,68 @@ TEST_F(MapTest, MapGetPath)
   EXPECT_TRUE(path2[5].x == 3 && path2[5].y == 1);
   EXPECT_TRUE(path2[6].x == 2 && path2[6].y == 1);
   EXPECT_TRUE(path2[7].x == 1 && path2[7].y == 1);
+}
+
+TEST_F(MapTest, MapGetSurroundings)
+{
+  Map map;
+  map.load(f);
+  Unit_sptr u0(new Unit(0, 1));
+  unit_info ui0 = u0->getUnitInfo();
+
+  map.getCell(position{1, 1})->addUnit(ui0);
+  map.getCell(position{1, 2})->addUnit(ui0);
+  map.getCell(position{1, 3})->addUnit(ui0);
+  map.getCell(position{1, 4})->addUnit(ui0);
+  map.getCell(position{1, 5})->addUnit(ui0);
+  map.getCell(position{1, 6})->addUnit(ui0);
+  map.getCell(position{1, 7})->addUnit(ui0);
+  map.getCell(position{2, 2})->addUnit(ui0);
+  map.getCell(position{2, 3})->addUnit(ui0);
+  map.getCell(position{2, 4})->addUnit(ui0);
+  map.getCell(position{2, 5})->addUnit(ui0);
+  map.getCell(position{2, 6})->addUnit(ui0);
+  map.getCell(position{3, 3})->addUnit(ui0);
+  map.getCell(position{3, 4})->addUnit(ui0);
+  map.getCell(position{3, 5})->addUnit(ui0);
+
+  std::vector<position> pos;
+  pos = map.getSurroundings(position {3,4}, ORIENTATION_OUEST, 3);
+
+  EXPECT_EQ(pos.size(), 9);
+  EXPECT_TRUE(pos[0].x == 3 && pos[0].y == 5);
+  EXPECT_TRUE(pos[1].x == 3 && pos[1].y == 4);
+  EXPECT_TRUE(pos[2].x == 3 && pos[2].y == 3);
+  EXPECT_TRUE(pos[3].x == 2 && pos[3].y == 6);
+  EXPECT_TRUE(pos[4].x == 2 && pos[4].y == 5);
+  EXPECT_TRUE(pos[5].x == 2 && pos[5].y == 4);
+  EXPECT_TRUE(pos[6].x == 1 && pos[6].y == 7);
+  EXPECT_TRUE(pos[7].x == 1 && pos[7].y == 6);
+  EXPECT_TRUE(pos[8].x == 1 && pos[8].y == 5);
+}
+
+TEST_F(MapTest, MapGetSurroundingsOnTower)
+{
+  Map map;
+  map.load(f);
+  Unit_sptr u0(new Unit(0, 1));
+  unit_info ui0 = u0->getUnitInfo();
+
+  map.getCell(position{5, 1})->addUnit(ui0);
+  map.getCell(position{6, 1})->addUnit(ui0);
+  map.getCell(position{7, 1})->addUnit(ui0);
+  map.getCell(position{8, 1})->addUnit(ui0);
+  map.getCell(position{5, 2})->addUnit(ui0);
+  map.getCell(position{6, 2})->addUnit(ui0);
+  map.getCell(position{7, 2})->addUnit(ui0);
+  map.getCell(position{8, 2})->addUnit(ui0);
+  map.getCell(position{5, 3})->addUnit(ui0);
+  map.getCell(position{6, 3})->addUnit(ui0);
+  map.getCell(position{7, 3})->addUnit(ui0);
+  map.getCell(position{8, 3})->addUnit(ui0);
+
+  std::vector<position> pos;
+  pos = map.getSurroundings(position {7,2}, ORIENTATION_OUEST, 3);
+
+  EXPECT_EQ(pos.size(), 12);
 }

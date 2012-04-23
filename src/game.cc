@@ -24,7 +24,7 @@ void GameState::init()
     for (uint32_t player_id = 0; player_id < player_count; ++player_id)
     {
         rules::Player_sptr p(new rules::Player(player_id, 0));
-        players_.push_back(p);
+        players_.players.push_back(p);
 
         // add units and abilities
         units_.push_back(Unit_sptr(new Voleur(player_id)));

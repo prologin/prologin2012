@@ -42,7 +42,7 @@ public:
 private:
     Map* map_;
     int player_count_;
-    rules::PlayerList players_;
+    rules::PlayerVector players_;
     UnitList units_;
     std::vector<palantir> palantiri_;
 };
