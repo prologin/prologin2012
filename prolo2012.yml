@@ -17,7 +17,7 @@ constant:
     cst_comment: Déplacement du Voleur
   -
     cst_name: VOLEUR_VIE
-    cst_val: 3
+    cst_val: 10
     cst_comment: Vie du Voleur
   -
     cst_name: VOLEUR_ATTAQUE
@@ -41,7 +41,7 @@ constant:
     cst_comment: Déplacement du Barbare
   -
     cst_name: BARBARE_VIE
-    cst_val: 3
+    cst_val: 10
     cst_comment: Vie du Barbare
   -
     cst_name: BARBARE_ATTAQUE
@@ -65,7 +65,7 @@ constant:
     cst_comment: Déplacement de l'Elfe
   -
     cst_name: ELFE_VIE
-    cst_val: 3
+    cst_val: 10
     cst_comment: Vie de l'Elfe
   -
     cst_name: ELFE_ATTAQUE
