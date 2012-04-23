@@ -42,12 +42,12 @@ Il a une arme de corps à corps et donc une portée de 1.
   :description: Le Voleur peut poser un palantír sur la case qu'il occupe qui
     lui donne une vision à distance. Elle reste sur le terrain jusqu'à ce que
     le Voleur pose un autr palantír.
-  :cooldown: 3 tours
+  :cooldown: 5 tours
 
 *Traîtrise*
   :description: Le Voleur peut tuer instantanément un personnage si il se
     trouve dans son dos, c'est à dire sur la même case que lui.
-  :cooldown: 8 tours
+  :cooldown: 5 tours
 
 Barbare
 -------
@@ -89,8 +89,8 @@ personnage de son équipe.
 
 *Loto, à qui le tour*
   :description: Le tireur d'élite peut tirer sur n'importe quelle case de la
-    carte, sauf son cône de vision.
-  :cooldown: 8 tours
+    carte, sauf dans son cône de vision.
+  :cooldown: 5 tours
 
 Champs de vision
 ================
