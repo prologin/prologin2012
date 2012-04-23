@@ -26,7 +26,7 @@
 ///
 // Vie du Voleur
 //
-# define VOLEUR_VIE                3
+# define VOLEUR_VIE                10
 
 ///
 // Attaque du voleur
@@ -56,7 +56,7 @@
 ///
 // Vie du Barbare
 //
-# define BARBARE_VIE               3
+# define BARBARE_VIE               10
 
 ///
 // Attaque du Barbare
@@ -86,7 +86,7 @@
 ///
 // Vie de l'Elfe
 //
-# define ELFE_VIE                  3
+# define ELFE_VIE                  10
 
 ///
 // Attaque de l'Elfe
