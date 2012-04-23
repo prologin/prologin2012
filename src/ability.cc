@@ -58,6 +58,10 @@ erreur BasicAttack::check(const GameState& st, unit_info attacker,
 
 void BasicAttack::apply(GameState* st, unit_info attacker, position target)
 {
+    INFO("player_id=%d unit=%d attack=normal target=(%d, %d)",
+            attacker.player_id, attacker.classe, target.x, target.y);
+
+    // apply cooldown
     Ability::apply(st, attacker, target);
 
     UnitVect units = st->getMap()->getUnitsOn(target);
@@ -72,6 +76,35 @@ void BasicAttack::apply(GameState* st, unit_info attacker, position target)
 }
 
 /*******************************************************************************
+ * Voleur - Palantir
+ */
+
+erreur Palantir::check(const GameState& st, unit_info attacker,
+        position target) const
+{
+    erreur err;
+    // check cooldown & valid position
+    if ((err = Ability::check(st, attacker, target)) != OK)
+        return err;
+
+    // TODO CHECK VISION
+
+    return OK;
+}
+
+void Palantir::apply(GameState* st, unit_info attacker, position target)
+{
+    INFO("player_id=%d unit=%d attack=palantir target=(%d, %d)",
+            attacker.player_id, attacker.classe, target.x, target.y);
+
+    // apply cooldown
+    Ability::apply(st, attacker, target);
+
+    // set the palantir
+    st->setPalantir(attacker.player_id, target);
+}
+
+/*******************************************************************************
  * Voleur - Traitrise
  */
 
@@ -79,11 +112,11 @@ erreur Traitrise::check(const GameState& st, unit_info attacker,
         position target) const
 {
     erreur err;
-    // Check cooldown & position valid
+    // check cooldown & valid position
     if ((err = Ability::check(st, attacker, target)) != OK)
         return err;
 
-    // Are target and attacker on the same cell?
+    // are target and attacker on the same cell?
     position pos = st.getUnit(attacker)->getPosition();
     if (pos != target)
         return POSITION_IMPOSSIBLE;
@@ -91,8 +124,14 @@ erreur Traitrise::check(const GameState& st, unit_info attacker,
     return OK;
 }
 
-void apply(GameState* st, unit_info attacker, position target)
+void Traitrise::apply(GameState* st, unit_info attacker, position target)
 {
+    INFO("player_id=%d unit=%d attack=traitrise target=(%d, %d)",
+            attacker.player_id, attacker.classe, target.x, target.y);
+
+    // apply cooldown
+    Ability::apply(st, attacker, target);
+
     UnitVect attacked_units = st->getMap()->getUnitsOn(target);
     for (auto it = attacked_units.begin(); it != attacked_units.end(); ++it)
     {

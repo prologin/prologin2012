@@ -83,14 +83,36 @@ private:
 };
 
 /*******************************************************************************
+ * Voleur - Palantir
+ */
+
+typedef struct palantir
+{
+    bool activated;
+    position location;
+} palantir;
+
+class Palantir : public Ability
+{
+public:
+    Palantir()
+        : Ability(VOLEUR_PALANTIR_CD)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
  * Voleur - Traitrise
  */
 
 class Traitrise : public Ability
 {
 public:
-    Traitrise(int cost)
-        : Ability(cost)
+    Traitrise()
+        : Ability(VOLEUR_TRAITRISE_CD)
     {}
 
     erreur check(const GameState& st, unit_info attacker, position target)

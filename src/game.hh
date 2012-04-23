@@ -7,6 +7,7 @@
 # include <rules/player.hh>
 
 # include "unit.hh"
+# include "ability.hh"
 
 class Map;
 class Player;
@@ -33,6 +34,9 @@ public:
     Map* getMap() const;
     size_t getPlayerCount();
 
+    palantir getPalantir(int player_id) const;
+    void setPalantir(int player_id, position target);
+
     Unit_sptr getUnit(const unit_info perso) const;
 
 private:
@@ -40,6 +44,7 @@ private:
     int player_count_;
     rules::PlayerList players_;
     UnitList units_;
+    std::vector<palantir> palantiri_;
 };
 
 #endif // !GAME_HH_

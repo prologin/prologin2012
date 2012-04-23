@@ -1,10 +1,12 @@
 #include <cstdint>
 
 #include <rules/player.hh>
+#include <utils/log.hh>
 
 #include "game.hh"
 #include "map.hh"
 #include "unit.hh"
+#include "ability.hh"
 
 GameState::GameState(const GameState& copy_from)
     : player_count_(copy_from.player_count_)
@@ -24,10 +26,17 @@ void GameState::init()
         rules::Player_sptr p(new rules::Player(player_id, 0));
         players_.push_back(p);
 
-        // Add units and abilities
+        // add units and abilities
         units_.push_back(Unit_sptr(new Voleur(player_id)));
         units_.push_back(Unit_sptr(new Barbare(player_id)));
         units_.push_back(Unit_sptr(new Elfe(player_id)));
+
+        // create palantir
+        palantiri_.push_back(palantir
+                {
+                    .activated = false,
+                    .location = {0, 0}
+                });
     }
 
     Cell* starting_cell = map_->getCell(map_->getStartingPos());
@@ -40,7 +49,7 @@ void GameState::init()
         (*it)->setPosition(map_->getStartingPos());
     }
 
-    // Initialize the shortest path calcul
+    // initialize the shortest path calcul
     map_->calculateShortestPaths();
 }
 
@@ -55,6 +64,26 @@ size_t GameState::getPlayerCount()
 {
     return player_count_;
 }
+
+/*******************************************************************************
+ * Palantir
+ */
+
+palantir GameState::getPalantir(int player_id) const
+{
+    CHECK((size_t)player_id < palantiri_.size());
+    return palantiri_[player_id];
+}
+
+void GameState::setPalantir(int player_id, position target)
+{
+    palantiri_[player_id].activated = true;
+    palantiri_[player_id].location = target;
+}
+
+/*
+ * end Palantir
+ ******************************************************************************/
 
 Unit_sptr GameState::getUnit(unit_info perso) const
 {

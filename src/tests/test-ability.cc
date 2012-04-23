@@ -10,6 +10,8 @@ class AbilityTest : public ::testing::Test
 protected:
     virtual void SetUp()
     {
+        utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
+
         f << "10 9\n";
         f << "5 4\n";
         f << "##########\n";
@@ -44,7 +46,23 @@ TEST_F(AbilityTest, AbilityCreate)
 {
     Ability a = Ability(0);
     ASSERT_EQ(0, a.getCooldown());
+
+    Ability b = Ability(1);
+    ASSERT_EQ(0, b.getCooldown());
 }
+
+TEST_F(AbilityTest, AbilityCooldown)
+{
+    Ability a = Ability(1);
+    a.apply(gamestate_, unit_info {0, PERSO_VOLEUR}, position {0, 0});
+
+    EXPECT_EQ(1, a.getCooldown());
+
+}
+
+/*******************************************************************************
+ * Test BasicAbility
+ */
 
 TEST_F(AbilityTest, BasicAbilityCheck)
 {
@@ -87,4 +105,26 @@ TEST_F(AbilityTest, BasicAbilityApply)
             EXPECT_EQ(7 /* _VIE - dmg = 10 - 3 */,
                     gamestate_->getUnit(*it)->getCurrentLife());
     }
+}
+
+/*******************************************************************************
+ * Test Palantir
+ */
+
+TEST_F(AbilityTest, PalantirCheck)
+{
+    // TODO CHECK VISION;
+}
+
+TEST_F(AbilityTest, PalantirApply)
+{
+    unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
+    position target = {5, 4};
+
+    Palantir attack = Palantir();
+
+    attack.apply(gamestate_, attacker_unit, target);
+
+    EXPECT_TRUE(gamestate_->getPalantir(0).activated);
+    EXPECT_EQ(target, gamestate_->getPalantir(0).location);
 }
