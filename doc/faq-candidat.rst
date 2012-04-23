@@ -5,6 +5,18 @@ FAQ Casus Belli
 Vision
 ======
 
+Les murs bloquent-ils la vision en diagonale ?
+----------------------------------------------
+
+Non, un mur (ou une forêt) ne bloque la vision que de la colonne orienté par la
+direction du personnage.
+
+Sur une tour, je vois tout autour de moi, comment ça marche avec les murs ?
+---------------------------------------------------------------------------
+
+Une tour est bien plus haute que le reste, elle permet donc de voir au-delà des
+murs qui ne bloquent alors plus la vision.
+
 Si mon personnage est sur une tour, peut-il voir dans une forêt ?
 -----------------------------------------------------------------
 

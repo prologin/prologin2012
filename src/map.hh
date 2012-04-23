@@ -70,6 +70,11 @@ public:
      */
     std::vector<position> getPath(position from, position to);
 
+    /*
+     * @return the positions where units could be seen
+     */
+    std::vector<position> getSurroundings(position pos, orientation direction, int range);
+
 protected:
     static Cell* newCell(int y, int x, zone_type type)
     {
@@ -107,6 +112,7 @@ private:
     std::vector<std::vector<Cell*>> map_;
     std::shared_ptr<std::vector<std::vector<int>>> paths_;
 
+    std::vector<position> getSurroundingsOnTower(position pos, int range);
     int initializeDistance(int from, int to);
 
     int height_;

@@ -121,7 +121,7 @@ UnitVect Map::getUnitsOn(position cell) const
 
 bool Map::isPositionValid(position p) const
 {
-    return p.x < width_ && p.y < height_;
+    return p.x >= 0 && p.x < width_ && p.y >= 0 && p.y < height_;
 }
 
 void Map::moveUnit(unit_info unit, position from, position to)
@@ -214,4 +214,65 @@ std::vector<position> Map::getPath(position from, position to)
     path.clear();
 
   return path;
+}
+
+static inline bool near(int x, int y, position p)
+{
+  return abs(x - p.x) + abs(y - p.y) <= 1;
+}
+
+// North = 1 if North, -1 if South, 0 else.
+// East = 1 if East, -1 if West, 0 else
+// x and y inverts their role depending on the orientation.
+// When isBlocked[j] is true, something prevents us to look in this column.
+// When near is true, we are near our position and can see through the forest.
+std::vector<position> Map::getSurroundings(position pos, orientation direction, int range)
+{
+  if (getCell(pos)->getType() == ZONE_TOUR)
+    return getSurroundingsOnTower(pos, range);
+
+  std::vector<position> unitsPositions;
+  std::vector<bool> isBlocked(2 * range + 3, false);
+  int North = (direction == ORIENTATION_NORD) - (direction == ORIENTATION_SUD);
+  int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
+
+  for (int i = 0; i <= range; ++i)
+    for (int j = -(i + 1); j <= (i + 1); ++j)
+    {
+      int x = pos.x + i * East + j * North;
+      int y = pos.y + i * North + j * East;
+
+      if (!isPositionValid(position({x,y})) || isBlocked[j]) continue;
+
+      zone_type zoneType = map_[y][x]->getType();
+      if ((!near(x, y, pos) && zoneType == ZONE_FORET) || zoneType == ZONE_MUR)
+        isBlocked[j] = true;
+      else if (!map_[y][x]->getUnits().empty())
+        unitsPositions.push_back(position({x, y}));
+    }
+
+  return unitsPositions;
+}
+
+// Check the square of length (2 * range + 1) around pos (but not pos).
+// Can see behind a wall or a forest (but not in a forest).
+std::vector<position> Map::getSurroundingsOnTower(position pos, int range)
+{
+  std::vector<position> unitsPositions;
+
+  for (int i = -range; i <= range; ++i)
+    for (int j = -range; j <= range; ++j)
+    {
+      int x = pos.x + i;
+      int y = pos.y + j;
+
+      if (!isPositionValid(position({x, y}))) continue;
+      zone_type zoneType = map_[y][x]->getType();
+
+      if (zoneType != ZONE_MUR && zoneType != ZONE_FORET
+          && !map_[y][x]->getUnits().empty())
+        unitsPositions.push_back(position({x, y}));
+    }
+
+  return unitsPositions;
 }
