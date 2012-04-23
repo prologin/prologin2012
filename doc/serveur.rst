@@ -15,7 +15,12 @@ occupant des objectifs. FIXME comment gagner des points
 Règles
 ------
 
-Une partie se compose de 2 à 6 joueurs.
+Nombre de joueurs
+=================
+
+Une partie se compose de 2 à ``n`` joueurs. La valeur la plus fréquence sera 3,
+mais rien ne nous empèche de faire un match à 100 avec tous les champions sur
+une même carte.
 
 Unités
 ======
