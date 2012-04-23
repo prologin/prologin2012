@@ -6,6 +6,19 @@
 
 # include "constant.hh"
 
+/*******************************************************************************
+ * Cooldown
+ */
+
+# define VOLEUR_PALANTIR_CD 3
+# define VOLEUR_TRAITRISE_CD 8
+
+# define BARBARE_BASTOOOON_CD 3
+# define BARBARE_FUS_RO_DAH_CD 10
+
+# define ELFE_I_SEE_CD 5
+# define ELFE_LOTO_CD 8
+
 struct unit_info;
 
 class GameState;
@@ -16,6 +29,10 @@ typedef std::shared_ptr<Unit> Unit_sptr;
 typedef std::vector<Unit_sptr> UnitList;
 
 class Map;
+
+/*******************************************************************************
+ * Ability
+ */
 
 class Ability
 {
@@ -45,6 +62,10 @@ private:
     int cost_;
 };
 
+/*******************************************************************************
+ * BasicAttack
+ */
+
 class BasicAttack : public Ability
 {
 public:
@@ -61,15 +82,20 @@ private:
     int range_;
 };
 
-class OneShot : public Ability
+/*******************************************************************************
+ * Voleur - Traitrise
+ */
+
+class Traitrise : public Ability
 {
 public:
-    OneShot(int cost)
+    Traitrise(int cost)
         : Ability(cost)
     {}
 
     erreur check(const GameState& st, unit_info attacker, position target)
         const;
+    // kill unit
     void apply(GameState* st, unit_info attacker, position target);
 };
 

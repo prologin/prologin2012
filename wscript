@@ -22,7 +22,7 @@ def build(bld):
         defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
     )
 
-    for test in ['unit', 'cell', 'ability', 'map', 'api']:
+    for test in ['unit', 'cell', 'ability', 'map', 'game', 'api']:
         bld.program(
             features = 'gtest',
             source = 'src/tests/test-%s.cc' % test,
