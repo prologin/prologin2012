@@ -40,3 +40,12 @@ L'attque normale du Barbare attaque-t-elle mes unités ?
 -------------------------------------------------------
 
 Oui, le Barbare est un peu débile.
+
+Chemin
+======
+
+La fonction ``chemin`` est-elle rapide ?
+----------------------------------------
+
+Oui car le calcul des distances n'est effectué qu'une seule fois par le
+champion lors du chargement de la carte.
