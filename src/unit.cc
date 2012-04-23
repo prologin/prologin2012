@@ -104,6 +104,7 @@ Voleur::Voleur(int player_id)
     : Unit(player_id, VOLEUR_DEPLACEMENT, PERSO_VOLEUR)
 {
     abilities_.push_back(new BasicAttack(VOLEUR_ATTAQUE, VOLEUR_ATT_PORTEE));
+    abilities_.push_back(new Traitrise(VOLEUR_TRAITRISE_CD));
 }
 
 /******************************************************************************
