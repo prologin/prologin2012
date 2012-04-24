@@ -113,7 +113,6 @@ TEST_F(ApiTest, chemin)
     EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
 }
 
-/*
 TEST_F(ApiTest, perso_vision)
 {
     api_->perso_vision(
@@ -124,8 +123,11 @@ TEST_F(ApiTest, perso_vision)
             .vie = 10,
             .direction = ORIENTATION_NORD
         });
+
+    // TODO Moar test
+
+    SUCCEED();
 }
-*/
 
 TEST_F(ApiTest, scores)
 {
