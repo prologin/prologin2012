@@ -29,7 +29,11 @@ void ActionMove::handle_buffer(utils::Buffer& buf)
     buf.handle(direction_);
 }
 
-void ActionMove::apply_on(GameState*) const
+void ActionMove::apply_on(GameState* gameState) const
 {
-    // FIXME jicks
+  gameState->reserveMoves(path_.size());
+
+  for (size_t i = 0; i < path_.size(); ++i)
+    gameState->addMoves(i, std::make_pair(path_[i],
+          gameState->getUnit(unit_)));
 }

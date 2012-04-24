@@ -106,6 +106,20 @@ int Unit::pickAbilityCooldown(int ability_id)
     return abilities_[ability_id]->getCooldown();
 }
 
+void Unit::resetPenombre()
+{
+  penombre_.clear();
+}
+
+void Unit::addPenombre(std::vector<position> newPenombre)
+{
+  penombre_.insert(penombre_.end(), newPenombre.begin(), newPenombre.end());
+}
+
+std::vector<position> Unit::getPenombre() const
+{
+  return penombre_;
+}
 
 /******************************************************************************
  * Voleur

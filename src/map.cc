@@ -146,8 +146,11 @@ erreur Map::checkMove(unit_info unit, path_t path) const
 
 int Map::initializeDistance(int from, int to)
 {
-  (*paths_)[from][to] = from;
-  return map_[from % height_][from / height_]->getCost();
+  int cost = map_[from % height_][from / height_]->getCost();
+
+  if (cost < 255)
+    (*paths_)[from][to] = from;
+  return cost;
 }
 
 // Calculate the all pairs shortest paths using Floyd-Warshall algorithm
@@ -276,4 +279,16 @@ std::vector<position> Map::getSurroundingsOnTower(position pos, int range)
     }
 
   return unitsPositions;
+}
+
+orientation Map::getOrientation(position p1, position p2)
+{
+  if (p2.x - p1.x > 0)
+    return ORIENTATION_EST;
+  if (p2.x - p1.x < 0)
+    return ORIENTATION_OUEST;
+  if (p2.y - p1.y > 0)
+    return ORIENTATION_NORD;
+  else
+    return ORIENTATION_SUD;
 }

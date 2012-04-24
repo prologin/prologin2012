@@ -47,7 +47,8 @@ public:
         : abilities_(), player_id_(player_id), classe_(classe),
         vision_(vision), life_max_(life), life_current_(life),
         spawn_(position {0, 0}), current_position_(position {0, 0}),
-        move_points_(move_points), attackers_(), orientation_(ORIENTATION_NORD)
+        move_points_(move_points), attackers_(), orientation_(ORIENTATION_NORD),
+        penombre_()
     {}
 
     // by default, for test purposes only, creata a Voleur
@@ -93,6 +94,10 @@ public:
 
     virtual int getAbilityCooldown(attaque_type id);
 
+    void resetPenombre();
+    void addPenombre(std::vector<position> newPenombre);
+    std::vector<position> getPenombre() const;
+
 protected:
     int pickAbilityCooldown(int ability_id);
 
@@ -116,6 +121,8 @@ private:
     UnitVect attackers_;
 
     orientation orientation_;
+
+    std::vector<position> penombre_;
 };
 
 typedef std::shared_ptr<Unit> Unit_sptr;

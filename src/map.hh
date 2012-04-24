@@ -75,6 +75,8 @@ public:
      */
     std::vector<position> getSurroundings(position pos, orientation direction, int range);
 
+    static orientation getOrientation(position p1, position p2);
+
 protected:
     static Cell* newCell(int y, int x, zone_type type)
     {

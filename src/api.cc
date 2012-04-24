@@ -135,8 +135,7 @@ std::vector<position> Api::perso_penombre(perso_info perso, position zone)
 //
 std::vector<position> Api::perso_penombre_zone(perso_info perso)
 {
-  // TODO
-  abort();
+  return game_state_->getUnit(perso)->getPenombre();
 }
 
 ///

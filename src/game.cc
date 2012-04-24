@@ -117,3 +117,33 @@ void GameState::incrementTurn()
 {
     current_turn_ += 1;
 }
+
+void GameState::reserveMoves(size_t n)
+{
+  pendingMoves_.reserve(n);
+}
+
+void GameState::addMoves(size_t n, std::pair<position, Unit_sptr> movement)
+{
+  pendingMoves_[n].push_back(movement);
+}
+
+void GameState::resolveMoves()
+{
+  for (auto unit : units_)
+    unit->resetPenombre();
+  for (auto moves : pendingMoves_)
+  {
+    for (auto move : moves)
+    {
+      move.second->setPosition(move.first);
+      move.second->setOrientation(Map::getOrientation(move.first,
+            move.second->getPosition()));
+    }
+    for (auto unit : units_)
+      unit->addPenombre(map_->getSurroundings(unit->getPosition(),
+            unit->getOrientation(), unit->getVision()));
+    moves.clear();
+  }
+  pendingMoves_.clear();
+}

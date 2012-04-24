@@ -15,7 +15,8 @@ class GameState : public rules::GameState
 {
 public:
     GameState(Map* map, rules::PlayerVector_sptr players)
-        : rules::GameState(), map_(map), players_(players), current_turn_(0)
+        : rules::GameState(), map_(map), players_(players), pendingMoves_(),
+        current_turn_(0)
     {}
 
     virtual rules::GameState* copy() const;
@@ -41,12 +42,17 @@ public:
     int getCurrentTurn() const;
     void incrementTurn();
 
+    void reserveMoves(size_t n);
+    void addMoves(size_t n, std::pair<position, Unit_sptr> movement);
+
 private:
     // The map
     Map* map_;
     rules::PlayerVector_sptr players_;
     UnitList units_;
     std::vector<palantir> palantiri_;
+
+    std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;
 
     // TODO increment each turn
     int current_turn_;
