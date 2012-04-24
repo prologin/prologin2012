@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include <gtest/gtest.h>
 
 #include "../game.hh"
@@ -25,8 +27,8 @@ protected:
         map_ = new Map();
         map_->load(f);
 
-        players = rules::PlayerVector_sptr(
-            new rules::PlayerVector
+        players = rules::Players_sptr(
+            new rules::Players
             {
                 std::vector<rules::Player_sptr>
                 {
@@ -41,7 +43,7 @@ protected:
     std::stringstream f;
 
     Map* map_;
-    rules::PlayerVector_sptr players;
+    rules::Players_sptr players;
 };
 
 TEST_F(GameTest, GameCreate)
@@ -49,9 +51,9 @@ TEST_F(GameTest, GameCreate)
     GameState gs = GameState(map_, players);
     gs.init();
 
-    EXPECT_EQ(0, players->players[0]->id);
-    EXPECT_EQ(1, (*players).players[1]->id);
-    EXPECT_EQ(2, (*players).players[2]->id);
+    EXPECT_EQ((uint32_t)0, players->players[0]->id);
+    EXPECT_EQ((uint32_t)1, players->players[1]->id);
+    EXPECT_EQ((uint32_t)2, players->players[2]->id);
 
     EXPECT_EQ((size_t)3, gs.getPlayerCount());
     EXPECT_EQ(map_, gs.getMap());

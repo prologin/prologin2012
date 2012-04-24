@@ -8,9 +8,15 @@
 #include "unit.hh"
 #include "ability.hh"
 
+GameState::GameState(Map* map, rules::Players_sptr players)
+    : rules::GameState(), map_(map), players_(players), current_turn_(0)
+{
+}
+
 rules::GameState* GameState::copy() const
 {
     // NOT USED IN PROLOGIN2012
+    // TEST
     return new GameState(*this);
 }
 

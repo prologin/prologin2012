@@ -5,10 +5,11 @@
 
 #include "action-move.hh"
 #include "action-attack.hh"
-#include "game.hh""
+#include "game.hh"
+#include "map.hh"
 
 Rules::Rules(const rules::Options& opt)
-    : opt_(opt)
+    : opt_(opt),
       champion_(nullptr)
 {
 

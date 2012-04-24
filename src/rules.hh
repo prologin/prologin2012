@@ -41,7 +41,7 @@ private:
     rules::Options opt_;
     utils::DLL* champion_;
     Api* api_;
-    rules::PlayerVector_sptr players_;
+    rules::Players_sptr players_;
 
     int winner_;
 };

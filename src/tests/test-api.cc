@@ -28,8 +28,8 @@ protected:
         map_ = new Map();
         map_->load(f);
 
-        rules::PlayerVector_sptr players(
-            new rules::PlayerVector
+        rules::Players_sptr players(
+            new rules::Players
             {
                 std::vector<rules::Player_sptr>
                 {
