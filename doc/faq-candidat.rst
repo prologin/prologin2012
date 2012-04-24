@@ -28,6 +28,15 @@ Un palantir sur une tour de guet profite-t-il du bonus de vision ?
 
 Oui.
 
+Pénombre
+========
+
+Si un personnage ne bouge pas alors que je passe à coté de lui, apparaitra-t-il plusieurs fois dans la liste des pénombres ?
+----------------------------------------------------------------------------------------------------------------------------
+
+Oui, ``perso_penombre`` peut donc renvoyer plusieurs fois la même case, si un
+personnage a été vu sur plusieurs cases de déplacement.
+
 Attaques
 ========
 
