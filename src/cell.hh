@@ -11,9 +11,7 @@
 class Cell
 {
 public:
-    Cell(int y, int x, int cost, zone_type type)
-        : x_(x), y_(y), type_(type), units_(), cost_(cost), corpse_(false)
-    {};
+    Cell(int y, int x, zone_type type);
 
     // return the cost in movement points to walk on this cell
     int getCost() const;
@@ -45,55 +43,6 @@ private:
     int cost_;
 
     bool corpse_;
-};
-
-
-class Wall : public Cell
-{
-public:
-    Wall(int y, int x)
-        : Cell(y, x, 255, ZONE_MUR)
-    {}
-};
-
-class Road : public Cell
-{
-public:
-    Road(int y, int x)
-        : Cell(y, x, 1, ZONE_ROUTE)
-    {}
-};
-
-class Grass : public Cell
-{
-public:
-    Grass(int y, int x)
-        : Cell(y, x, 2, ZONE_HERBE)
-    {}
-};
-
-class Swamp : public Cell
-{
-public:
-    Swamp(int y, int x)
-        : Cell(y, x, 4, ZONE_MARAIS)
-    {}
-};
-
-class Forest : public Cell
-{
-public:
-    Forest(int y, int x)
-        : Cell(y, x, 2, ZONE_FORET)
-    {}
-};
-
-class Tower : public Cell
-{
-public:
-    Tower(int y, int x)
-        : Cell(y, x, 2, ZONE_TOUR)
-    {}
 };
 
 #endif // !CELL_HH_

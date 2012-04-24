@@ -75,39 +75,6 @@ public:
      */
     std::vector<position> getSurroundings(position pos, orientation direction, int range);
 
-protected:
-    static Cell* newCell(int y, int x, zone_type type)
-    {
-        Cell* cell;
-
-        switch (type)
-        {
-        case ZONE_MUR:
-            cell = new Wall(y, x);
-            break;
-        case ZONE_ROUTE:
-            cell = new Road(y, x);
-            break;
-        case ZONE_HERBE:
-            cell = new Grass(y, x);
-            break;
-        case ZONE_MARAIS:
-            cell = new Swamp(y, x);
-            break;
-        case ZONE_FORET:
-            cell = new Forest(y, x);
-            break;
-        case ZONE_TOUR:
-            cell = new Tower(y, x);
-            break;
-        default:
-            FATAL("not in enum");
-            break;
-        }
-
-        return cell;
-    }
-
 private:
     std::vector<std::vector<Cell*>> map_;
     std::shared_ptr<std::vector<std::vector<int>>> paths_;
