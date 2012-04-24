@@ -27,7 +27,19 @@ protected:
 
         map_ = new Map();
         map_->load(f);
-        gamestate_ = new GameState(map_, 2);
+
+        rules::PlayerVector_sptr players(
+            new rules::PlayerVector
+            {
+                std::vector<rules::Player_sptr>
+                {
+                    rules::Player_sptr(new rules::Player(0, 0)),
+                    rules::Player_sptr(new rules::Player(1, 0)),
+                }
+            }
+        );
+
+        gamestate_ = new GameState(map_, players);
 
         gamestate_->init();
 

@@ -24,17 +24,34 @@ protected:
 
         map_ = new Map();
         map_->load(f);
+
+        players = rules::PlayerVector_sptr(
+            new rules::PlayerVector
+            {
+                std::vector<rules::Player_sptr>
+                {
+                    rules::Player_sptr(new rules::Player(0, 0)),
+                    rules::Player_sptr(new rules::Player(1, 0)),
+                    rules::Player_sptr(new rules::Player(2, 0)),
+                }
+            }
+        );
     }
 
     std::stringstream f;
 
     Map* map_;
+    rules::PlayerVector_sptr players;
 };
 
 TEST_F(GameTest, GameCreate)
 {
-    GameState gs = GameState(map_, 3);
+    GameState gs = GameState(map_, players);
     gs.init();
+
+    EXPECT_EQ(0, players->players[0]->id);
+    EXPECT_EQ(1, (*players).players[1]->id);
+    EXPECT_EQ(2, (*players).players[2]->id);
 
     EXPECT_EQ((size_t)3, gs.getPlayerCount());
     EXPECT_EQ(map_, gs.getMap());

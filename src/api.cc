@@ -26,7 +26,7 @@
 // global used in interface.cc
 Api* api;
 
-Api::Api(GameState* game_state, rules::Player* player)
+Api::Api(GameState* game_state, rules::Player_sptr player)
     : game_state_(game_state),
       player_(player)
 {
@@ -105,17 +105,18 @@ std::vector<position> Api::chemin(position p1, position p2)
 ///
 // Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
 //
-erreur Api::perso_deplace(perso_info perso, std::vector<orientation> chemin, orientation direction)
+erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {
-    ActionMove move(perso, chemin, direction);
+    rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
+                player_->id));
 
     erreur err;
 
-    if ((err = (erreur)move.check(game_state_)) != OK)
+    if ((err = static_cast<erreur>(move->check(game_state_))) != OK)
         return err;
 
-    // wait what, where is the action stored?
-    game_state_ = move.apply(game_state_);
+    game_state_ = dynamic_cast<GameState*>(move->apply(game_state_));
+    actions_.add_action(move);
 
     return OK;
 }
@@ -172,15 +173,6 @@ int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 }
 
 ///
-// Annule l'action précédente. Renvoie ``true`` si une action a été annulée, ``false`` sinon.
-//
-bool Api::annuler()
-{
-  // TODO
-  abort();
-}
-
-///
 // Retourne le numéro de votre équipe
 //
 int Api::mon_equipe()
@@ -193,7 +185,6 @@ int Api::mon_equipe()
 //
 std::vector<int> Api::scores()
 {
-    // TODO TEST
     return game_state_->getScores();
 }
 

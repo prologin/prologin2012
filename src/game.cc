@@ -11,7 +11,7 @@
 rules::GameState* GameState::copy() const
 {
     // NOT USED IN PROLOGIN2012
-    return this;
+    return new GameState(*this);
 }
 
 GameState::~GameState()
@@ -24,9 +24,6 @@ void GameState::init()
     size_t player_count = getPlayerCount();
     for (uint32_t player_id = 0; player_id < player_count; ++player_id)
     {
-        rules::Player_sptr p(new rules::Player(player_id, 0));
-        players_->players.push_back(p);
-
         // add units and abilities
         units_.push_back(Unit_sptr(new Voleur(player_id)));
         units_.push_back(Unit_sptr(new Barbare(player_id)));
@@ -53,8 +50,6 @@ void GameState::init()
     // initialize the shortest path calcul
     map_->calculateShortestPaths();
 }
-
-rules::GameState* GameState::copy() const { return new GameState(*this); }
 
 Map* GameState::getMap() const
 {

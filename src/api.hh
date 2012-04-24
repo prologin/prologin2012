@@ -14,6 +14,9 @@
 # define API_HH_
 
 # include <vector>
+
+# include <rules/game-state.hh>
+# include <rules/actions.hh>
 # include <rules/player.hh>
 
 # include "constant.hh"
@@ -27,12 +30,28 @@ class Game;
 class Api
 {
 public:
-    Api(GameState* game_state, rules::Player* player);
-    virtual ~Api() { };
+    Api(GameState* game_state, rules::Player_sptr player);
+    virtual ~Api() { }
+
+    const rules::Player_sptr player() const
+        { return player_; }
+    void player_set(rules::Player_sptr player)
+        { player_ = player; }
+
+    rules::Actions* actions()
+        { return &actions_; }
+
+    const GameState* game_state() const
+        { return game_state_; }
+    GameState* game_state()
+        { return game_state_; }
+    void game_state_set(rules::GameState* gs)
+        { game_state_ = dynamic_cast<GameState*>(gs); }
 
 private:
     GameState* game_state_;
-    rules::Player* player_;
+    rules::Player_sptr player_;
+    rules::Actions actions_;
 
 public:
 
@@ -59,7 +78,7 @@ public:
 ///
 // Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
 //
-   erreur perso_deplace(perso_info perso, std::vector<orientation> chemin, orientation direction);
+   erreur perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction);
 ///
 // Récupère la liste des zones sur lesquelles des personnages ont été aperçus dans la pénombre par ``perso`` lors de son passage sur une ``zone`` de son déplacement.
 //
