@@ -146,5 +146,3 @@ TEST_F(ApiTest, tour_actuel)
     EXPECT_EQ(0, api_->tour_actuel());
     // TODO More tests
 }
-
-// vim:set fdm=syntax:
