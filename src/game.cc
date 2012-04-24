@@ -8,9 +8,10 @@
 #include "unit.hh"
 #include "ability.hh"
 
-GameState::GameState(const GameState& copy_from)
-    : player_count_(copy_from.player_count_)
+rules::GameState* GameState::copy() const
 {
+    // NOT USED IN PROLOGIN2012
+    return this;
 }
 
 GameState::~GameState()
@@ -24,7 +25,7 @@ void GameState::init()
     for (uint32_t player_id = 0; player_id < player_count; ++player_id)
     {
         rules::Player_sptr p(new rules::Player(player_id, 0));
-        players_.players.push_back(p);
+        players_->players.push_back(p);
 
         // add units and abilities
         units_.push_back(Unit_sptr(new Voleur(player_id)));
@@ -60,11 +61,6 @@ Map* GameState::getMap() const
     return map_;
 }
 
-size_t GameState::getPlayerCount()
-{
-    return player_count_;
-}
-
 /*******************************************************************************
  * Palantir
  */
@@ -90,4 +86,39 @@ Unit_sptr GameState::getUnit(unit_info perso) const
     // tricky, but works, as long as the Units on GameState::init are created
     // with the same order as perso_class enum members
     return units_[perso.player_id * 3 + perso.classe];
+}
+
+Unit_sptr GameState::getUnit(perso_info perso) const
+{
+    return getUnit(unit_info
+            {
+                .player_id = perso.equipe,
+                .classe = perso.classe
+            });
+}
+
+size_t GameState::getPlayerCount()
+{
+    return players_->players.size();
+}
+
+std::vector<int> GameState::getScores() const
+{
+    std::vector<int> scores;
+    for (auto it = players_->players.begin(); it != players_->players.end(); ++it)
+    {
+        scores.push_back((*it)->score);
+    }
+
+    return scores;
+}
+
+int GameState::getCurrentTurn() const
+{
+    return current_turn_;
+}
+
+void GameState::incrementTurn()
+{
+    current_turn_ += 1;
 }

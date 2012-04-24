@@ -42,15 +42,17 @@ class Ability;
 class Unit
 {
 public:
-    Unit(int player_id, int move_points, perso_classe classe)
+    Unit(int player_id, int move_points, int vision, int life,
+            perso_classe classe)
         : abilities_(), player_id_(player_id), classe_(classe),
+        vision_(vision), life_max_(life), life_current_(life),
         spawn_(position {0, 0}), current_position_(position {0, 0}),
-        life_max_(10), life_current_(10), move_points_(move_points),
-        attackers_()
+        move_points_(move_points), attackers_(), orientation_(ORIENTATION_NORD)
     {}
 
+    // by default, for test purposes only, creata a Voleur
     Unit(int player_id, int move_points)
-        : Unit(player_id, move_points, PERSO_VOLEUR)
+        : Unit(player_id, move_points, VOLEUR_VISION, VOLEUR_VIE, PERSO_VOLEUR)
     {}
 
     unit_info getUnitInfo() const;
@@ -78,7 +80,8 @@ public:
      */
     void respawn();
 
-    int getAbilityCooldown(int ability_id) const;
+
+    int getVision() const;
 
     /**
      * reduce life
@@ -88,18 +91,24 @@ public:
     UnitVect getAttackers() const;
     bool isDead();
 
+    virtual int getAbilityCooldown(attaque_type id);
+
+protected:
+    int pickAbilityCooldown(int ability_id);
+
 protected:
     std::vector<Ability*> abilities_;
 
 private:
     int player_id_;
     perso_classe classe_;
-
-    position spawn_;
-    position current_position_;
+    int vision_;
 
     int life_max_;
     int life_current_;
+
+    position spawn_;
+    position current_position_;
 
     int move_points_;
 
@@ -121,6 +130,8 @@ class Voleur : public Unit
 {
 public:
     Voleur(int player_id);
+
+    virtual int getAbilityCooldown(attaque_type id);
 };
 
 /*******************************************************************************
@@ -131,6 +142,8 @@ class Barbare : public Unit
 {
 public:
     Barbare(int player_id);
+
+    int getAbilityCooldown(attaque_type id) const;
 };
 
 /*******************************************************************************
@@ -141,6 +154,8 @@ class Elfe : public Unit
 {
 public:
     Elfe(int player_id);
+
+    int getAbilityCooldown(attaque_type id) const;
 };
 
 #endif // !UNIT_HH_

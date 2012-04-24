@@ -24,8 +24,6 @@ public:
     int removeUnit(unit_info unit);
     UnitVect getUnits() const;
 
-    std::vector<position> getVision(int vision) const;
-
     bool isUnitOnCell(unit_info unit) const;
 
     // corpse stuff, must be reset after each turn, before

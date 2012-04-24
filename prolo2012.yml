@@ -108,7 +108,7 @@ enum:
     enum_field:
       - [attaque_normale, "Attaque normale dont les dégats dépendent du personnage"]
       - [attaque_palantir, "Attaque 'Palantir' du Voleur"]
-      - [attaque_dans_to_dos, "Attaque 'Dans ton dos' du Voleur"]
+      - [attaque_traitrise, "Attaque 'Traîtrise' du Voleur"]
       - [attaque_bastoooon, "Attaque 'Bastoooon' de du Barbare"]
       - [attaque_fus_ro_dah, "Attaque 'Fus Ro Dah' du Barbare"]
       - [attaque_i_see, "Attaque 'I see what you did there.' de l'Elfe"]
@@ -249,13 +249,6 @@ function:
       - [attaque, attaque_type, "Attaque à vérifier"]
 
 # Autre
-  -
-    fct_name: annuler
-    fct_summary:
-      "Annule l'action précédente. Renvoie ``true`` si une action a été annulée,
-       ``false`` sinon."
-    fct_ret_type: bool
-    fct_arg: []
   -
     fct_name: mon_equipe
     fct_summary: Retourne le numéro de votre équipe

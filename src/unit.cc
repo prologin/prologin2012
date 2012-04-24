@@ -72,11 +72,9 @@ void Unit::respawn()
     current_position_ = getSpawn();
 }
 
-int Unit::getAbilityCooldown(int ability_id) const
+int Unit::getVision() const
 {
-    CHECK((size_t)ability_id < abilities_.size());
-
-    return abilities_[ability_id]->getCooldown();
+    return vision_;
 }
 
 void Unit::attacked(int damages, unit_info attacker)
@@ -96,15 +94,47 @@ bool Unit::isDead()
     return life_current_ <= 0;
 }
 
+int Unit::getAbilityCooldown(attaque_type id)
+{
+    return pickAbilityCooldown(id);
+}
+
+int Unit::pickAbilityCooldown(int ability_id)
+{
+    CHECK((size_t)ability_id < abilities_.size());
+
+    return abilities_[ability_id]->getCooldown();
+}
+
+
 /******************************************************************************
  * Voleur
  **/
 
 Voleur::Voleur(int player_id)
-    : Unit(player_id, VOLEUR_DEPLACEMENT, PERSO_VOLEUR)
+    : Unit(player_id, VOLEUR_DEPLACEMENT, VOLEUR_VISION, VOLEUR_VIE,
+            PERSO_VOLEUR)
 {
     abilities_.push_back(new BasicAttack(VOLEUR_ATTAQUE, VOLEUR_ATT_PORTEE));
     abilities_.push_back(new Traitrise());
+}
+
+int Voleur::getAbilityCooldown(attaque_type id)
+{
+    switch (id)
+    {
+    case ATTAQUE_NORMALE:
+        return pickAbilityCooldown(0);
+        break;
+    case ATTAQUE_PALANTIR:
+        return pickAbilityCooldown(1);
+        break;
+    case ATTAQUE_TRAITRISE:
+        return pickAbilityCooldown(2);
+        break;
+    default:
+        return 0;
+    }
 }
 
 /******************************************************************************
@@ -112,7 +142,8 @@ Voleur::Voleur(int player_id)
  **/
 
 Barbare::Barbare(int player_id)
-    : Unit(player_id, BARBARE_DEPLACEMENT, PERSO_BARBARE)
+    : Unit(player_id, BARBARE_DEPLACEMENT, BARBARE_VISION, BARBARE_VIE,
+            PERSO_BARBARE)
 {
     abilities_.push_back(new BasicAttack(BARBARE_ATTAQUE, BARBARE_ATT_PORTEE));
 }
@@ -122,7 +153,7 @@ Barbare::Barbare(int player_id)
  **/
 
 Elfe::Elfe(int player_id)
-    : Unit(player_id, ELFE_DEPLACEMENT, PERSO_ELFE)
+    : Unit(player_id, ELFE_DEPLACEMENT, ELFE_VISION, ELFE_VIE, PERSO_ELFE)
 {
     abilities_.push_back(new BasicAttack(ELFE_ATTAQUE, ELFE_ATT_PORTEE));
 }

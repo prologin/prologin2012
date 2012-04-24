@@ -2,11 +2,13 @@
 
 #include "../unit.hh"
 #include "../map.hh"
+#include "../constant.hh"
 
 TEST(Unit, UnitCreate)
 {
     Unit u(0, 1);
     ASSERT_EQ(10, u.getCurrentLife()) << "Default life is not 10";
+    ASSERT_EQ(ORIENTATION_NORD, u.getOrientation());
 }
 
 TEST(Unit, UnitDamage)

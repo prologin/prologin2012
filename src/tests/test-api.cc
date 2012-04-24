@@ -1,4 +1,5 @@
 #include <sstream>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -20,8 +21,8 @@ protected:
         f << "#FFF_....#\n";
         f << "#..._....#\n";
         f << "#~~~_....#\n";
-        f << "#~T~_....#\n";
-        f << "#~~~_....#\n";
+        f << "#~T~_..###\n";
+        f << "#~~~_..#.#\n";
         f << "##########\n";
 
         map_ = new Map();
@@ -77,3 +78,61 @@ TEST_F(ApiTest, carte_zone_perso)
     EXPECT_EQ(0, persos[0].equipe);
 }
 
+TEST_F(ApiTest, chemin)
+{
+    position start({1, 1}), end({1, 1});
+    EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
+
+    end = {1, 2};
+    EXPECT_EQ((size_t)1, api_->chemin(start, end).size());
+
+    start = {0, 0};
+    end = {0, 1};
+    // wierd, we can walk on wall
+    // XXX is this legit?
+    EXPECT_EQ((size_t)1, api_->chemin(start, end).size());
+
+    start = {0, 0};
+    end = {0, 6};
+    EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
+
+    start = {7, 8};
+    end = {7, 6};
+    EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
+}
+
+/*
+TEST_F(ApiTest, perso_vision)
+{
+    api_->perso_vision(
+        perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_VOLEUR,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        });
+}
+*/
+
+TEST_F(ApiTest, scores)
+{
+    std::vector<int> default_scores(2, 0);
+    std::vector<int> actual_scores = api_->scores();
+
+    for (int i = 0; i < api_->nombre_equipes(); ++i)
+        EXPECT_EQ(default_scores[i], actual_scores[i]);
+}
+
+TEST_F(ApiTest, nombre_equipes)
+{
+    EXPECT_EQ(2, api_->nombre_equipes());
+}
+
+TEST_F(ApiTest, tour_actuel)
+{
+    EXPECT_EQ(0, api_->tour_actuel());
+    // TODO More tests
+}
+
+// vim:set fdm=syntax:

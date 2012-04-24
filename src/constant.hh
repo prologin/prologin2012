@@ -13,6 +13,9 @@
 #ifndef CONSTANT_HH_
 # define CONSTANT_HH_
 
+#define ACTION_MOVE 0
+#define ACTION_ATTACK 1
+
 ///
 // Vision du Voleur
 //
@@ -133,7 +136,7 @@ typedef enum zone_type {
 typedef enum attaque_type {
   ATTAQUE_NORMALE, /* <- Attaque normale */
   ATTAQUE_PALANTIR, /* <- Attaque 'Palantir' de l'Elfe */
-  ATTAQUE_DANS_TO_DOS, /* <- Attaque 'Dans ton dos' de l'Elfe */
+  ATTAQUE_TRAITRISE, /* <- Attaque 'Dans ton dos' de l'Elfe */
   ATTAQUE_BASTOOOON, /* <- Attaque 'Bastoooon' de du Barbare */
   ATTAQUE_FUS_RO_DAH, /* <- Attaque 'Fus Ro Dah' du Barbare */
   ATTAQUE_I_SEE, /* <- Attaque 'I see what you did there.' du Voleur */

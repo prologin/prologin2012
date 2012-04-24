@@ -60,12 +60,6 @@ bool Cell::isUnitOnCell(unit_info unit) const
     return find(units_.begin(), units_.end(), unit) != units_.end();
 }
 
-std::vector<position> Cell::getVision(int vision) const
-{
-    // TODO
-    return std::vector<position> {{1, 0}, {-1, 0}};
-}
-
 void Cell::setCorpse()
 {
     corpse_ = true;

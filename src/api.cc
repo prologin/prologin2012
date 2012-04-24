@@ -98,7 +98,8 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
 //
 std::vector<position> Api::chemin(position p1, position p2)
 {
-  return game_state_->getMap()->getPath(p1, p2);
+    // check of p1 and p2 validity is done in getPath
+    return game_state_->getMap()->getPath(p1, p2);
 }
 
 ///
@@ -142,8 +143,12 @@ std::vector<position> Api::perso_penombre_zone(perso_info perso)
 //
 std::vector<position> Api::perso_vision(perso_info perso)
 {
-  // TODO
-  abort();
+    // TODO check perso
+    Unit_sptr unit = game_state_->getUnit(perso);
+    position unit_pos = unit->getPosition();
+
+    return game_state_->getMap()->getSurroundings(unit_pos,
+            unit->getOrientation(), unit->getVision());
 }
 
 ///
@@ -160,8 +165,10 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 //
 int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
-  // TODO
-  abort();
+ //   CHECK(perso.equipe > 0 && perso.equipe < game_state_->getPlayerCount());
+
+    // attaque % 3 because we get an enum
+    return game_state_->getUnit(perso)->getAbilityCooldown(attaque);
 }
 
 ///
@@ -178,8 +185,7 @@ bool Api::annuler()
 //
 int Api::mon_equipe()
 {
-  // TODO
-  abort();
+    return player_->id;
 }
 
 ///
@@ -187,8 +193,8 @@ int Api::mon_equipe()
 //
 std::vector<int> Api::scores()
 {
-  // TODO
-  abort();
+    // TODO TEST
+    return game_state_->getScores();
 }
 
 ///
@@ -196,8 +202,7 @@ std::vector<int> Api::scores()
 //
 int Api::nombre_equipes()
 {
-  // TODO
-  abort();
+    return game_state_->getPlayerCount();
 }
 
 ///
@@ -205,35 +210,6 @@ int Api::nombre_equipes()
 //
 int Api::tour_actuel()
 {
-  // TODO
-  abort();
+    return game_state_->getCurrentTurn();
 }
-
-///
-// Affiche le contenu d'une valeur de type perso_classe
-//
-
-///
-// Affiche le contenu d'une valeur de type zone_type
-//
-
-///
-// Affiche le contenu d'une valeur de type attaque_type
-//
-
-///
-// Affiche le contenu d'une valeur de type orientation
-//
-
-///
-// Affiche le contenu d'une valeur de type erreur
-//
-
-///
-// Affiche le contenu d'une valeur de type position
-//
-
-///
-// Affiche le contenu d'une valeur de type perso_info
-//
 
