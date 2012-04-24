@@ -117,7 +117,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
         return err;
 
     game_state_ = dynamic_cast<GameState*>(move->apply(game_state_));
-    actions_.add_action(move);
+    actions_.add(move);
 
     return OK;
 }
@@ -167,7 +167,7 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
         return err;
 
     game_state_ = dynamic_cast<GameState*>(action->apply(game_state_));
-    actions_.add_action(action);
+    actions_.add(action);
 
     return OK;
 }
