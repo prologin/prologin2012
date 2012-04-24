@@ -2,6 +2,12 @@
 Finale Prologin 2012 - Casus Belli
 ==================================
 
+**TODO: Ajouter les tiles pour les types de terrain**
+
+**TODO: Ajouter les tiles pour les unités**
+
+**TODO: Enlever la partie stratégie**
+
 -----
 Intro
 -----
@@ -9,7 +15,7 @@ Intro
 Le sujet serveur Prologin 2012 est un RPG ou chaque joueur contrôle une équipe
 de trois personnages ayant chacun des caractéristiques les différenciant. Le
 but est de gagner le plus de point en tuant un maximum d'adversaire ou en
-occupant des objectifs. FIXME comment gagner des points
+occupant des objectifs. **FIXME comment gagner des points**
 
 ------
 Règles
@@ -43,16 +49,21 @@ Le Voleur peut se déplacer rapidement et voir à une longue distance.
 
 Il a une arme de corps à corps et donc une portée de 1.
 
+*Attaque de base*
+  :description: Petit couteau
+  :dégats: 5 points de vie
+
 *Palantír*
   :description: Le Voleur peut poser un palantír qui lui donne une vision à
     distance. Elle reste sur le terrain jusqu'à ce que le Voleur pose un autre
-   palantír.
+    palantír.
   :cooldown: 5 tours
 
 *Traîtrise*
   :description: Le Voleur peut tuer instantanément un personnage si il se
     trouve dans son dos, c'est à dire sur la même case que lui.
   :cooldown: 5 tours
+  :dégats: >9000
 
 Barbare
 -------
@@ -67,6 +78,10 @@ dans son cône de vision.
           +
   @      +++
           +
+
+*Attaque de base*
+  :description: Grosse masse
+  :dégats: 3 points de vie sur toutes les cases touchées
 
 *Bastoooon*
   :description: Si le Barbare est sur la même case qu'un autre joueur, il peut
@@ -83,9 +98,13 @@ Elfe
 
 L'Elfe peut se déplacer de manière lente et voir à une distance moyenne.
 
-Il peut tirer sur toutes les cases visibles qui ne sont pas dans *son* cône de
-vision. C'est à dire qu'il peut tirer dans le champs de vision des autres
-personnage de son équipe.
+Il peut tirer sur toutes les cases visibles par le membres de son équipe. C'est
+à dire qu'il peut tirer dans le champs de vision des autres personnage de son
+équipe.
+
+*Attaque de base*
+  :description: Arc
+  :dégats: 2 points de vie
 
 *I see what you did there.*
   :description: Le tireur d'élite peut réveler une zone (géométrie à définir)
@@ -162,17 +181,27 @@ Herbe
 
 Zone normale.
 
+Route
+-----
 
-Route (+ rapide)
------------------------------------------
+*Plus rapide*
 
 Les personnages sur une route peuvent se déplacer deux fois plus rapidement que
 sur l'herbe, c'est à dire qu'ils consoment 1 point de déplacement au lieu de
 2.
 
+Marais
+------
 
-Forêt (1 portée 1 vision)
--------------------------
+*Moins rapide*
+
+Un personnage qui veut se déplacer dans un marais doit dépenser quatre points
+par case traversée.
+
+Forêt
+-----
+
+*Vision réduite à 1, camouflage*
 
 Un personnage qui regarde vers la foret ne peut voir qu'une seule case en face
 de lui et un personnage hors de la foret ne peut pas voir l'intérieur de
@@ -221,19 +250,27 @@ Exemples (``?`` foret, ``@`` personnage, ``.`` case visible) : ::
     .....
      .@.
 
-Marais (- rapide)
------------------
+Mur
+---
 
-Un personnage qui veut se déplacer dans un marais doit dépenser quatre points
-par case traversée.
-
-Mur (0 portée 0 vision 0 déplacement)
--------------------------------------
+*Infranchissable*
 
 Un mur est une case opaque et infranchissable.
 
-Tour de guet (+ vision)
---------------------------------
+Tour de guet
+------------
+
+*Vision agrandie*
+
+::
+
+  .......
+  .......
+  .......
+  ...@...
+  .......
+  .......
+  .......
 
 Un personnage sur une tour de guet gagne une vision circulaire de même taille
 que sa vision naturelle.
