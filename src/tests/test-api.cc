@@ -100,9 +100,7 @@ TEST_F(ApiTest, chemin)
 
     start = {0, 0};
     end = {0, 1};
-    // wierd, we can walk on wall
-    // XXX is this legit?
-    EXPECT_EQ((size_t)1, api_->chemin(start, end).size());
+    EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
 
     start = {0, 0};
     end = {0, 6};
