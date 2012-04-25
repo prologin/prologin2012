@@ -63,8 +63,11 @@ zone_type Api::carte_zone_type(position pos)
 //
 bool Api::carte_zone_cadavre(position pos)
 {
-    // TODO CHECK
     Map* map = game_state_->getMap();
+
+    if (!map->isPositionValid(pos))
+        return false;
+
     return map->getCell(pos)->isCorpse();
 }
 
@@ -102,8 +105,12 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
 //
 std::vector<position> Api::chemin(position p1, position p2)
 {
-    // check of p1 and p2 validity is done in getPath
-    return game_state_->getMap()->getPath(p1, p2);
+    Map* map = game_state_->getMap();
+
+    if (!map->isPositionValid(p1) || !map->isPositionValid(p2))
+        return std::vector<position>();
+
+    return map->getPath(p1, p2);
 }
 
 ///
@@ -111,8 +118,11 @@ std::vector<position> Api::chemin(position p1, position p2)
 //
 erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {
-    // Check phase
-    CHECK(game_state_->getPhase() != PHASE_ATTAQUE);
+    if (game_state_->getPhase() != PHASE_ATTAQUE)
+      return CHEMIN_IMPOSSIBLE;
+
+    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+      return PERSONNAGE_IMPOSSIBLE;
 
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
                 player_->id));
@@ -133,7 +143,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 //
 std::vector<position> Api::perso_penombre_zone(perso_info perso)
 {
-    if ((unsigned int)perso.equipe != player_->id)
+    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     return game_state_->getUnit(perso)->getPenombre();
@@ -145,7 +155,7 @@ std::vector<position> Api::perso_penombre_zone(perso_info perso)
 std::vector<position> Api::perso_vision(perso_info perso)
 {
     // Error, you cannot see what the other team sees
-    if ((unsigned int)perso.equipe != player_->id)
+    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     Unit_sptr unit = game_state_->getUnit(perso);
@@ -174,8 +184,11 @@ std::vector<position> Api::palantir_vision()
 //
 erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 {
-    // Check phase
-    CHECK(game_state_->getPhase() == PHASE_ATTAQUE);
+    if (game_state_->getPhase() != PHASE_ATTAQUE)
+      return ATTAQUE_INDISPONIBLE;
+
+    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+      return PERSONNAGE_IMPOSSIBLE;
 
     rules::IAction_sptr action(new ActionAttack(perso, attaque, pos,
                 player_->id));
@@ -197,9 +210,10 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 //
 int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
- //   CHECK(perso.equipe > 0 && perso.equipe < game_state_->getPlayerCount());
+    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+      return -1;
 
-    // attaque % 3 because we get an enum
+    // TODO test + getAbilityCooldown for ELFE and BARBARE
     return game_state_->getUnit(perso)->getAbilityCooldown(attaque);
 }
 

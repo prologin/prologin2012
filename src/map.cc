@@ -234,9 +234,6 @@ std::vector<position> Map::getPath(position from, position to)
 {
     std::vector<position> path;
 
-    if (!isPositionValid(from) || !isPositionValid(to))
-        return path;
-
     int fromID = from.y + from.x * height_;
     int toID = to.y + to.x * height_;
 

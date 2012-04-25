@@ -135,12 +135,12 @@ typedef enum zone_type {
 //
 typedef enum attaque_type {
   ATTAQUE_NORMALE, /* <- Attaque normale */
-  ATTAQUE_PALANTIR, /* <- Attaque 'Palantir' de l'Elfe */
-  ATTAQUE_TRAITRISE, /* <- Attaque 'Dans ton dos' de l'Elfe */
+  ATTAQUE_PALANTIR, /* <- Attaque 'Palantir' du Voleur */
+  ATTAQUE_TRAITRISE, /* <- Attaque 'Dans ton dos' du Voleur */
   ATTAQUE_BASTOOOON, /* <- Attaque 'Bastoooon' de du Barbare */
   ATTAQUE_FUS_RO_DAH, /* <- Attaque 'Fus Ro Dah' du Barbare */
-  ATTAQUE_I_SEE, /* <- Attaque 'I see what you did there.' du Voleur */
-  ATTAQUE_LOTO, /* <- Attaque 'Loto, à qui le tour' du Voleur */
+  ATTAQUE_I_SEE, /* <- Attaque 'I see what you did there.' de l'Elfe */
+  ATTAQUE_LOTO, /* <- Attaque 'Loto, à qui le tour' de l'Elfe */
 } attaque_type;
 
 

@@ -99,14 +99,15 @@ public:
     UnitVect getAttackers() const;
     bool isDead();
 
-    virtual int getAbilityCooldown(attaque_type id);
+    virtual Ability* getAbility(attaque_type id);
+    virtual int getAbilityCooldown(attaque_type id) const;
 
     void resetPenombre();
     void addPenombre(std::vector<position> newPenombre);
     std::vector<position> getPenombre() const;
 
 protected:
-    int pickAbilityCooldown(int ability_id);
+    int pickAbilityCooldown(int ability_id) const;
 
 protected:
     std::vector<Ability*> abilities_;
@@ -145,7 +146,8 @@ class Voleur : public Unit
 public:
     Voleur(int player_id);
 
-    virtual int getAbilityCooldown(attaque_type id);
+    virtual Ability* getAbility(attaque_type id);
+    virtual int getAbilityCooldown(attaque_type id) const;
 };
 
 /*******************************************************************************
@@ -157,7 +159,8 @@ class Barbare : public Unit
 public:
     Barbare(int player_id);
 
-    int getAbilityCooldown(attaque_type id) const;
+    virtual Ability* getAbility(attaque_type id);
+    virtual int getAbilityCooldown(attaque_type id) const;
 };
 
 /*******************************************************************************
@@ -169,7 +172,8 @@ class Elfe : public Unit
 public:
     Elfe(int player_id);
 
-    int getAbilityCooldown(attaque_type id) const;
+    virtual Ability* getAbility(attaque_type id);
+    virtual int getAbilityCooldown(attaque_type id) const;
 };
 
 #endif // !UNIT_HH_

@@ -1,5 +1,6 @@
 #include "map.hh"
 #include "action-attack.hh"
+#include "ability.hh"
 
 #include "constant.hh"
 
@@ -21,12 +22,20 @@ ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target,
 {
 }
 
-int ActionAttack::check(const GameState*) const
+int ActionAttack::check(const GameState* gameState) const
 {
     DEBUG("ActionAttack::check");
-    // TODO
 
-    return OK;
+    Unit_sptr unit = gameState->getUnit(unit_);
+    Ability* ability = unit->getAbility(atk_id_);
+
+    if (!ability)
+      return ATTAQUE_INDISPONIBLE;
+
+    unit_info info = { unit_.equipe, unit_.classe };
+    position target = { target_.x, target_.y };
+
+    return ability->check(*gameState, info, target);
 }
 
 void ActionAttack::handle_buffer(utils::Buffer& buf)

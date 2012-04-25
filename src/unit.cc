@@ -99,12 +99,19 @@ bool Unit::isDead()
     return life_current_ <= 0;
 }
 
-int Unit::getAbilityCooldown(attaque_type id)
+Ability* Unit::getAbility(attaque_type id)
+{
+  CHECK((size_t)id < abilities_.size());
+
+  return abilities_[id];
+}
+
+int Unit::getAbilityCooldown(attaque_type id) const
 {
     return pickAbilityCooldown(id);
 }
 
-int Unit::pickAbilityCooldown(int ability_id)
+int Unit::pickAbilityCooldown(int ability_id) const
 {
     CHECK((size_t)ability_id < abilities_.size());
 
@@ -138,7 +145,22 @@ Voleur::Voleur(int player_id)
     abilities_.push_back(new Traitrise());
 }
 
-int Voleur::getAbilityCooldown(attaque_type id)
+Ability* Voleur::getAbility(attaque_type id)
+{
+     switch (id)
+    {
+    case ATTAQUE_NORMALE:
+        return abilities_[0];
+    case ATTAQUE_PALANTIR:
+        return abilities_[1];
+    case ATTAQUE_TRAITRISE:
+        return abilities_[2];
+    default:
+        return 0;
+    }
+}
+
+int Voleur::getAbilityCooldown(attaque_type id) const
 {
     switch (id)
     {
@@ -152,7 +174,7 @@ int Voleur::getAbilityCooldown(attaque_type id)
         return pickAbilityCooldown(2);
         break;
     default:
-        return 0;
+        return -1;
     }
 }
 
@@ -167,6 +189,39 @@ Barbare::Barbare(int player_id)
     abilities_.push_back(new BasicAttack(BARBARE_ATTAQUE, BARBARE_ATT_PORTEE));
 }
 
+Ability* Barbare::getAbility(attaque_type id)
+{
+     switch (id)
+    {
+    case ATTAQUE_NORMALE:
+        return abilities_[0];
+    case ATTAQUE_BASTOOOON:
+        return abilities_[1];
+    case ATTAQUE_FUS_RO_DAH:
+        return abilities_[2];
+    default:
+        return 0;
+    }
+}
+
+int Barbare::getAbilityCooldown(attaque_type id) const
+{
+    switch (id)
+    {
+    case ATTAQUE_NORMALE:
+        return pickAbilityCooldown(0);
+        break;
+    case ATTAQUE_BASTOOOON:
+        return pickAbilityCooldown(1);
+        break;
+    case ATTAQUE_FUS_RO_DAH:
+        return pickAbilityCooldown(2);
+        break;
+    default:
+        return -1;
+    }
+}
+
 /******************************************************************************
  * Elfe
  **/
@@ -175,4 +230,37 @@ Elfe::Elfe(int player_id)
     : Unit(player_id, ELFE_DEPLACEMENT, ELFE_VISION, ELFE_VIE, PERSO_ELFE)
 {
     abilities_.push_back(new BasicAttack(ELFE_ATTAQUE, ELFE_ATT_PORTEE));
+}
+
+Ability* Elfe::getAbility(attaque_type id)
+{
+     switch (id)
+    {
+    case ATTAQUE_NORMALE:
+        return abilities_[0];
+    case ATTAQUE_I_SEE:
+        return abilities_[1];
+    case ATTAQUE_LOTO:
+        return abilities_[2];
+    default:
+        return 0;
+    }
+}
+
+int Elfe::getAbilityCooldown(attaque_type id) const
+{
+    switch (id)
+    {
+    case ATTAQUE_NORMALE:
+        return pickAbilityCooldown(0);
+        break;
+    case ATTAQUE_I_SEE:
+        return pickAbilityCooldown(1);
+        break;
+    case ATTAQUE_LOTO:
+        return pickAbilityCooldown(2);
+        break;
+    default:
+        return -1;
+    }
 }
