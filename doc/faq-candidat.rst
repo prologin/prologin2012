@@ -61,7 +61,7 @@ L'attaque "Traîtrise" du Voleur attaque-t-elle mes unités ?
 Non, car le Voleur est suffisament intelligent pour reconnaitre ses copains.
 
 L'attaque normale du Barbare attaque-t-elle mes unités ?
--------------------------------------------------------
+--------------------------------------------------------
 
 Oui, le Barbare est un peu débile.
 
