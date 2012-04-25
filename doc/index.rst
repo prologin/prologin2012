@@ -13,4 +13,3 @@ Pages:
    serveur
    serveur-api
    faq-candidat
-   prototype-old
