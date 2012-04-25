@@ -341,6 +341,9 @@ void Rules::resolve_end_of_attaque_phase()
 
     st->incrementTurn();
     st->setPhase(PHASE_DEPLACEMENT);
+
+    for (Unit_sptr unit : st->getUnits())
+        unit->resetAttackers();
 }
 
 bool Rules::is_finished()

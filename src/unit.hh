@@ -99,6 +99,8 @@ public:
      */
     void attacked(int damages, unit_info attacker);
     UnitVect getAttackers() const;
+    void resetAttackers();
+
     bool isDead();
 
     virtual Ability* getAbility(attaque_type id);
@@ -127,7 +129,6 @@ private:
 
     int move_points_;
 
-    // TODO Cleaned at the end of the turn?
     UnitVect attackers_;
 
     orientation orientation_;

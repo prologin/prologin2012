@@ -99,6 +99,11 @@ UnitVect Unit::getAttackers() const
     return attackers_;
 }
 
+void Unit::resetAttackers()
+{
+    attackers_.clear();
+}
+
 // Return true if unit's life is less or equal to zero
 bool Unit::isDead()
 {
