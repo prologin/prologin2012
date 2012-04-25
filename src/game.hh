@@ -48,6 +48,7 @@ public:
     int getCurrentTurn() const;
     void incrementTurn();
 
+    void setPhase(game_phase phase);
     game_phase getPhase() const;
     /*
      * @return true when the game is finished
@@ -67,7 +68,7 @@ private:
     std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;
     std::list<const ActionAttack*> pendingAttacks_;
 
-    // TODO increment each turn
+    game_phase game_phase_;
     int current_turn_;
 };
 

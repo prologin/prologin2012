@@ -12,6 +12,8 @@ GameState::GameState(Map* map, rules::Players_sptr players)
     : rules::GameState(),
       map_(map),
       players_(players),
+      pendingMoves_(),
+      game_phase_(PHASE_PLACEMENT),
       current_turn_(0)
 {
 }
@@ -150,6 +152,16 @@ int GameState::getCurrentTurn() const
 void GameState::incrementTurn()
 {
     current_turn_ += 1;
+}
+
+void GameState::setPhase(game_phase phase)
+{
+    game_phase_ = phase;
+}
+
+game_phase GameState::getPhase() const
+{
+    return game_phase_;
 }
 
 bool GameState::isFinished()

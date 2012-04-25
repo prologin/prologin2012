@@ -30,7 +30,9 @@ public:
     void resolve_moves();
     void resolve_attacks();
     void resolve_points();
-    void resolve_end_of_turn();
+    void resolve_end_of_placement_turn();
+    void resolve_end_of_deplacement_phase();
+    void resolve_end_of_attaque_phase();
 
 protected:
     bool is_finished();
@@ -47,7 +49,6 @@ private:
     utils::DLL* champion_;
     Api* api_;
     rules::Players_sptr players_;
-    game_phase game_phase_;
 
     int winner_;
 

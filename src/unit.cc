@@ -43,6 +43,11 @@ void Unit::setPosition(position p)
     current_position_ = p;
 }
 
+int Unit::getMovementPoints() const
+{
+    return move_points_;
+}
+
 orientation Unit::getOrientation() const
 {
     return orientation_;

@@ -74,6 +74,8 @@ public:
     position getPosition() const;
     void setPosition(position p);
 
+    int getMovementPoints() const;
+
     orientation getOrientation() const;
     void setOrientation(orientation direction);
 

@@ -111,6 +111,9 @@ std::vector<position> Api::chemin(position p1, position p2)
 //
 erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {
+    // Check phase
+    CHECK(game_state_->getPhase() != PHASE_ATTAQUE);
+
     // TODO halfr check
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
                 player_->id));
@@ -124,17 +127,6 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
     actions_.add(move);
 
     return OK;
-}
-
-///
-// Récupère la liste des zones sur lesquelles des personnages ont été aperçus dans la pénombre par ``perso`` lors de son passage sur une ``zone`` de son déplacement.
-//
-std::vector<position> Api::perso_penombre(perso_info perso, position zone)
-{
-  // TODO delete, use perso_penombre
-  (void)perso;
-  (void)zone;
-  abort();
 }
 
 ///
@@ -183,6 +175,9 @@ std::vector<position> Api::palantir_vision()
 //
 erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 {
+    // Check phase
+    CHECK(game_state_->getPhase() == PHASE_ATTAQUE);
+
     rules::IAction_sptr action(new ActionAttack(perso, attaque, pos,
                 player_->id));
 

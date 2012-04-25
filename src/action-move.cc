@@ -1,6 +1,7 @@
 #include "action-move.hh"
 
 #include "constant.hh"
+#include "map.hh"
 
 ActionMove::ActionMove()
     : unit_(),
@@ -22,11 +23,29 @@ ActionMove::ActionMove(perso_info unit, std::vector<position>& path,
 {
 }
 
-int ActionMove::check(const GameState*) const
+int ActionMove::check(const GameState* st) const
 {
+    // TODO: test
     DEBUG("ActionMove::check");
 
-    CHECK(player_ >= 0);
+    Unit_sptr unit = st->getUnit(unit_);
+
+    int move_points = unit->getMovementPoints();
+
+    position current_unit_position = unit->getPosition();
+
+    for (auto pos : path_)
+    {
+        if (abs(current_unit_position.x - pos.x)
+                + abs(current_unit_position.y - pos.y) != 1)
+            return CHEMIN_IMPOSSIBLE;
+
+        current_unit_position = pos;
+        move_points -= st->getMap()->getCell(pos)->getCost();
+
+        if (move_points < 0)
+            return CHEMIN_IMPOSSIBLE;
+    }
 
     return OK;
 }

@@ -1,5 +1,6 @@
 #include <fstream>
 #include <map>
+#include <set>
 
 #include "rules.hh"
 
@@ -15,7 +16,6 @@
 Rules::Rules(const rules::Options& opt)
     : opt_(opt),
       champion_(nullptr),
-      game_phase_(PHASE_PLACEMENT),
       sandbox_()
 {
     // Load map from file
@@ -57,7 +57,6 @@ Rules::Rules(rules::Players_sptr players, Api* api)
     : champion_(nullptr),
       api_(api),
       players_(players),
-      game_phase_(PHASE_PLACEMENT),
       sandbox_()
 {
     // Register Actions
@@ -82,13 +81,17 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
 {
     CHECK(champion_ != nullptr);
 
+    game_phase phase;
+
     while (!is_finished())
     {
         DEBUG("NEW TURN");
 
+        phase = api_->game_state()->getPhase();
+
         api_->actions()->clear();
 
-        switch (game_phase_)
+        switch (phase)
         {
         case PHASE_PLACEMENT:
             champion_jouer_placement();
@@ -128,15 +131,20 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             }
         }
 
-        switch (game_phase_)
+        switch (phase)
         {
-        case PHASE_DEPLACEMENT:
         case PHASE_PLACEMENT:
             resolve_moves();
+            resolve_end_of_placement_turn();
+            break;
+        case PHASE_DEPLACEMENT:
+            resolve_moves();
+            resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
             resolve_attacks();
             resolve_points();
+            resolve_end_of_attaque_phase();
             break;
         }
     }
@@ -232,13 +240,84 @@ void Rules::resolve_attacks()
 
 void Rules::resolve_points()
 {
-    // FIXME halfr
+    GameState* st = api_->game_state();
+    Map* map = st->getMap();
+
+    for (auto unit : st->getUnits())
+    {
+        if (!unit->isDead())
+            continue;
+
+        // Unit is dead
+        unsigned int teamkill = 0;
+        for (unit_info attacker : unit->getAttackers())
+            if (attacker.player_id == unit->getPlayer())
+                ++teamkill;
+
+        // Only teamkill
+        if (teamkill == unit->getAttackers().size())
+            api_->player()->score -= 1;
+        else
+        {
+            // no teamkill, every team get a point
+            if (teamkill == 0)
+            {
+                std::set<int> attackers_team;
+                for (unit_info attacker : unit->getAttackers())
+                    attackers_team.insert(attacker.player_id);
+
+                for (int team : attackers_team)
+                    players_->players[team]->score += 1;
+            }
+            // else
+            // mixed teamkill and offensive kill
+            // no points given
+        }
+
+    }
 }
 
-void Rules::resolve_end_of_turn()
+void Rules::resolve_end_of_placement_turn()
 {
-    // FIXME halfr
-    api_->game_state()->incrementTurn();
+    GameState* st = api_->game_state();
+    Map* map = st->getMap();
+
+    INFO("end of placement turn %d", st->getCurrentTurn());
+
+    st->incrementTurn();
+
+    if (st->getCurrentTurn() == map->getPlacementTurns())
+    {
+        st->setPhase(PHASE_DEPLACEMENT);
+
+        // End of placement phase
+        // Save spawns
+        for (auto unit : st->getUnits())
+            unit->setSpawn(unit->getPosition());
+    }
+}
+
+void Rules::resolve_end_of_deplacement_phase()
+{
+    GameState* st = api_->game_state();
+    Map* map = st->getMap();
+
+    INFO("end of move turn %d", st->getCurrentTurn());
+
+    st->setPhase(PHASE_ATTAQUE);
+
+    // FIXME: (halfr) is that all?
+}
+
+void Rules::resolve_end_of_attaque_phase()
+{
+    GameState* st = api_->game_state();
+    Map* map = st->getMap();
+
+    INFO("end of move turn %d", st->getCurrentTurn());
+
+    st->incrementTurn();
+    st->setPhase(PHASE_DEPLACEMENT);
 }
 
 bool Rules::is_finished()
