@@ -12,7 +12,6 @@ GameState::GameState(Map* map, rules::Players_sptr players)
     : rules::GameState(),
       map_(map),
       players_(players),
-      pendingMoves_(),
       current_turn_(0)
 {
 }
@@ -24,6 +23,7 @@ GameState::GameState(const GameState& st)
       units_(st.units_),
       palantiri_(st.palantiri_),
       pendingMoves_(st.pendingMoves_),
+      pendingAttacks_(st.pendingAttacks_),
       current_turn_(st.current_turn_)
 {
 }

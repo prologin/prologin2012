@@ -189,16 +189,17 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
 void Rules::resolve_moves()
 {
-    auto pendingMoves = api_->game_state()->getPendingMoves();
+    auto& pendingMoves = api_->game_state()->getPendingMoves();
 
     for (auto unit : api_->game_state()->getUnits())
         unit->resetPenombre();
-    for (auto moves : pendingMoves)
+    for (auto& moves : pendingMoves)
     {
-        for (auto move : moves)
+        for (auto& move : moves)
         {
             move.second->setPosition(move.first);
-            api_->game_state()->getMap()->moveUnit(move.second->getUnitInfo(), move.second->getPosition(), move.first);
+            api_->game_state()->getMap()->moveUnit(move.second->getUnitInfo(),
+                        move.second->getPosition(), move.first);
             move.second->setOrientation(Map::getOrientation(move.first,
                         move.second->getPosition()));
         }

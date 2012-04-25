@@ -100,10 +100,11 @@ void ActionAttack::applyAttack(GameState *gameState) const
 
 void ActionAttack::apply_on(GameState* gameState) const
 {
+    auto& pendingAttacks = gameState->getPendingAttacks();
     if (atk_id_ == ATTAQUE_FUS_RO_DAH)
-        gameState->getPendingAttacks().push_front(this);
+        pendingAttacks.push_front(this);
     else
-        gameState->getPendingAttacks().push_back(this);
+        pendingAttacks.push_back(this);
 }
 
 void ActionAttack::applySimpleAttack(GameState* gameState, int power, bool friendlyFire) const

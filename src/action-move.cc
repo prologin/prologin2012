@@ -40,9 +40,14 @@ void ActionMove::handle_buffer(utils::Buffer& buf)
 
 void ActionMove::apply_on(GameState* gameState) const
 {
-  gameState->getPendingMoves().reserve(path_.size());
+    auto& pendingMoves = gameState->getPendingMoves();
 
-  for (size_t i = 0; i < path_.size(); ++i)
-    gameState->getPendingMoves()[i].push_back(std::make_pair(path_[i],
-          gameState->getUnit(unit_)));
+    for (size_t i = 0; i < path_.size(); ++i)
+    {
+        if (i < pendingMoves.size())
+            pendingMoves[i].push_back(std::make_pair(path_[i], gameState->getUnit(unit_)));
+        else
+            pendingMoves.push_back(std::vector<std::pair<position, Unit_sptr>>(1,
+                        std::make_pair(path_[i], gameState->getUnit(unit_))));
+    }
 }

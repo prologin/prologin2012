@@ -77,7 +77,10 @@ public:
      * @return the path from 'from' to 'to'
      */
     std::vector<position> getPath(position from, position to);
-
+    /*
+     * @return the cost to go from 'from' to 'to'
+     */
+    int getDistance(position from, position to);
     /*
      * @return the positions where units could be seen
      */
@@ -87,11 +90,12 @@ public:
     static orientation getOrientation(position p1, position p2);
 
 private:
-    int initializeDistance(int from, int to);
+    void initializeDistance(int from, int to);
 
 private:
     std::vector<std::vector<Cell*>> map_;
     std::shared_ptr<std::vector<std::vector<int>>> paths_;
+    std::shared_ptr<std::vector<std::vector<int>>> distance_;
 
     int height_;
     int width_;

@@ -123,7 +123,7 @@ TEST_F(ApiTest, perso_deplace)
 
 TEST_F(ApiTest, perso_vision)
 {
-    EXPECT_EQ(0u, api_->perso_vision(
+    EXPECT_EQ(1u, api_->perso_vision(
         perso_info
         {
             .equipe = 0,
@@ -136,7 +136,7 @@ TEST_F(ApiTest, perso_vision)
 TEST_F(ApiTest, perso_penombre)
 {
     api_->perso_deplace(
-        perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD},
+        perso_info {0, PERSO_ELFE, 10, ORIENTATION_NORD},
         api_->chemin(map_->getStartingPos(), position {5, 2}),
         ORIENTATION_SUD
     );
@@ -146,7 +146,7 @@ TEST_F(ApiTest, perso_penombre)
 
     rules_->resolve_moves();
 
-    //EXEPCT_EQ(...);
+    EXPECT_EQ(5u, api_->perso_penombre_zone(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD}).size());
 }
 
 TEST_F(ApiTest, scores)
