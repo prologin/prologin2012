@@ -214,19 +214,19 @@ void Rules::resolve_moves()
 
 void Rules::resolve_attacks()
 {
-  auto pendingAttacks = api_->game_state()->getPendingAttacks();
-  std::map<int, int> markedUnits;
+    auto pendingAttacks = api_->game_state()->getPendingAttacks();
+    std::map<int, int> markedUnits;
 
-  for (auto attack : pendingAttacks)
-  {
-    if (attack->getType() != ATTAQUE_FUS_RO_DAH)
-      break;
-    attack->markFusRohDah(api_->game_state(), markedUnits);
-  }
-  for (auto attack : pendingAttacks)
-    attack->applyAttack(api_->game_state());
+    for (auto attack : pendingAttacks)
+    {
+        if (attack->getType() != ATTAQUE_FUS_RO_DAH)
+            break;
+        attack->markFusRohDah(api_->game_state(), markedUnits);
+    }
+    for (auto attack : pendingAttacks)
+        attack->applyAttack(api_->game_state());
 
-  pendingAttacks.clear();
+    pendingAttacks.clear();
 }
 
 void Rules::resolve_points()

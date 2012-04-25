@@ -164,5 +164,5 @@ std::vector<std::vector<std::pair<position, Unit_sptr>>>& GameState::getPendingM
 
 std::list<const ActionAttack*>& GameState::getPendingAttacks()
 {
-  return pendingAttacks_;
+    return pendingAttacks_;
 }
