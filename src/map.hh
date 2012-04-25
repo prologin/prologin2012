@@ -27,9 +27,7 @@ typedef std::vector<position> path_t;
 class Map
 {
 public:
-    Map()
-        : map_(), start_position_({0, 0})
-    {}
+    Map();
 
     Map(const Map& copy_from);
 
@@ -41,16 +39,22 @@ public:
     int getHeight() const;
 
     /*
-     * @return where all unit starts on turn 0
+     * @return Where all unit starts on turn 0
      */
     position getStartingPos() const;
 
+    /*
+     * @return Cell from ``position``
+     */
     Cell* getCell(position p) const;
+
+    /*
+     * @return Units on cell position
+     */
     UnitVect getUnitsOn(position cell) const;
 
-    // checks
     /*
-     * @return if the path is valid
+     * @return If the path is valid
      *  - unit on first cell of the path,
      *  - path is contiguous,
      *  - unit have enought movePoints
@@ -78,15 +82,17 @@ public:
     static orientation getOrientation(position p1, position p2);
 
 private:
-    std::vector<std::vector<Cell*>> map_;
-    std::shared_ptr<std::vector<std::vector<int>>> paths_;
-
     std::vector<position> getSurroundingsOnTower(position pos, int range);
     int initializeDistance(int from, int to);
+
+private:
+    std::vector<std::vector<Cell*>> map_;
+    std::shared_ptr<std::vector<std::vector<int>>> paths_;
 
     int height_;
     int width_;
     position start_position_;
+    int placement_turns;
 };
 
 #endif // !MAP_HH_

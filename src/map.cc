@@ -11,8 +11,15 @@
 #include "unit.hh"
 #include "constant.hh"
 
-// TODO
-// copy constructor
+Map::Map()
+    : map_(),
+      paths_(),
+      height_(0),
+      width_(0),
+      start_position_({0, 0}),
+      placement_turns(0)
+{
+}
 
 Map::~Map()
 {
@@ -29,8 +36,8 @@ Map::~Map()
 // Create a map from an istream
 // Format:
 // height width
-// player_count
 // start_x start_y
+// placement_turns
 //  x ->
 // y MAP DATA
 // | MAP DATA
@@ -42,9 +49,13 @@ int Map::load(std::istream& s)
 
     s >> width_ >> height_;
     INFO("map: width=%d height=%d ", width_, height_);
+
     s >> start_x >> start_y;
+    INFO("map: start: x=%d y=%d", start_x, start_y);
     start_position_ = position {start_x, start_y};
-    INFO("map start: x=%d y=%d", start_x, start_y);
+
+    s >> placement_turns;
+    INFO("map: placement_turns=%d", placement_turns);
 
     map_.resize(height_);
 
