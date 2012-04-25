@@ -174,6 +174,29 @@ Une carte est un quadrillage de cases carrées représentant différents terrain
 La taille de cette carte n'est pas définie statiquement et sera donnée au
 joueur au début de la partie.
 
+Coordonnées
+-----------
+
+Les coordonnés sont en ``(x, y)`` les suivantes : ::
+
+          NORD
+    OUEST <-> EST
+          SUD
+
+
++--------+--------+--------+-----+
+| (0, 0) | (1, 0) | (2, 0) | ... |
++--------+--------+--------+-----+
+| (0, 1) | (1, 1) | (2, 1) | ... |
++--------+--------+--------+-----+
+| (0, 2) | (1, 2) | (2, 2) | ... |
++--------+--------+--------+-----+
+|  ...   |  ...   |  ...   | ... |
++--------+--------+--------+-----+
+
+Type de cases
+-------------
+
 Les différentes cases que l'on peut rencontrer sur une carte sont :
 
 Herbe
