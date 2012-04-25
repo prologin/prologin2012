@@ -7,6 +7,7 @@
 #include "map.hh"
 #include "unit.hh"
 #include "ability.hh"
+#include "cell.hh"
 
 GameState::GameState(Map* map, rules::Players_sptr players)
     : rules::GameState(),

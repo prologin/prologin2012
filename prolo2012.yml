@@ -168,13 +168,6 @@ function:
     fct_arg:
       - [pos, position, "Position"]
   -
-    fct_name: carte_zone_cadavre
-    fct_summary:
-      Retourne ``true`` si un cadavre se trouve sur la zone ``pos``.
-    fct_ret_type: bool
-    fct_arg:
-      - [pos, position, "Position"]
-  -
     fct_name: carte_zone_perso
     fct_summary:
       Retourne la liste des personnages sur la zone.

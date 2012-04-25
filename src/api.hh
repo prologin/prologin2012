@@ -64,10 +64,6 @@ public:
 //
    zone_type carte_zone_type(position pos);
 ///
-// Retourne ``true`` si un cadavre se trouve sur la zone ``pos``.
-//
-   bool carte_zone_cadavre(position pos);
-///
 // Retourne la liste des personnages sur la zone.
 //
    std::vector<perso_info> carte_zone_perso(position pos);

@@ -7,6 +7,7 @@
 #include "../constant.hh"
 #include "../unit.hh"
 #include "../map.hh"
+#include "../cell.hh"
 
 class MapTest : public ::testing::Test
 {

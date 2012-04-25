@@ -2,6 +2,7 @@
 
 #include "constant.hh"
 #include "map.hh"
+#include "cell.hh"
 
 ActionMove::ActionMove()
     : unit_(),

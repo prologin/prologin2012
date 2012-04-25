@@ -82,12 +82,6 @@ TEST_F(ApiTest, carte_zone_type)
     EXPECT_EQ(ZONE_MARAIS, api_->carte_zone_type(position {1, 5}));
 }
 
-TEST_F(ApiTest, carte_zone_cadavre)
-{
-    // TODO: check after end of turn
-    EXPECT_FALSE(api_->carte_zone_cadavre(position {1, 1}));
-}
-
 TEST_F(ApiTest, carte_zone_perso)
 {
     std::vector<perso_info> persos = api_->carte_zone_perso(position {5, 4});

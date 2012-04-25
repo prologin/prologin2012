@@ -23,12 +23,6 @@ public:
 
     bool isUnitOnCell(unit_info unit) const;
 
-    // corpse stuff, must be reset after each turn, before
-    // GameState::attackResolve
-    void setCorpse();
-    void resetCorpse();
-    bool isCorpse() const;
-
 private:
     int x_;
     int y_;
@@ -38,8 +32,6 @@ private:
     UnitVect units_;
 
     int cost_;
-
-    bool corpse_;
 };
 
 #endif // !CELL_HH_

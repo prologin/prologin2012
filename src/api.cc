@@ -20,6 +20,7 @@
 
 #include "game.hh"
 #include "map.hh"
+#include "cell.hh"
 
 #include "action-move.hh"
 #include "action-attack.hh"
@@ -58,20 +59,6 @@ zone_type Api::carte_zone_type(position pos)
     return map->getCell(pos)->getType();
 }
 
-///
-// Retourne ``true`` si un cadavre se trouve sur la zone ``pos``.
-//
-bool Api::carte_zone_cadavre(position pos)
-{
-    Map* map = game_state_->getMap();
-
-    if (!map->isPositionValid(pos))
-        return false;
-
-    return map->getCell(pos)->isCorpse();
-}
-
-///
 // Retourne la liste des personnages sur la zone.
 //
 std::vector<perso_info> Api::carte_zone_perso(position pos)

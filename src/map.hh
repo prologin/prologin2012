@@ -9,8 +9,10 @@
 
 # include <utils/log.hh>
 
-# include "cell.hh"
 # include "constant.hh"
+# include "unit.hh"
+
+class Cell;
 
 inline bool operator==(const position& a, const position& b)
 {

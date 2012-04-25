@@ -82,6 +82,12 @@ int Unit::getVision() const
     return vision_;
 }
 
+bool Unit::isPositionInVision(Map* map, position target) const
+{
+    // FIXME: jicks
+    return false;
+}
+
 void Unit::attacked(int damages, unit_info attacker)
 {
     life_current_ -= damages;

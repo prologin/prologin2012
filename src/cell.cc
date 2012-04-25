@@ -21,8 +21,7 @@ Cell::Cell(int y, int x, zone_type type)
     : x_(x),
       y_(y),
       type_(type),
-      cost_(ZONE_COST[type]),
-      corpse_(false)
+      cost_(ZONE_COST[type])
 {
 }
 
@@ -77,19 +76,4 @@ int Cell::getPopulation() const
 bool Cell::isUnitOnCell(unit_info unit) const
 {
     return find(units_.begin(), units_.end(), unit) != units_.end();
-}
-
-void Cell::setCorpse()
-{
-    corpse_ = true;
-}
-
-void Cell::resetCorpse()
-{
-    corpse_ = false;
-}
-
-bool Cell::isCorpse() const
-{
-    return corpse_;
 }

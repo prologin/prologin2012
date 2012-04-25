@@ -9,6 +9,8 @@
 # include "constant.hh"
 # include "safety.hh"
 
+class Map;
+
 /*******************************************************************************
  * unit_info
  */
@@ -88,8 +90,8 @@ public:
      */
     void respawn();
 
-
     int getVision() const;
+    bool isPositionInVision(Map* map, position target) const;
 
     /**
      * reduce life

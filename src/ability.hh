@@ -70,7 +70,9 @@ class BasicAttack : public Ability
 {
 public:
     BasicAttack(int damages, int range)
-        : Ability(0), damages_(damages), range_(range)
+        : Ability(0),
+          damages_(damages),
+          range_(range)
     {};
 
     erreur check(const GameState& st, unit_info attacker, position target)
@@ -118,6 +120,86 @@ public:
     erreur check(const GameState& st, unit_info attacker, position target)
         const;
     // kill unit
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
+ * Barbare - Bastoooon
+ */
+
+class Bastoooon : public Ability
+{
+public:
+    Bastoooon()
+        : Ability(BARBARE_BASTOOOON_CD)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
+ * Barbare - FusRoDah
+ */
+
+class FusRoDah: public Ability
+{
+public:
+    FusRoDah()
+        : Ability(BARBARE_FUS_RO_DAH_CD)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
+ * Elfe - ElfeAttaque
+ */
+
+class ElfeAttaque : public Ability
+{
+public:
+    ElfeAttaque()
+        : Ability(0)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
+ * Elfe - ISee
+ */
+
+class ISee: public Ability
+{
+public:
+    ISee()
+        : Ability(ELFE_I_SEE_CD)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
+ * Elfe - Loto
+ */
+
+class Loto: public Ability
+{
+public:
+    Loto()
+        : Ability(ELFE_LOTO_CD)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
     void apply(GameState* st, unit_info attacker, position target);
 };
 

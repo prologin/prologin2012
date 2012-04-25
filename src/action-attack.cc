@@ -1,8 +1,9 @@
-#include "map.hh"
 #include "action-attack.hh"
 #include "ability.hh"
 
 #include "constant.hh"
+#include "map.hh"
+#include "cell.hh"
 
     ActionAttack::ActionAttack()
 : unit_(),
