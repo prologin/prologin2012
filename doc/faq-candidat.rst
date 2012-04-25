@@ -37,6 +37,16 @@ Si un personnage ne bouge pas alors que je passe à coté de lui, apparaitra-t-i
 Oui, ``perso_penombre`` peut donc renvoyer plusieurs fois la même case, si un
 personnage a été vu sur plusieurs cases de déplacement.
 
+Ai-je accès à la pénombre du tour n-1 lors de la phase de déplacement n ?
+-------------------------------------------------------------------------
+
+Oui !
+
+Fus Ro Dah génère-t-il de la pénombre ?
+---------------------------------------
+
+Non. :)
+
 Attaques
 ========
 
@@ -58,3 +68,18 @@ La fonction ``chemin`` est-elle rapide ?
 
 Oui car le calcul des distances n'est effectué qu'une seule fois par le
 champion lors du chargement de la carte.
+
+Misc
+====
+
+Quelle est la limite de mémoire ?
+---------------------------------
+
+Veillez à ce que votre champion ne prenne pas plus de ``10mio`` de mémoire.
+
+Quelle est la limite de temps ?
+-------------------------------
+
+Chaque tour (``deplacement``, ``placement`` ou ``attaque``) ne doit pas prendre
+plus d'une seconde sinon votre champion sera interrompu et vos actions ne
+seront pas prisent en compte.
