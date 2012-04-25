@@ -105,7 +105,7 @@ std::vector<position> Api::chemin(position p1, position p2)
 //
 erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {
-    if (game_state_->getPhase() != PHASE_ATTAQUE)
+    if (game_state_->getPhase() == PHASE_ATTAQUE)
       return CHEMIN_IMPOSSIBLE;
 
     if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
