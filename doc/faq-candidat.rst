@@ -50,12 +50,17 @@ Non. :)
 Attaques
 ========
 
+Que se passe-t'il quand mon personnage se fait toucher par deux ``Fus Roh Dah`` ?
+---------------------------------------------------------------------------------
+
+Il meurt, son corps ne résistant pas au choc de deux attaques si puissantes.
+
 L'attaque "Traîtrise" du Voleur attaque-t-elle mes unités ?
 -----------------------------------------------------------
 
 Non, car le Voleur est suffisament intelligent pour reconnaitre ses copains.
 
-L'attque normale du Barbare attaque-t-elle mes unités ?
+L'attaque normale du Barbare attaque-t-elle mes unités ?
 -------------------------------------------------------
 
 Oui, le Barbare est un peu débile.
