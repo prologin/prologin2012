@@ -9,8 +9,7 @@
 #include "ability.hh"
 
 GameState::GameState(Map* map, rules::Players_sptr players)
-    : rules::GameState(), map_(map), players_(players), pendingMoves_(),
-    current_turn_(0)
+    : rules::GameState(), map_(map), players_(players), current_turn_(0)
 {
 }
 
@@ -146,4 +145,9 @@ bool GameState::isFinished()
 std::vector<std::vector<std::pair<position, Unit_sptr>>>& GameState::getPendingMoves()
 {
     return pendingMoves_;
+}
+
+std::list<const ActionAttack*>& GameState::getPendingAttacks()
+{
+  return pendingAttacks_;
 }

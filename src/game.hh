@@ -2,6 +2,7 @@
 # define GAME_HH_
 
 # include <vector>
+# include <list>
 
 # include <rules/game-state.hh>
 # include <rules/player.hh>
@@ -17,6 +18,7 @@ enum game_phase {
 
 
 class Map;
+class ActionAttack;
 
 class GameState : public rules::GameState
 {
@@ -51,6 +53,7 @@ public:
     bool isFinished();
 
     std::vector<std::vector<std::pair<position, Unit_sptr>>>& getPendingMoves();
+    std::list<const ActionAttack*>& getPendingAttacks();
 
 private:
     // The map
@@ -60,6 +63,7 @@ private:
     std::vector<palantir_t> palantiri_;
 
     std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;
+    std::list<const ActionAttack*> pendingAttacks_;
 
     // TODO increment each turn
     int current_turn_;

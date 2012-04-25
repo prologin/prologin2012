@@ -1,6 +1,8 @@
 #ifndef ACTION_ATTACK_HH_
 # define ACTION_ATTACK_HH_
 
+# include <map>
+
 # include <rules/action.hh>
 
 # include "constant.hh"
@@ -23,8 +25,15 @@ public:
     uint32_t id() const
         { return id_; }
 
+    attaque_type getType() const;
+    void markFusRohDah(GameState* gameState, std::map<int, int>& markedUnits) const;
+    void applyAttack(GameState* gameState) const;
+
 protected:
-    virtual void apply_on(GameState* st) const;
+    virtual void apply_on(GameState* gameState) const;
+    void applySimpleAttack(GameState* gameState, int power, bool friendlyFire) const;
+    void applyBarbareAttack(GameState* gameState) const;
+    void applyFusRohDah(GameState* gameState) const;
 
 protected:
     perso_info unit_;

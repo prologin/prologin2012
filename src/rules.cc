@@ -1,4 +1,5 @@
 #include <fstream>
+#include <map>
 
 #include "rules.hh"
 
@@ -134,7 +135,7 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             resolve_moves();
             break;
         case PHASE_ATTAQUE:
-            // jicks FIXME
+            resolve_attacks();
             resolve_points();
             break;
         }
@@ -169,7 +170,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             for (auto& action : api_->actions()->actions())
             {
                 api_->game_state_set(action->apply(api_->game_state()));
-                actions.add_action(action);
+                actions.add(action);
             }
 
             msgr->ack();
@@ -213,7 +214,19 @@ void Rules::resolve_moves()
 
 void Rules::resolve_attacks()
 {
-    // FIXME jicks
+  auto pendingAttacks = api_->game_state()->getPendingAttacks();
+  std::map<int, int> markedUnits;
+
+  for (auto attack : pendingAttacks)
+  {
+    if (attack->getType() != ATTAQUE_FUS_RO_DAH)
+      break;
+    attack->markFusRohDah(api_->game_state(), markedUnits);
+  }
+  for (auto attack : pendingAttacks)
+    attack->applyAttack(api_->game_state());
+
+  pendingAttacks.clear();
 }
 
 void Rules::resolve_points()
