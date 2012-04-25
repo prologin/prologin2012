@@ -112,7 +112,55 @@ TEST_F(ApiTest, chemin)
 
 TEST_F(ApiTest, perso_deplace)
 {
-    // TODO test halfr
+    api_->perso_deplace(
+        perso_info {0, PERSO_ELFE, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
+        api_->chemin(map_->getStartingPos(), position {5, 2}),
+        ORIENTATION_SUD
+    );
+
+    api_->perso_deplace(
+        perso_info {0, PERSO_VOLEUR, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
+        api_->chemin(map_->getStartingPos(), position {4, 5}),
+        ORIENTATION_SUD
+    );
+
+    for (auto& move : api_->actions()->actions())
+        move->apply(gamestate_);
+
+    rules_->resolve_moves();
+
+    position test_elfe_pos = gamestate_->getUnit(unit_info {0, PERSO_ELFE})->getPosition();
+    position elfe_pos = {5, 2};
+    EXPECT_EQ(elfe_pos, test_elfe_pos);
+
+    position test_voleur_pos = gamestate_->getUnit(unit_info {0, PERSO_VOLEUR})->getPosition();
+    position voleur_pos = {4, 5};
+    EXPECT_EQ(voleur_pos, test_voleur_pos);
+}
+
+TEST_F(ApiTest, perso_deplace_chemin_impossible)
+{
+
+    erreur err = api_->perso_deplace(
+        perso_info {0, PERSO_ELFE, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
+        api_->chemin(map_->getStartingPos(), position {1, 1}),
+        ORIENTATION_SUD
+    );
+
+    EXPECT_EQ(CHEMIN_IMPOSSIBLE, err);
+}
+
+TEST_F(ApiTest, perso_deplace_bad_phase)
+{
+    gamestate_->setPhase(PHASE_ATTAQUE);
+
+    erreur err = api_->perso_deplace(
+        perso_info {0, PERSO_ELFE, 10, ORIENTATION_NORD},
+        api_->chemin(map_->getStartingPos(), position {5, 2}),
+        ORIENTATION_SUD
+    );
+
+    EXPECT_EQ(CHEMIN_IMPOSSIBLE, err);
 }
 
 TEST_F(ApiTest, perso_vision)
