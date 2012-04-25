@@ -114,7 +114,6 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
     // Check phase
     CHECK(game_state_->getPhase() != PHASE_ATTAQUE);
 
-    // TODO halfr check
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
                 player_->id));
 
