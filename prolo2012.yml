@@ -206,17 +206,7 @@ function:
     fct_name: perso_penombre
     fct_summary:
       Récupère la liste des zones sur lesquelles des personnages ont été aperçus
-      dans la pénombre par ``perso`` lors de son passage sur une ``zone``
-      de son déplacement.
-    fct_ret_type: position array
-    fct_arg:
-      - [perso, perso_info, "Personnage"]
-      - [zone, position, "Zone de son déplacement"]
-  -
-    fct_name: perso_penombre_zone
-    fct_summary:
-      Récupère la liste des zones sur lesquelles un personnage est passé au
-      tour précédent.
+      dans la pénombre par ``perso``.
     fct_ret_type: position array
     fct_arg:
       - [perso, perso_info, "Personnage"]

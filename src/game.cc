@@ -8,9 +8,16 @@
 #include "unit.hh"
 #include "ability.hh"
 
+GameState::GameState(Map* map, rules::Players_sptr players)
+    : rules::GameState(), map_(map), players_(players), pendingMoves_(),
+    current_turn_(0)
+{
+}
+
 rules::GameState* GameState::copy() const
 {
     // NOT USED IN PROLOGIN2012
+    // TEST
     return new GameState(*this);
 }
 
@@ -76,6 +83,10 @@ void GameState::setPalantir(int player_id, position target)
  * end Palantir
  ******************************************************************************/
 
+/*******************************************************************************
+ * getUnit
+ */
+
 Unit_sptr GameState::getUnit(unit_info perso) const
 {
     // tricky, but works, as long as the Units on GameState::init are created
@@ -91,6 +102,10 @@ Unit_sptr GameState::getUnit(perso_info perso) const
                 .classe = perso.classe
             });
 }
+
+/*
+ * end getUnit
+ ******************************************************************************/
 
 size_t GameState::getPlayerCount()
 {

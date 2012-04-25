@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <map>
 
 #include <utils/log.hh>
 
@@ -60,34 +61,19 @@ int Map::load(std::istream& s)
 
         for (int x = 0; x < width_; ++x)
         {
-            Cell* cell;
+            static std::map<char, zone_type> type_chars = {
+                { '#', ZONE_MUR },
+                { '_', ZONE_ROUTE },
+                { '.', ZONE_HERBE },
+                { '~', ZONE_MARAIS },
+                { 'F', ZONE_FORET },
+                { 'T', ZONE_TOUR },
+            };
 
-            switch (line[x])
-            {
-            case '#':
-                cell = newCell(y, x, ZONE_MUR);
-                break;
-            case '_':
-                cell = newCell(y, x, ZONE_ROUTE);
-                break;
-            case '.':
-                cell = newCell(y, x, ZONE_HERBE);
-                break;
-            case '~':
-                cell = newCell(y, x, ZONE_MARAIS);
-                break;
-            case 'F':
-                cell = newCell(y, x, ZONE_FORET);
-                break;
-            case 'T':
-                cell = newCell(y, x, ZONE_TOUR);
-                break;
-            default:
-                FATAL("Invalid cell");
-                break;
-            }
+            if (type_chars.find(line[x]) == type_chars.end())
+                FATAL("Invalid cell at y=%d x=%d", y, x);
 
-            cell_line[x] = cell;
+            cell_line[x] = new Cell(y, x, type_chars[line[x]]);
         }
     }
 

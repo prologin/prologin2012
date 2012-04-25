@@ -14,10 +14,7 @@ class Map;
 class GameState : public rules::GameState
 {
 public:
-    GameState(Map* map, rules::PlayerVector_sptr players)
-        : rules::GameState(), map_(map), players_(players), pendingMoves_(),
-        current_turn_(0)
-    {}
+    GameState(Map* map, rules::Players_sptr players);
 
     virtual rules::GameState* copy() const;
 
@@ -48,7 +45,7 @@ public:
 private:
     // The map
     Map* map_;
-    rules::PlayerVector_sptr players_;
+    rules::Players_sptr players_;
     UnitList units_;
     std::vector<palantir> palantiri_;
 

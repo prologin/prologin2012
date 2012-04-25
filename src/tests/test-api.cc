@@ -28,8 +28,8 @@ protected:
         map_ = new Map();
         map_->load(f);
 
-        rules::PlayerVector_sptr players(
-            new rules::PlayerVector
+        rules::Players_sptr players(
+            new rules::Players
             {
                 std::vector<rules::Player_sptr>
                 {
@@ -111,7 +111,6 @@ TEST_F(ApiTest, chemin)
     EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
 }
 
-/*
 TEST_F(ApiTest, perso_vision)
 {
     api_->perso_vision(
@@ -122,8 +121,11 @@ TEST_F(ApiTest, perso_vision)
             .vie = 10,
             .direction = ORIENTATION_NORD
         });
+
+    // TODO Moar test
+
+    SUCCEED();
 }
-*/
 
 TEST_F(ApiTest, scores)
 {
@@ -144,5 +146,3 @@ TEST_F(ApiTest, tour_actuel)
     EXPECT_EQ(0, api_->tour_actuel());
     // TODO More tests
 }
-
-// vim:set fdm=syntax:

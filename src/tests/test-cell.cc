@@ -9,7 +9,7 @@ TEST(CellBasic, CellUnitManagement)
     unit_info ui0 = u0->getUnitInfo();
     unit_info ui1 = u1->getUnitInfo();
 
-    Grass c(0, 0);
+    Cell c(0, 0, ZONE_HERBE);
 
     ASSERT_EQ(0, c.getPopulation()) << "Empty cell population is not 0";
 

@@ -22,6 +22,7 @@
 #include "map.hh"
 
 #include "action-move.hh"
+#include "action-attack.hh"
 
 // global used in interface.cc
 Api* api;
@@ -116,7 +117,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
         return err;
 
     game_state_ = dynamic_cast<GameState*>(move->apply(game_state_));
-    actions_.add_action(move);
+    actions_.add(move);
 
     return OK;
 }
@@ -156,8 +157,18 @@ std::vector<position> Api::perso_vision(perso_info perso)
 //
 erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 {
-  // TODO
-  abort();
+    rules::IAction_sptr action(new ActionAttack(perso, attaque, pos,
+                player_->id));
+
+    erreur err;
+
+    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
+        return err;
+
+    game_state_ = dynamic_cast<GameState*>(action->apply(game_state_));
+    actions_.add(action);
+
+    return OK;
 }
 
 ///
