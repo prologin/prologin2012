@@ -90,7 +90,7 @@ typedef struct palantir
 {
     bool activated;
     position location;
-} palantir;
+} palantir_t;
 
 class Palantir : public Ability
 {

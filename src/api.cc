@@ -34,6 +34,8 @@ Api::Api(GameState* game_state, rules::Player_sptr player)
   api = this;
 }
 
+// FIXME: Y U NO DTOR?
+
 ///
 // Retourne la taille de la carte sous la forme d'une position correspondant aux coordonnées du point extrême.
 // XXX: ÇA NE CORRESPOND PAS VRAIMENT À LA DÉFINITION D'UNE TAILLE
@@ -108,6 +110,7 @@ std::vector<position> Api::chemin(position p1, position p2)
 //
 erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {
+    // TODO halfr check
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
                 player_->id));
 
@@ -117,7 +120,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
         return err;
 
     game_state_ = dynamic_cast<GameState*>(move->apply(game_state_));
-    actions_.add(move);
+    actions_.add_action(move);
 
     return OK;
 }
@@ -127,7 +130,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 //
 std::vector<position> Api::perso_penombre(perso_info perso, position zone)
 {
-  // TODO
+  // TODO delete, use perso_penombre
   (void)perso;
   (void)zone;
   abort();
@@ -138,7 +141,10 @@ std::vector<position> Api::perso_penombre(perso_info perso, position zone)
 //
 std::vector<position> Api::perso_penombre_zone(perso_info perso)
 {
-  return game_state_->getUnit(perso)->getPenombre();
+    if ((unsigned int)perso.equipe == player_->id)
+        return std::vector<position>();
+
+    return game_state_->getUnit(perso)->getPenombre();
 }
 
 ///
@@ -146,12 +152,28 @@ std::vector<position> Api::perso_penombre_zone(perso_info perso)
 //
 std::vector<position> Api::perso_vision(perso_info perso)
 {
-    // TODO check perso
+    if ((unsigned int)perso.equipe == player_->id)
+        return std::vector<position>();
+
     Unit_sptr unit = game_state_->getUnit(perso);
     position unit_pos = unit->getPosition();
 
     return game_state_->getMap()->getSurroundings(unit_pos,
             unit->getOrientation(), unit->getVision());
+}
+
+///
+// Récupère la liste des zones sur lesquelles le palantír du voleur voit d'autre personnages.
+//
+std::vector<position> Api::palantir_vision()
+{
+    // TODO test
+    palantir_t palantir = game_state_->getPalantir(player_->id);
+
+    if (!palantir.activated)
+        return std::vector<position>();
+
+    return game_state_->getMap()->getSquareSurroundings(palantir.location, VOLEUR_VISION);
 }
 
 ///
@@ -168,8 +190,9 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
         return err;
 
     game_state_ = dynamic_cast<GameState*>(action->apply(game_state_));
-    actions_.add(action);
+    actions_.add_action(action);
 
+    // TODO More tests
     return OK;
 }
 

@@ -9,6 +9,8 @@ def configure(cfg):
 def build(bld):
     bld.shlib(
         source = '''
+            src/rules.cc
+            src/entry.cc
             src/map.cc
             src/unit.cc
             src/cell.cc
@@ -21,6 +23,7 @@ def build(bld):
         target = 'prolo2012',
         use = ['net', 'rules', 'utils'],
         defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
+        lib = ['dl'],
     )
 
     for test in ['unit', 'cell', 'ability', 'map', 'game', 'api']:

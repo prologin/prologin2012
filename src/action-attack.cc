@@ -2,6 +2,15 @@
 
 #include "constant.hh"
 
+ActionAttack::ActionAttack()
+    : unit_(),
+      atk_id_(ATTAQUE_NORMALE),
+      target_({0, 0}),
+      player_(-1),
+      id_(ACTION_ATTACK)
+{
+}
+
 ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target,
         int)
     : unit_(unit),

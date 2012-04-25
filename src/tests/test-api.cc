@@ -7,6 +7,7 @@
 #include "../map.hh"
 #include "../game.hh"
 #include "../constant.hh"
+#include "../rules.hh"
 
 class ApiTest : public ::testing::Test
 {
@@ -15,6 +16,7 @@ protected:
     {
         f << "10 9\n";
         f << "5 4\n";
+        f << "10\n";
         f << "10\n";
         f << "##########\n";
         f << "#FFF_....#\n";
@@ -44,13 +46,14 @@ protected:
 
         gamestate_->init();
 
-        api_ = new Api(gamestate_, NULL);
+        api_ = new Api(gamestate_, players->players[0]);
+
+        rules_ = new Rules(players, api_);
     }
 
     virtual void TearDown()
     {
-         delete gamestate_;
-         delete api_;
+         delete rules_;
     }
 
     std::stringstream f;
@@ -58,6 +61,7 @@ protected:
     Api* api_;
     Map* map_;
     GameState* gamestate_;
+    Rules* rules_;
 };
 
 TEST_F(ApiTest, carte_taille)
@@ -112,6 +116,27 @@ TEST_F(ApiTest, chemin)
     EXPECT_EQ((size_t)0, api_->chemin(start, end).size());
 }
 
+TEST_F(ApiTest, perso_deplace)
+{
+    // TODO test halfr
+}
+
+TEST_F(ApiTest, perso_penombre)
+{
+    api_->perso_deplace(
+        perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD},
+        api_->chemin(map_->getStartingPos(), position {5, 2}),
+        ORIENTATION_SUD
+    );
+
+    for (auto& move : api_->actions()->actions())
+        move->apply(gamestate_);
+
+    rules_->resolve_moves();
+
+    //EXEPCT_EQ(...);
+}
+
 TEST_F(ApiTest, perso_vision)
 {
     api_->perso_vision(
@@ -145,5 +170,4 @@ TEST_F(ApiTest, nombre_equipes)
 TEST_F(ApiTest, tour_actuel)
 {
     EXPECT_EQ(0, api_->tour_actuel());
-    // TODO More tests
 }

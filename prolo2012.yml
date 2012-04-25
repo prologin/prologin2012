@@ -9,7 +9,7 @@ constant:
 # Constantes pour les personnages
   -
     cst_name: VOLEUR_VISION
-    cst_val: 8
+    cst_val: 4
     cst_comment: Vision du Voleur
   -
     cst_name: VOLEUR_DEPLACEMENT
@@ -33,7 +33,7 @@ constant:
     cst_comment: Zone de dégats de l'arme du Voleur
   -
     cst_name: BARBARE_VISION
-    cst_val: 8
+    cst_val: 5
     cst_comment: Vision du Barbare
   -
     cst_name: BARBARE_DEPLACEMENT
@@ -57,7 +57,7 @@ constant:
     cst_comment: Zone de dégats de l'arme du Barbare
   -
     cst_name: ELFE_VISION
-    cst_val: 8
+    cst_val: 5
     cst_comment: Vision de l'Elfe
   -
     cst_name: ELFE_DEPLACEMENT
@@ -218,6 +218,13 @@ function:
     fct_ret_type: position array
     fct_arg:
       - [perso, perso_info, "Personnage"]
+  -
+    fct_name: palantir_vision
+    fct_summary:
+      Récupère la liste des zones sur lesquelles le palantír du voleur voit
+      d'autre personnages.
+    fct_ret_type: position array
+    fct_arg: []
   -
     fct_name: perso_attaque
     fct_summary:

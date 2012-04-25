@@ -1,8 +1,11 @@
+#include <fstream>
+
 #include "rules.hh"
 
 #include <utils/log.hh>
 #include <utils/buffer.hh>
 
+#include "constant.hh"
 #include "action-move.hh"
 #include "action-attack.hh"
 #include "game.hh"
@@ -10,12 +13,18 @@
 
 Rules::Rules(const rules::Options& opt)
     : opt_(opt),
-      champion_(nullptr)
+      champion_(nullptr),
+      game_phase_(PHASE_PLACEMENT),
+      sandbox_()
 {
+    // Load map from file
+    std::ifstream ifs(opt.map_name);
 
-    Map* map;
-    map->load(opt.map);
+    Map* map = new Map();
+    map->load(ifs);
+
     GameState* game_state = new GameState(map, opt.players);
+
     api_ = new Api(game_state, opt.player);
 
     // Get the champion library if we are a client
@@ -27,9 +36,9 @@ Rules::Rules(const rules::Options& opt)
         champion_jouer_placement = champion_->get<f_champion_jouer_placement>("jouer_placement");
         champion_jouer_deplacement = champion_->get<f_champion_jouer_deplacement>("jouer_deplacement");
         champion_jouer_attaque = champion_->get<f_champion_jouer_attaque>("jouer_attaque");
-        champion_partie_fin = champion_-><f_champion_partie_fin>("partie_fin");
+        champion_partie_fin = champion_->get<f_champion_partie_fin>("partie_fin");
 
-        champion_init();
+        champion_partie_init();
     }
 
     players_ = opt.players;
@@ -41,29 +50,55 @@ Rules::Rules(const rules::Options& opt)
             []() -> rules::IAction* { return new ActionAttack(); });
 }
 
-rules::~rules()
+
+// a bit ugly, but used to test
+Rules::Rules(rules::Players_sptr players, Api* api)
+    : champion_(nullptr),
+      api_(api),
+      players_(players),
+      game_phase_(PHASE_PLACEMENT),
+      sandbox_()
+{
+    // Register Actions
+    api_->actions()->register_action(ACTION_MOVE,
+            []() -> rules::IAction* { return new ActionMove(); });
+    api_->actions()->register_action(ACTION_ATTACK,
+            []() -> rules::IAction* { return new ActionAttack(); });
+}
+
+Rules::~Rules()
 {
     if (champion_)
     {
-        champion_end();
+        champion_partie_fin();
         delete champion_;
     }
 
     delete api_;
 }
 
-void Rules::client_loop()
+void Rules::client_loop(rules::ClientMessenger_sptr msgr)
 {
     CHECK(champion_ != nullptr);
 
-    while ((winner_ = is_finished()) == -1)
+    while (!is_finished())
     {
         DEBUG("NEW TURN");
 
         api_->actions()->clear();
 
-        // Play
-        champion_play();
+        switch (game_phase_)
+        {
+        case PHASE_PLACEMENT:
+            champion_jouer_placement();
+            break;
+        case PHASE_DEPLACEMENT:
+            champion_jouer_deplacement();
+            break;
+        case PHASE_ATTAQUE:
+            champion_jouer_attaque();
+            break;
+        }
 
         // Send actions
         utils::Buffer send_buf;
@@ -92,24 +127,29 @@ void Rules::client_loop()
             }
         }
 
-        if (game_phase == PHASE_PLACEMENT || PHASE_DEPLACEMENT)
-            api_->game_state().resolveMoves();
-
-        if (game_phase == PHASE_ATTACK)
-            api_->game_state().resolveAttacks();
-
-        // XXX: debug
-        //std::cout << *api_->game_state();
+        switch (game_phase_)
+        {
+        case PHASE_DEPLACEMENT:
+        case PHASE_PLACEMENT:
+            resolve_moves();
+            break;
+        case PHASE_ATTAQUE:
+            // jicks FIXME
+            resolve_points();
+            break;
+        }
     }
 
     DEBUG("winner = %i", winner_);
 }
 
-void Rules::server_loop(net::ServerMessenger_sptr msgr)
+void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 {
+    CHECK(champion_ == nullptr);
+
     rules::Actions actions;
 
-    while ((winner_ = is_finished()) == -1)
+    while (!is_finished())
     {
         DEBUG("NEW TURN");
 
@@ -135,22 +175,59 @@ void Rules::server_loop(net::ServerMessenger_sptr msgr)
             msgr->ack();
         }
 
-        if (game_phase == PHASE_PLACEMENT || PHASE_DEPLACEMENT)
-            api_->game_state().resolveMoves();
-
-        if (game_phase == PHASE_ATTACK)
-            api_->game_state().resolveAttacks();
-
         // Send actions
         utils::Buffer send_buf;
 
         actions.handle_buffer(send_buf);
 
         msgr->push(send_buf);
-
-        // XXX: debug
-        //std::cout << *api_->game_state();
     }
 
     DEBUG("winner = %i", winner_);
+}
+
+void Rules::resolve_moves()
+{
+    auto pendingMoves = api_->game_state()->getPendingMoves();
+
+    for (auto unit : api_->game_state()->getUnits())
+        unit->resetPenombre();
+    for (auto moves : pendingMoves)
+    {
+        for (auto move : moves)
+        {
+            move.second->setPosition(move.first);
+            api_->game_state()->getMap()->moveUnit(move.second->getUnitInfo(), move.second->getPosition(), move.first);
+            move.second->setOrientation(Map::getOrientation(move.first,
+                        move.second->getPosition()));
+        }
+        for (auto unit : api_->game_state()->getUnits())
+            unit->addPenombre(
+                    api_->game_state()->getMap()->getSurroundings(
+                        unit->getPosition(),
+                        unit->getOrientation(), unit->getVision()));
+        moves.clear();
+    }
+    pendingMoves.clear();
+}
+
+void Rules::resolve_attacks()
+{
+    // FIXME jicks
+}
+
+void Rules::resolve_points()
+{
+    // FIXME halfr
+}
+
+void Rules::resolve_end_of_turn()
+{
+    // FIXME halfr
+    api_->game_state()->incrementTurn();
+}
+
+bool Rules::is_finished()
+{
+    return api_->game_state()->isFinished();
 }

@@ -37,7 +37,7 @@ void GameState::init()
         units_.push_back(Unit_sptr(new Elfe(player_id)));
 
         // create palantir
-        palantiri_.push_back(palantir
+        palantiri_.push_back(palantir_t
                 {
                     .activated = false,
                     .location = {0, 0}
@@ -67,7 +67,7 @@ Map* GameState::getMap() const
  * Palantir
  */
 
-palantir GameState::getPalantir(int player_id) const
+palantir_t GameState::getPalantir(int player_id) const
 {
     CHECK((size_t)player_id < palantiri_.size());
     return palantiri_[player_id];
@@ -84,8 +84,13 @@ void GameState::setPalantir(int player_id, position target)
  ******************************************************************************/
 
 /*******************************************************************************
- * getUnit
+ * getUnit(s)
  */
+
+UnitList GameState::getUnits() const
+{
+    return units_;
+}
 
 Unit_sptr GameState::getUnit(unit_info perso) const
 {
@@ -104,7 +109,7 @@ Unit_sptr GameState::getUnit(perso_info perso) const
 }
 
 /*
- * end getUnit
+ * end getUnit(s)
  ******************************************************************************/
 
 size_t GameState::getPlayerCount()
@@ -133,32 +138,12 @@ void GameState::incrementTurn()
     current_turn_ += 1;
 }
 
-void GameState::reserveMoves(size_t n)
+bool GameState::isFinished()
 {
-  pendingMoves_.reserve(n);
+    return current_turn_ == map_->getMaxTurns();
 }
 
-void GameState::addMoves(size_t n, std::pair<position, Unit_sptr> movement)
+std::vector<std::vector<std::pair<position, Unit_sptr>>>& GameState::getPendingMoves()
 {
-  pendingMoves_[n].push_back(movement);
-}
-
-void GameState::resolveMoves()
-{
-  for (auto unit : units_)
-    unit->resetPenombre();
-  for (auto moves : pendingMoves_)
-  {
-    for (auto move : moves)
-    {
-      move.second->setPosition(move.first);
-      move.second->setOrientation(Map::getOrientation(move.first,
-            move.second->getPosition()));
-    }
-    for (auto unit : units_)
-      unit->addPenombre(map_->getSurroundings(unit->getPosition(),
-            unit->getOrientation(), unit->getVision()));
-    moves.clear();
-  }
-  pendingMoves_.clear();
+    return pendingMoves_;
 }

@@ -17,7 +17,8 @@ Map::Map()
       height_(0),
       width_(0),
       start_position_({0, 0}),
-      placement_turns(0)
+      placement_turns_(0),
+      max_turns_()
 {
 }
 
@@ -38,6 +39,7 @@ Map::~Map()
 // height width
 // start_x start_y
 // placement_turns
+// max_turns
 //  x ->
 // y MAP DATA
 // | MAP DATA
@@ -54,8 +56,11 @@ int Map::load(std::istream& s)
     INFO("map: start: x=%d y=%d", start_x, start_y);
     start_position_ = position {start_x, start_y};
 
-    s >> placement_turns;
-    INFO("map: placement_turns=%d", placement_turns);
+    s >> placement_turns_;
+    INFO("map: placement_turns=%d", placement_turns_);
+
+    s >> max_turns_;
+    INFO("map: max_turns=%d", max_turns_);
 
     map_.resize(height_);
 
@@ -101,6 +106,16 @@ int Map::getHeight() const
     return height_;
 }
 
+int Map::getPlacementTurns() const
+{
+    return placement_turns_;
+}
+
+int Map::getMaxTurns() const
+{
+    return max_turns_;
+}
+
 position Map::getStartingPos() const
 {
     return start_position_;
@@ -121,6 +136,7 @@ bool Map::isPositionValid(position p) const
     return p.x >= 0 && p.x < width_ && p.y >= 0 && p.y < height_;
 }
 
+// XXX: does not change unit.position_
 void Map::moveUnit(unit_info unit, position from, position to)
 {
      getCell(from)->removeUnit(unit);
@@ -229,7 +245,7 @@ static inline bool near(int x, int y, position p)
 std::vector<position> Map::getSurroundings(position pos, orientation direction, int range)
 {
   if (getCell(pos)->getType() == ZONE_TOUR)
-    return getSurroundingsOnTower(pos, range);
+    return getSquareSurroundings(pos, range);
 
   std::vector<position> unitsPositions;
   std::vector<bool> isBlocked(2 * range + 3, false);
@@ -257,7 +273,7 @@ std::vector<position> Map::getSurroundings(position pos, orientation direction, 
 
 // Check the square of length (2 * range + 1) around pos (but not pos).
 // Can see behind a wall or a forest (but not in a forest).
-std::vector<position> Map::getSurroundingsOnTower(position pos, int range)
+std::vector<position> Map::getSquareSurroundings(position pos, int range)
 {
   std::vector<position> unitsPositions;
 

@@ -92,6 +92,10 @@ public:
 //
    std::vector<position> perso_vision(perso_info perso);
 ///
+// Récupère la liste des zones sur lesquelles le palantír du voleur voit d'autre personnages.
+//
+   std::vector<position> palantir_vision();
+///
 // Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la zone ``pos``.
 //
    erreur perso_attaque(perso_info perso, attaque_type attaque, position pos);

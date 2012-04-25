@@ -38,6 +38,9 @@ public:
     int getWidth() const;
     int getHeight() const;
 
+    int getPlacementTurns() const;
+    int getMaxTurns() const;
+
     /*
      * @return Where all unit starts on turn 0
      */
@@ -54,6 +57,7 @@ public:
     UnitVect getUnitsOn(position cell) const;
 
     /*
+     * // TODO DO
      * @return If the path is valid
      *  - unit on first cell of the path,
      *  - path is contiguous,
@@ -78,11 +82,11 @@ public:
      * @return the positions where units could be seen
      */
     std::vector<position> getSurroundings(position pos, orientation direction, int range);
+    std::vector<position> getSquareSurroundings(position pos, int range);
 
     static orientation getOrientation(position p1, position p2);
 
 private:
-    std::vector<position> getSurroundingsOnTower(position pos, int range);
     int initializeDistance(int from, int to);
 
 private:
@@ -92,7 +96,8 @@ private:
     int height_;
     int width_;
     position start_position_;
-    int placement_turns;
+    int placement_turns_;
+    int max_turns_;
 };
 
 #endif // !MAP_HH_

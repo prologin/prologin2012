@@ -2,15 +2,13 @@
 # define RULES_HH_
 
 # include <utils/dll.hh>
+# include <utils/sandbox.hh>
 # include <rules/options.hh>
-# include <net/client-messenger.hh>
-# include <net/server-messenger.hh>
+# include <rules/client-messenger.hh>
+# include <rules/server-messenger.hh>
+# include <rules/player.hh>
 
 # include "api.hh"
-
-# define PHASE_PLACEMENT 0
-# define PHASE_DEPLACEMENT 1
-# define PHASE_ATTACKE 2
 
 typedef void (*f_champion_partie_init)();
 typedef void (*f_champion_jouer_placement)();
@@ -22,13 +20,20 @@ class Rules
 {
 public:
     explicit Rules(const rules::Options& opt);
+    Rules(rules::Players_sptr players, Api* api);
+
     virtual ~Rules();
 
-    void client_loop(net::ClientMessenger_sptr msgr);
-    void server_loop(net::ServerMessenger_sptr msgr);
+    void client_loop(rules::ClientMessenger_sptr msgr);
+    void server_loop(rules::ServerMessenger_sptr msgr);
+
+    void resolve_moves();
+    void resolve_attacks();
+    void resolve_points();
+    void resolve_end_of_turn();
 
 protected:
-    int is_finished();
+    bool is_finished();
 
 protected:
     f_champion_partie_init champion_partie_init;
@@ -42,8 +47,11 @@ private:
     utils::DLL* champion_;
     Api* api_;
     rules::Players_sptr players_;
+    game_phase game_phase_;
 
     int winner_;
+
+    utils::Sandbox sandbox_;
 };
 
 #endif // !RULES_HH_

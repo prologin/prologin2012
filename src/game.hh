@@ -9,6 +9,13 @@
 # include "unit.hh"
 # include "ability.hh"
 
+enum game_phase {
+    PHASE_PLACEMENT,
+    PHASE_DEPLACEMENT,
+    PHASE_ATTAQUE,
+};
+
+
 class Map;
 
 class GameState : public rules::GameState
@@ -22,14 +29,12 @@ public:
 
     void init();
 
-    void resolveMoves(); // FIXME jicks
-    void resolveAttacks();
-
     Map* getMap() const;
 
-    palantir getPalantir(int player_id) const;
+    palantir_t getPalantir(int player_id) const;
     void setPalantir(int player_id, position target);
 
+    UnitList getUnits() const;
     Unit_sptr getUnit(const unit_info perso) const;
     Unit_sptr getUnit(const perso_info perso) const;
 
@@ -39,15 +44,20 @@ public:
     int getCurrentTurn() const;
     void incrementTurn();
 
-    void reserveMoves(size_t n);
-    void addMoves(size_t n, std::pair<position, Unit_sptr> movement);
+    game_phase getPhase() const;
+    /*
+     * @return true when the game is finished
+     */
+    bool isFinished();
+
+    std::vector<std::vector<std::pair<position, Unit_sptr>>>& getPendingMoves();
 
 private:
     // The map
     Map* map_;
     rules::Players_sptr players_;
     UnitList units_;
-    std::vector<palantir> palantiri_;
+    std::vector<palantir_t> palantiri_;
 
     std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;
 

@@ -13,6 +13,8 @@ public:
     ActionMove(perso_info unit, std::vector<position>& path,
             orientation& direction, int player);
 
+    ActionMove();
+
     virtual int check(const GameState* st) const;
     virtual void handle_buffer(utils::Buffer& buf);
 

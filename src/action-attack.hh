@@ -13,6 +13,8 @@ public:
     ActionAttack(perso_info unit, attaque_type atk, position target,
             int player);
 
+    ActionAttack();
+
     virtual int check(const GameState* st) const;
     virtual void handle_buffer(utils::Buffer& buf);
 
