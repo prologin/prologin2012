@@ -157,10 +157,13 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
     CHECK(champion_ == nullptr);
 
     rules::Actions actions;
+    game_phase phase;
 
     while (!is_finished())
     {
         DEBUG("NEW TURN");
+
+        phase = api_->game_state()->getPhase();
 
         api_->actions()->clear();
 
@@ -182,6 +185,23 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             }
 
             msgr->ack();
+        }
+
+        switch (phase)
+        {
+        case PHASE_PLACEMENT:
+            resolve_moves();
+            resolve_end_of_placement_turn();
+            break;
+        case PHASE_DEPLACEMENT:
+            resolve_moves();
+            resolve_end_of_deplacement_phase();
+            break;
+        case PHASE_ATTAQUE:
+            resolve_attacks();
+            resolve_points();
+            resolve_end_of_attaque_phase();
+            break;
         }
 
         // Send actions
@@ -241,7 +261,6 @@ void Rules::resolve_attacks()
 void Rules::resolve_points()
 {
     GameState* st = api_->game_state();
-    Map* map = st->getMap();
 
     for (auto unit : st->getUnits())
     {
@@ -300,7 +319,6 @@ void Rules::resolve_end_of_placement_turn()
 void Rules::resolve_end_of_deplacement_phase()
 {
     GameState* st = api_->game_state();
-    Map* map = st->getMap();
 
     INFO("end of move turn %d", st->getCurrentTurn());
 
@@ -312,7 +330,6 @@ void Rules::resolve_end_of_deplacement_phase()
 void Rules::resolve_end_of_attaque_phase()
 {
     GameState* st = api_->game_state();
-    Map* map = st->getMap();
 
     INFO("end of move turn %d", st->getCurrentTurn());
 
