@@ -44,11 +44,18 @@ class Unit
 public:
     Unit(int player_id, int move_points, int vision, int life,
             perso_classe classe)
-        : abilities_(), player_id_(player_id), classe_(classe),
-        vision_(vision), life_max_(life), life_current_(life),
-        spawn_(position {0, 0}), current_position_(position {0, 0}),
-        move_points_(move_points), attackers_(), orientation_(ORIENTATION_NORD),
-        penombre_()
+        : abilities_(),
+          player_id_(player_id),
+          classe_(classe),
+          vision_(vision),
+          life_max_(life),
+          life_current_(life),
+          spawn_(position {0, 0}),
+          current_position_(position {0, 0}),
+          move_points_(move_points),
+          attackers_(),
+          orientation_(ORIENTATION_NORD),
+          penombre_()
     {}
 
     // by default, for test purposes only, creata a Voleur
@@ -57,8 +64,6 @@ public:
     {}
 
     unit_info getUnitInfo() const;
-
-    DISALLOW_COPY_AND_ASSIGN(Unit);
 
     int getPlayer() const;
     perso_classe getClasse() const;
@@ -126,7 +131,7 @@ private:
 };
 
 typedef std::shared_ptr<Unit> Unit_sptr;
-typedef std::vector<Unit_sptr> UnitList;
+typedef std::vector<Unit_sptr> Units;
 
 
 /*******************************************************************************

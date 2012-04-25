@@ -63,6 +63,7 @@ zone_type Api::carte_zone_type(position pos)
 //
 bool Api::carte_zone_cadavre(position pos)
 {
+    // TODO CHECK
     Map* map = game_state_->getMap();
     return map->getCell(pos)->isCorpse();
 }
@@ -152,7 +153,8 @@ std::vector<position> Api::perso_penombre_zone(perso_info perso)
 //
 std::vector<position> Api::perso_vision(perso_info perso)
 {
-    if ((unsigned int)perso.equipe == player_->id)
+    // Error, you cannot see what the other team sees
+    if ((unsigned int)perso.equipe != player_->id)
         return std::vector<position>();
 
     Unit_sptr unit = game_state_->getUnit(perso);

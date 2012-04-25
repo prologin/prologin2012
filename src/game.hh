@@ -25,6 +25,8 @@ class GameState : public rules::GameState
 public:
     GameState(Map* map, rules::Players_sptr players);
 
+    GameState(const GameState& st);
+
     virtual rules::GameState* copy() const;
 
     ~GameState();
@@ -36,7 +38,7 @@ public:
     palantir_t getPalantir(int player_id) const;
     void setPalantir(int player_id, position target);
 
-    UnitList getUnits() const;
+    Units getUnits() const;
     Unit_sptr getUnit(const unit_info perso) const;
     Unit_sptr getUnit(const perso_info perso) const;
 
@@ -59,7 +61,7 @@ private:
     // The map
     Map* map_;
     rules::Players_sptr players_;
-    UnitList units_;
+    Units units_;
     std::vector<palantir_t> palantiri_;
 
     std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;

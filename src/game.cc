@@ -9,7 +9,22 @@
 #include "ability.hh"
 
 GameState::GameState(Map* map, rules::Players_sptr players)
-    : rules::GameState(), map_(map), players_(players), current_turn_(0)
+    : rules::GameState(),
+      map_(map),
+      players_(players),
+      pendingMoves_(),
+      current_turn_(0)
+{
+}
+
+GameState::GameState(const GameState& st)
+    : rules::GameState(st),
+      map_(new Map(*st.map_)),
+      players_(st.players_),
+      units_(st.units_),
+      palantiri_(st.palantiri_),
+      pendingMoves_(st.pendingMoves_),
+      current_turn_(st.current_turn_)
 {
 }
 
@@ -86,7 +101,7 @@ void GameState::setPalantir(int player_id, position target)
  * getUnit(s)
  */
 
-UnitList GameState::getUnits() const
+Units GameState::getUnits() const
 {
     return units_;
 }

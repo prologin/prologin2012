@@ -5,7 +5,6 @@
 # include <cstdint>
 
 # include "constant.hh"
-# include "safety.hh"
 # include "unit.hh"
 
 class Cell
@@ -29,8 +28,6 @@ public:
     void setCorpse();
     void resetCorpse();
     bool isCorpse() const;
-
-    DISALLOW_COPY_AND_ASSIGN(Cell);
 
 private:
     int x_;

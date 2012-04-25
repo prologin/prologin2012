@@ -121,6 +121,18 @@ TEST_F(ApiTest, perso_deplace)
     // TODO test halfr
 }
 
+TEST_F(ApiTest, perso_vision)
+{
+    EXPECT_EQ(0u, api_->perso_vision(
+        perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_VOLEUR,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        }).size());
+}
+
 TEST_F(ApiTest, perso_penombre)
 {
     api_->perso_deplace(
@@ -135,22 +147,6 @@ TEST_F(ApiTest, perso_penombre)
     rules_->resolve_moves();
 
     //EXEPCT_EQ(...);
-}
-
-TEST_F(ApiTest, perso_vision)
-{
-    api_->perso_vision(
-        perso_info
-        {
-            .equipe = 0,
-            .classe = PERSO_VOLEUR,
-            .vie = 10,
-            .direction = ORIENTATION_NORD
-        });
-
-    // TODO Moar test
-
-    SUCCEED();
 }
 
 TEST_F(ApiTest, scores)

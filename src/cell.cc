@@ -18,7 +18,11 @@ static std::map<zone_type, int> ZONE_COST = {
 };
 
 Cell::Cell(int y, int x, zone_type type)
-    : x_(x), y_(y), type_(type), cost_(ZONE_COST[type]), corpse_(false)
+    : x_(x),
+      y_(y),
+      type_(type),
+      cost_(ZONE_COST[type]),
+      corpse_(false)
 {
 }
 

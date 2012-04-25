@@ -26,7 +26,7 @@ class GameState;
 class Unit;
 
 typedef std::shared_ptr<Unit> Unit_sptr;
-typedef std::vector<Unit_sptr> UnitList;
+typedef std::vector<Unit_sptr> Units;
 
 class Map;
 

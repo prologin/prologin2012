@@ -22,6 +22,27 @@ Map::Map()
 {
 }
 
+Map::Map(const Map& copy_from)
+    : map_(),
+      paths_(copy_from.paths_),
+      height_(copy_from.height_),
+      width_(copy_from.width_),
+      start_position_(copy_from.start_position_),
+      placement_turns_(copy_from.placement_turns_),
+      max_turns_(copy_from.max_turns_)
+{
+    map_.resize(height_);
+
+    for (int y = 0; y < height_; ++y)
+    {
+        std::vector<Cell*>& cell_line = map_[y];
+        cell_line.resize(width_);
+
+        for (int x = 0; x < width_; ++x)
+            cell_line[x] = new Cell(*copy_from.map_[y][x]);
+    }
+}
+
 Map::~Map()
 {
     for (int y = 0; y < height_; ++y)
@@ -237,6 +258,10 @@ static inline bool near(int x, int y, position p)
   return abs(x - p.x) + abs(y - p.y) <= 1;
 }
 
+/*
+ * @return: a list of units visible from position ``pos``, orientation
+ * ``direction`` and range ``range``
+ */
 // North = 1 if North, -1 if South, 0 else.
 // East = 1 if East, -1 if West, 0 else
 // x and y inverts their role depending on the orientation.

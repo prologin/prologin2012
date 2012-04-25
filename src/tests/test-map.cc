@@ -64,6 +64,20 @@ TEST_F(MapTest, MapCreateFromFile)
         << "Cell (2, 5) has a bad type";
 }
 
+TEST_F(MapTest, MapCopy)
+{
+    Map* map = new Map();
+    map->load(f); 
+
+    Map* map_copy = new Map(*map);
+
+    delete map;
+
+    for (int y = 0; y < map_copy->getHeight(); ++y)
+        for (int x = 0; x < map_copy->getWidth(); ++x)
+            map_copy->getCell(position {x, y})->getUnits();
+}
+
 TEST_F(MapTest, MapPositionValid)
 {
     Map map;
