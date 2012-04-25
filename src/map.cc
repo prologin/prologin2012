@@ -249,7 +249,7 @@ std::vector<position> Map::getSurroundings(position pos, orientation direction, 
 
   std::vector<position> unitsPositions;
   std::vector<bool> isBlocked(2 * range + 3, false);
-  int North = (direction == ORIENTATION_NORD) - (direction == ORIENTATION_SUD);
+  int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
   int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
 
   for (int i = 0; i <= range; ++i)
@@ -301,7 +301,7 @@ orientation Map::getOrientation(position p1, position p2)
   if (p2.x - p1.x < 0)
     return ORIENTATION_OUEST;
   if (p2.y - p1.y > 0)
-    return ORIENTATION_NORD;
-  else
     return ORIENTATION_SUD;
+  else
+    return ORIENTATION_NORD;
 }
