@@ -3,7 +3,7 @@
 #include "constant.hh"
 
 ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target,
-        int player)
+        int)
     : unit_(unit),
       atk_id_(atk),
       target_(target),
@@ -11,7 +11,7 @@ ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target,
 {
 }
 
-int ActionAttack::check(const GameState* st) const
+int ActionAttack::check(const GameState*) const
 {
     DEBUG("ActionAttack::check");
     // TODO

@@ -109,7 +109,7 @@ TEST_F(MapTest, MapGetPath)
 
   EXPECT_TRUE(path1.empty());
 
-  EXPECT_EQ(8, path2.size());
+  EXPECT_EQ(8u, path2.size());
   EXPECT_TRUE(path2[0].x == 4 && path2[0].y == 5);
   EXPECT_TRUE(path2[1].x == 4 && path2[1].y == 4);
   EXPECT_TRUE(path2[2].x == 4 && path2[2].y == 3);
@@ -146,7 +146,7 @@ TEST_F(MapTest, MapGetSurroundings)
   std::vector<position> pos;
   pos = map.getSurroundings(position {3,4}, ORIENTATION_OUEST, 3);
 
-  EXPECT_EQ(pos.size(), 9);
+  EXPECT_EQ(9u, pos.size());
   EXPECT_TRUE(pos[0].x == 3 && pos[0].y == 5);
   EXPECT_TRUE(pos[1].x == 3 && pos[1].y == 4);
   EXPECT_TRUE(pos[2].x == 3 && pos[2].y == 3);
@@ -181,5 +181,5 @@ TEST_F(MapTest, MapGetSurroundingsOnTower)
   std::vector<position> pos;
   pos = map.getSurroundings(position {7,2}, ORIENTATION_OUEST, 3);
 
-  EXPECT_EQ(pos.size(), 12);
+  EXPECT_EQ(12u, pos.size());
 }

@@ -7,13 +7,13 @@ ActionMove::ActionMove(perso_info unit, std::vector<position>& path,
     : rules::Action<GameState>(),
       unit_(unit),
       path_(path),
-      direction_(direction_),
+      direction_(direction),
       player_(player),
       id_(ACTION_MOVE)
 {
 }
 
-int ActionMove::check(const GameState* st) const
+int ActionMove::check(const GameState*) const
 {
     DEBUG("ActionMove::check");
 

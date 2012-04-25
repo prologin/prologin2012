@@ -128,6 +128,8 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 std::vector<position> Api::perso_penombre(perso_info perso, position zone)
 {
   // TODO
+  (void)perso;
+  (void)zone;
   abort();
 }
 
