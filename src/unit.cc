@@ -168,6 +168,7 @@ Voleur::Voleur(int player_id)
             PERSO_VOLEUR)
 {
     abilities_.push_back(new VoleurAttaque());
+    abilities_.push_back(new Palantir());
     abilities_.push_back(new Traitrise());
 }
 
@@ -213,6 +214,8 @@ Barbare::Barbare(int player_id)
             PERSO_BARBARE)
 {
     abilities_.push_back(new BarbareAttaque());
+    abilities_.push_back(new Bastoooon());
+    abilities_.push_back(new FusRoDah());
 }
 
 Ability* Barbare::getAbility(attaque_type id)
@@ -256,6 +259,8 @@ Elfe::Elfe(int player_id)
     : Unit(player_id, ELFE_DEPLACEMENT, ELFE_VISION, ELFE_VIE, PERSO_ELFE)
 {
     abilities_.push_back(new ElfeAttaque());
+    abilities_.push_back(new ISee());
+    abilities_.push_back(new Loto());
 }
 
 Ability* Elfe::getAbility(attaque_type id)
