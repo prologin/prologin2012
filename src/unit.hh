@@ -71,6 +71,7 @@ public:
     perso_classe getClasse() const;
 
     int getCurrentLife() const;
+    int getMaxLife() const;
     void resetLife();
 
     position getPosition() const;

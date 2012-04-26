@@ -31,6 +31,11 @@ int Unit::getCurrentLife() const
     return life_current_;
 }
 
+int Unit::getMaxLife() const
+{
+    return life_max_;
+}
+
 void Unit::resetLife()
 {
     life_current_ = life_max_;
