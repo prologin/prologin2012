@@ -18,7 +18,7 @@
 Rules::Rules(const rules::Options& opt)
     : opt_(opt),
       champion_(nullptr),
-      sandbox_()
+      sandbox_(opt.time)
 {
     // Load map from file
     std::ifstream ifs(opt.map_name);
