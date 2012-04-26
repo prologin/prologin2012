@@ -56,12 +56,13 @@ Il a une arme de corps à corps et donc une portée de 1.
 *Palantír*
   :description: Le Voleur peut poser un palantír qui lui donne une vision à
     distance. Elle reste sur le terrain jusqu'à ce que le Voleur pose un autre
-    palantír.
-  :cooldown: 5 tours
+    palantír. Le champs de vision est le même que celui qu'aurait un Voleur sur
+    une tour.
+  :cooldown: 3 tours
 
 *Traîtrise*
-  :description: Le Voleur peut tuer instantanément un personnage si il se
-    trouve dans son dos, c'est à dire sur la même case que lui.
+  :description: Le Voleur peut tuer instantanément les personnage se trouvant
+    sur la même case que lui.
   :cooldown: 5 tours
   :dégats: >9000
 
@@ -70,8 +71,7 @@ Barbare
 
 Le Barbare peut se déplacer de manière moyenne et voir à une distance moyenne.
 
-Il a une arme de dégât de zone (zone + portée à définir) qu'il peut utiliser
-dans son cône de vision.
+Il a une arme de dégât de zone qu'il peut utiliser dans son cône de vision.
 
 ::
 
@@ -80,18 +80,19 @@ dans son cône de vision.
           +
 
 *Attaque de base*
-  :description: Grosse masse
+  :description: Gros marteau
   :dégats: 3 points de vie sur toutes les cases touchées
 
 *Bastoooon*
-  :description: Si le Barbare est sur la même case qu'un autre joueur, il peut
-    lui infliger des dégâts.
+  :description: Le Barbare s'énerve puis effectue son attaque normale.
+  :dégats: 11 - vie restante du Barbare
   :cooldown: 3 tours
 
 *Fus ro dah!*
   :description: Le barbare repousse tous les personnages de son champs de
-    vision. Voir `Résolution du tour`_.
-  :cooldown: 10 tours
+    vision en ligne droite jusqu'à ce qu'ils soient bloqués ou hors de son
+    champs de vision. Voir `Résolution du tour`_ pour plus d'informations.
+  :cooldown: 5 tours
 
 Elfe
 ----
@@ -103,17 +104,19 @@ Il peut tirer sur toutes les cases visibles par le membres de son équipe. C'est
 équipe.
 
 *Attaque de base*
-  :description: Arc
+  :description: Arc long
   :dégats: 2 points de vie
 
-*I see what you did there.*
-  :description: Le tireur d'élite peut réveler une zone (géométrie à définir)
-    de la carte. Elle sera visible au tour suivant uniquement.
+*Loto, à qui le tour*
+  :description: Arc très long. Le tireur d'élite peut tirer sur n'importe
+    quelle case de la carte, sauf dans son cône de vision.
+  :dégats: 4 points de vie
   :cooldown: 5 tours
 
-*Loto, à qui le tour*
-  :description: Le tireur d'élite peut tirer sur n'importe quelle case de la
-    carte, sauf dans son cône de vision.
+*I see what you did there.*
+  :description: Le tireur d'élite peut réveler une zone carrée (comme si l'Elfe
+    était sur une tour) de la carte. Elle sera visible jusqu'à la prochaine
+    phase d'attaque.
   :cooldown: 5 tours
 
 Champs de vision
