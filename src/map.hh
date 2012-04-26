@@ -83,6 +83,12 @@ public:
      * @return the cost to go from 'from' to 'to'
      */
     int getDistance(position from, position to);
+
+    /*
+     * @return the positions visible from pos
+     */
+    std::vector<position> getVision(position pos, orientation direction, int range);
+    std::vector<position> getSquareVision(position pos, int range);
     /*
      * @return the positions where units could be seen
      */

@@ -1,5 +1,8 @@
+#include <algorithm>
+
 #include <utils/log.hh>
 
+#include "map.hh"
 #include "unit.hh"
 #include "ability.hh"
 #include "constant.hh"
@@ -84,7 +87,9 @@ int Unit::getVision() const
 
 bool Unit::isPositionInVision(Map* map, position target) const
 {
-    // FIXME: jicks
+    auto cone = map->getVision(current_position_, orientation_, vision_);
+    if (std::find(cone.begin(), cone.end(), target) != cone.end())
+      return true;
     return false;
 }
 

@@ -260,21 +260,17 @@ static inline bool near(int x, int y, position p)
     return abs(x - p.x) + abs(y - p.y) <= 1;
 }
 
-/*
- * @return: a list of units visible from position ``pos``, orientation
- * ``direction`` and range ``range``
- */
 // North = 1 if North, -1 if South, 0 else.
 // East = 1 if East, -1 if West, 0 else
 // x and y inverts their role depending on the orientation.
 // When isBlocked[j] is true, something prevents us to look in this column.
 // When near is true, we are near our position and can see through the forest.
-std::vector<position> Map::getSurroundings(position pos, orientation direction, int range)
+std::vector<position> Map::getVision(position pos, orientation direction, int range)
 {
     if (getCell(pos)->getType() == ZONE_TOUR)
-        return getSquareSurroundings(pos, range);
+        return getSquareVision(pos, range);
 
-    std::vector<position> unitsPositions;
+    std::vector<position> visionCone;
     std::vector<bool> isBlocked(2 * range + 3, false);
     int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
     int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
@@ -285,20 +281,60 @@ std::vector<position> Map::getSurroundings(position pos, orientation direction, 
             int x = pos.x + i * East + j * North;
             int y = pos.y + i * North + j * East;
 
-            if (!isPositionValid(position({x,y})) || isBlocked[j + i + 1]) continue;
+            if (!isPositionValid(position({x,y})) || isBlocked[j + i + 1])
+              continue;
 
             zone_type zoneType = map_[y][x]->getType();
             if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||
                     ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
                 isBlocked[j + i + 1] = true;
-            else if (!map_[y][x]->getUnits().empty())
-                unitsPositions.push_back(position({x, y}));
+            else
+                visionCone.push_back(position({x, y}));
         }
+    return visionCone;
+
+}
+
+std::vector<position> Map::getSquareVision(position pos, int range)
+{
+    std::vector<position> visionSquare;
+
+    for (int i = -range; i <= range; ++i)
+        for (int j = -range; j <= range; ++j)
+        {
+            int x = pos.x + i;
+            int y = pos.y + j;
+
+            if (!isPositionValid(position({x, y}))) continue;
+            zone_type zoneType = map_[y][x]->getType();
+
+            if (zoneType != ZONE_MUR && zoneType != ZONE_FORET)
+                visionSquare.push_back(position({x, y}));
+        }
+
+    return visionSquare;
+}
+
+/*
+ * @return: a list of units visible from position ``pos``, orientation
+ * ``direction`` and range ``range``
+ */
+std::vector<position> Map::getSurroundings(position pos, orientation direction, int range)
+{
+    if (getCell(pos)->getType() == ZONE_TOUR)
+        return getSquareSurroundings(pos, range);
+
+    std::vector<position> visionCone = getVision(pos, direction, range);
+    std::vector<position> unitsPositions;
+
+    for (auto visionPosition : visionCone)
+        if (!getCell(visionPosition)->getUnits().empty())
+          unitsPositions.push_back(visionPosition);
 
     return unitsPositions;
 }
 
-// Check the square of length (2 * range + 1) around pos (but not pos).
+// Check the square of length (2 * range + 1) around pos
 // Can see behind a wall or a forest (but not in a forest).
 std::vector<position> Map::getSquareSurroundings(position pos, int range)
 {
