@@ -74,6 +74,14 @@ La fonction ``chemin`` est-elle rapide ?
 Oui car le calcul des distances n'est effectué qu'une seule fois par le
 champion lors du chargement de la carte.
 
+Mort
+====
+
+Quelle est l'orientation de mon personnage quand il revit ?
+-----------------------------------------------------------
+
+Il est orienté vers le Nord.
+
 Misc
 ====
 
