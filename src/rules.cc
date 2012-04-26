@@ -290,29 +290,27 @@ void Rules::resolve_points()
         // Only teamkill
         if (teamkill == unit->getAttackers().size())
             api_->player()->score -= 1;
-        else
+        // no teamkill, every team get a point
+        else if (teamkill == 0)
         {
-            // no teamkill, every team get a point
-            if (teamkill == 0)
-            {
-                std::set<int> attackers_team;
-                for (unit_info attacker : unit->getAttackers())
-                    attackers_team.insert(attacker.player_id);
+            std::set<int> attackers_team;
+            for (unit_info attacker : unit->getAttackers())
+                attackers_team.insert(attacker.player_id);
 
-                for (int team : attackers_team)
-                    players_->players[team]->score += 1;
-            }
+            for (int team : attackers_team)
+                players_->players[team]->score += 1;
+            players_->players[unit->getPlayer()]->score -= 1;
+        }
             // else
             // mixed teamkill and offensive kill
             // no points given
-        }
 
         // reset life & cooldowns
         unit->respawn();
 
         // Move unit to spawn position
         st->getMap()->moveUnit(unit->getUnitInfo(), unit->getPosition(),
-                unit->getSpawn());
+            unit->getSpawn());
     }
 }
 

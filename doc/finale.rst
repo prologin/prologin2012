@@ -12,8 +12,8 @@ Intro
 
 Le sujet serveur Prologin 2012 est un RPG ou chaque joueur contrôle une équipe
 de trois personnages ayant chacun des caractéristiques les différenciant. Le
-but est de gagner le plus de point en tuant un maximum d'adversaire ou en
-occupant des objectifs. **FIXME comment gagner des points**
+but est de gagner le plus de point en tuant un maximum d'adversaire en
+minimisant ses pertes.
 
 ------
 Règles
@@ -368,9 +368,10 @@ précédence) :
 1. Si un personnage meurt et alors qu'il s'est fait toucher par un allié et un
    un adversaire, aucun point n'est accordé.
 
-2. Le personnage qui a tué fait gagner un point à son équipe.
+2. Le personnage qui a tué fait gagner un point à son équipe. Le personnage qui
+   est tué fait perde un point à son équipe.
 
-2. Si un personnage tue un personage de sa propre équipe (y compris lui-même)
+3. Si un personnage tue un personage de sa propre équipe (y compris lui-même)
    l'équipe perd un point.
 
 Un personnage mort réapparait à son point de départ (défini à la `Phase de
