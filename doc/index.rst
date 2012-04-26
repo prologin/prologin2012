@@ -10,6 +10,5 @@ Pages:
 .. toctree::
    :maxdepth: 1
 
-   serveur
-   serveur-api
+   finale
    faq-candidat

@@ -254,7 +254,10 @@ void Bastoooon::apply(GameState* st, unit_info attacker, position target)
         {
             UnitVect attacked_units = st->getMap()->getUnitsOn(new_target);
             for (unit_info attacked_unit: attacked_units)
+            {
+                if (attacked_unit == attacker) continue;
                 st->getUnit(attacked_unit)->attacked(damages, attacker);
+            }
         }
     }
 }

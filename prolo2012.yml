@@ -9,11 +9,11 @@ constant:
 # Constantes pour les personnages
   -
     cst_name: VOLEUR_VISION
-    cst_val: 4
+    cst_val: 5
     cst_comment: Vision du Voleur
   -
     cst_name: VOLEUR_DEPLACEMENT
-    cst_val: 8
+    cst_val: 10
     cst_comment: Déplacement du Voleur
   -
     cst_name: VOLEUR_VIE
@@ -34,7 +34,7 @@ constant:
 
   -
     cst_name: BARBARE_VISION
-    cst_val: 5
+    cst_val: 4
     cst_comment: Vision du Barbare
   -
     cst_name: BARBARE_DEPLACEMENT
@@ -59,11 +59,11 @@ constant:
 
   -
     cst_name: ELFE_VISION
-    cst_val: 5
+    cst_val: 4
     cst_comment: Vision de l'Elfe
   -
     cst_name: ELFE_DEPLACEMENT
-    cst_val: 8
+    cst_val: 6
     cst_comment: Déplacement de l'Elfe
   -
     cst_name: ELFE_VIE
@@ -75,7 +75,7 @@ constant:
     cst_comment: Attaque de l'Elfe
   -
     cst_name: ELFE_LOTO_CD
-    cst_val: 3
+    cst_val: 5
     cst_comment: Cooldown de l'attaque "Loto, à qui le tour ?" de l'Elfe
   -
     cst_name: ELFE_I_SEE_CD
