@@ -71,6 +71,7 @@ public:
     bool isFinished();
 
     std::vector<std::vector<std::pair<position, Unit_sptr>>>& getPendingMoves();
+    std::list<const ActionAttack*>& getPendingBastoooon();
     std::list<const ActionAttack*>& getPendingAttacks();
 
 private:
@@ -82,6 +83,7 @@ private:
 
     std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;
     std::list<const ActionAttack*> pendingAttacks_;
+    std::list<const ActionAttack*> pendingBastoooon_;
 
     game_phase game_phase_;
     int current_turn_;

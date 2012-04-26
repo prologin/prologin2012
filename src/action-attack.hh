@@ -24,10 +24,13 @@ public:
         { return player_; }
     uint32_t id() const
         { return id_; }
+    perso_info getPersoInfo() const
+        { return unit_; }
 
     attaque_type getType() const;
     void markFusRoDah(GameState* gameState, std::map<int, int>& markedUnits) const;
     void applyAttack(GameState* gameState) const;
+    void applyBastoooon(GameState *gameState) const;
 
 protected:
     virtual void apply_on(GameState* gameState) const;

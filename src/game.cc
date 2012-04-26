@@ -27,6 +27,7 @@ GameState::GameState(const GameState& st)
       remote_vision_(st.remote_vision_),
       pendingMoves_(st.pendingMoves_),
       pendingAttacks_(st.pendingAttacks_),
+      pendingBastoooon_(st.pendingBastoooon_),
       current_turn_(st.current_turn_)
 {
 }
@@ -220,4 +221,9 @@ std::vector<std::vector<std::pair<position, Unit_sptr>>>& GameState::getPendingM
 std::list<const ActionAttack*>& GameState::getPendingAttacks()
 {
     return pendingAttacks_;
+}
+
+std::list<const ActionAttack*>& GameState::getPendingBastoooon()
+{
+  return pendingBastoooon_;
 }

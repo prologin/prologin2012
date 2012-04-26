@@ -4,6 +4,7 @@
 #include "constant.hh"
 #include "map.hh"
 #include "cell.hh"
+#include "unit.hh"
 
 ActionAttack::ActionAttack()
     : unit_(),
@@ -90,15 +91,27 @@ void ActionAttack::applyAttack(GameState *gameState) const
     position displacement = gameState->getUnit(info)->getDisplacement();
     position target = { target_.x + displacement.x, target_.y + displacement.y };
 
-    if (attack->check(*gameState) == OK)
+    if (attack->check(*gameState, info, target) == OK)
         attack->apply(gameState, info, target);
 }
+
+void ActionAttack::applyBastoooon(GameState *gameState) const
+{
+    gameState->getUnit(unit_)->swapLives();
+    applyAttack(gameState);
+    gameState->getUnit(unit_)->swapLives();
+}
+
 
 void ActionAttack::apply_on(GameState* gameState) const
 {
     auto& pendingAttacks = gameState->getPendingAttacks();
+    auto& pendingBastoooon = gameState->getPendingBastoooon();
+
     if (atk_id_ == ATTAQUE_FUS_RO_DAH)
         pendingAttacks.push_front(this);
+    else if (atk_id_ == ATTAQUE_BASTOOOON)
+        pendingBastoooon.push_back(this);
     else
-        pendingAttacks.push_back(this);
+      pendingAttacks.push_back(this);
 }

@@ -313,9 +313,11 @@ void FusRoDah::apply(GameState* st, unit_info attacker, position target)
         }
 
         // We move the units
+        position displacement = { unitsPosition.x - newPosition.x,
+                                  unitsPosition.y - newPosition.y};
         for (auto unitInfo : map->getCell(unitsPosition)->getUnits())
         {
-            if (st->getUnit(unitInfo)->isDead()) continue;
+            st->getUnit(unitInfo)->setDisplacement(displacement);
             st->getUnit(unitInfo)->setPosition(newPosition);
             map->moveUnit(unitInfo, unitsPosition, newPosition);
         }

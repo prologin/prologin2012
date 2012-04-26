@@ -251,19 +251,25 @@ void Rules::resolve_moves()
 
 void Rules::resolve_attacks()
 {
-    auto pendingAttacks = api_->game_state()->getPendingAttacks();
+    auto& pendingAttacks = api_->game_state()->getPendingAttacks();
+    auto& pendingBastoooon = api_->game_state()->getPendingBastoooon();
     std::map<int, int> markedUnits;
 
-    for (auto attack : pendingAttacks)
+    for (auto& attack : pendingAttacks)
     {
         if (attack->getType() != ATTAQUE_FUS_RO_DAH)
-            break;
+          break;
         attack->markFusRoDah(api_->game_state(), markedUnits);
     }
-    for (auto attack : pendingAttacks)
+    for (auto& attack : pendingAttacks)
         attack->applyAttack(api_->game_state());
+    for (auto& attack : pendingBastoooon)
+        api_->game_state()->getUnit(attack->getPersoInfo())->saveLife();
+    for (auto& attack : pendingBastoooon)
+        attack->applyBastoooon(api_->game_state());
 
     pendingAttacks.clear();
+    pendingBastoooon.clear();
 }
 
 void Rules::resolve_points()

@@ -41,6 +41,18 @@ void Unit::resetLife()
     life_current_ = life_max_;
 }
 
+void Unit::saveLife()
+{
+    life_saved_ = life_current_;
+}
+
+void Unit::swapLives()
+{
+    life_saved_ ^= life_current_;
+    life_current_ ^= life_saved_;
+    life_saved_ ^= life_current_;
+}
+
 position Unit::getPosition() const
 {
     return current_position_;

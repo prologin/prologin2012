@@ -53,6 +53,7 @@ public:
           vision_(vision),
           life_max_(life),
           life_current_(life),
+          life_saved_(-1),
           spawn_(position {0, 0}),
           current_position_(position {0, 0}),
           move_points_(move_points),
@@ -75,6 +76,9 @@ public:
     int getCurrentLife() const;
     int getMaxLife() const;
     void resetLife();
+
+    void saveLife();
+    void swapLives();
 
     position getPosition() const;
     void setPosition(position p);
@@ -131,6 +135,7 @@ private:
 
     int life_max_;
     int life_current_;
+    int life_saved_;
 
     position spawn_;
     position current_position_;
