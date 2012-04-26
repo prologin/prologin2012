@@ -39,7 +39,7 @@ Rules::Rules(const rules::Options& opt)
         champion_jouer_attaque = champion_->get<f_champion_jouer_attaque>("jouer_attaque");
         champion_partie_fin = champion_->get<f_champion_partie_fin>("partie_fin");
 
-        champion_partie_init();
+        sandbox_.execute(champion_partie_init);
     }
 
     players_ = opt.players;
@@ -70,7 +70,7 @@ Rules::~Rules()
 {
     if (champion_)
     {
-        champion_partie_fin();
+        sandbox_.execute(champion_partie_fin);
         delete champion_;
     }
 
@@ -94,13 +94,13 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
         switch (phase)
         {
         case PHASE_PLACEMENT:
-            champion_jouer_placement();
+            sandbox_.execute(champion_jouer_placement);
             break;
         case PHASE_DEPLACEMENT:
-            champion_jouer_deplacement();
+            sandbox_.execute(champion_jouer_deplacement);
             break;
         case PHASE_ATTAQUE:
-            champion_jouer_attaque();
+            sandbox_.execute(champion_jouer_attaque);
             break;
         }
 
