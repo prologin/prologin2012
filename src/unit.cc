@@ -90,6 +90,11 @@ int Unit::getVision() const
     return vision_;
 }
 
+void Unit::setVision(int vision)
+{
+    vision_ = vision;
+}
+
 bool Unit::isPositionInVision(Map* map, position target) const
 {
     auto cone = map->getVision(current_position_, orientation_, vision_);
@@ -162,7 +167,7 @@ Voleur::Voleur(int player_id)
     : Unit(player_id, VOLEUR_DEPLACEMENT, VOLEUR_VISION, VOLEUR_VIE,
             PERSO_VOLEUR)
 {
-    abilities_.push_back(new BasicAttack(VOLEUR_ATTAQUE, VOLEUR_ATT_PORTEE));
+    abilities_.push_back(new VoleurAttaque());
     abilities_.push_back(new Traitrise());
 }
 
@@ -207,7 +212,7 @@ Barbare::Barbare(int player_id)
     : Unit(player_id, BARBARE_DEPLACEMENT, BARBARE_VISION, BARBARE_VIE,
             PERSO_BARBARE)
 {
-    abilities_.push_back(new BasicAttack(BARBARE_ATTAQUE, BARBARE_ATT_PORTEE));
+    abilities_.push_back(new BarbareAttaque());
 }
 
 Ability* Barbare::getAbility(attaque_type id)
@@ -250,7 +255,7 @@ int Barbare::getAbilityCooldown(attaque_type id) const
 Elfe::Elfe(int player_id)
     : Unit(player_id, ELFE_DEPLACEMENT, ELFE_VISION, ELFE_VIE, PERSO_ELFE)
 {
-    abilities_.push_back(new BasicAttack(ELFE_ATTAQUE, ELFE_ATT_PORTEE));
+    abilities_.push_back(new ElfeAttaque());
 }
 
 Ability* Elfe::getAbility(attaque_type id)

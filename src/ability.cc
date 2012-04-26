@@ -1,5 +1,6 @@
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 
 #include "ability.hh"
 
@@ -37,30 +38,34 @@ void Ability::resetCooldown()
 }
 
 /*******************************************************************************
- * BasicAttack
+ * Voleur - VoleurAttaque
  */
 
-erreur BasicAttack::check(const GameState& st, unit_info attacker,
+erreur VoleurAttaque::check(const GameState& st, unit_info attacker,
         position target) const
 {
     erreur err;
     if ((err = Ability::check(st, attacker, target)) != OK)
         return err;
 
-    position  attacker_pos = st.getUnit(attacker)->getPosition();
+    Unit_sptr unit = st.getUnit(attacker);
+
+    unit->setVision(1);
 
     // check range
-    if (abs(target.x - attacker_pos.x)
-            + abs(target.y - attacker_pos.y) > range_)
+    if (!unit->isPositionInVision(st.getMap(), target))
+    {
+        unit->setVision(VOLEUR_VISION);
         return POSITION_IMPOSSIBLE;
-    if (!st.getUnit(attacker)->isPositionInVision(st.getMap(), target))
-      return POSITION_IMPOSSIBLE;
+    }
+
+    unit->setVision(VOLEUR_VISION);
 
     return OK;
 }
 
 // /!\ Does not harm attacker
-void BasicAttack::apply(GameState* st, unit_info attacker, position target)
+void VoleurAttaque::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=normale target=(%d, %d)",
             attacker.player_id, attacker.classe, target.x, target.y);
@@ -75,7 +80,7 @@ void BasicAttack::apply(GameState* st, unit_info attacker, position target)
         if (unit == attacker)
             continue;
 
-        st->getUnit(unit)->attacked(damages_, attacker);
+        st->getUnit(unit)->attacked(VOLEUR_ATTAQUE, attacker);
     }
 }
 
@@ -142,9 +147,8 @@ void Traitrise::apply(GameState* st, unit_info attacker, position target)
     Ability::apply(st, attacker, target);
 
     UnitVect attacked_units = st->getMap()->getUnitsOn(target);
-    for (auto it = attacked_units.begin(); it != attacked_units.end(); ++it)
+    for (unit_info attacked_unit : attacked_units)
     {
-        unit_info attacked_unit = *it;
         // TODO TEST
         // same unit or same team, skip
         if (attacked_unit == attacker
@@ -158,6 +162,54 @@ void Traitrise::apply(GameState* st, unit_info attacker, position target)
 
 /*
  * end - Voleur - Traitrise
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Barbare - BarbareAttaque
+ */
+
+erreur BarbareAttaque::check(const GameState& st, unit_info attacker,
+        position target) const
+{
+    erreur err;
+    // check cooldown & valid position
+    if ((err = Ability::check(st, attacker, target)) != OK)
+        return err;
+
+    // In range?
+    if (!st.getUnit(attacker)->isPositionInVision(st.getMap(), target))
+        return POSITION_IMPOSSIBLE;
+
+    return OK;
+}
+
+void BarbareAttaque::apply(GameState* st, unit_info attacker, position target)
+{
+    INFO("player_id=%d unit=%d attack=normale target=(%d, %d)",
+            attacker.player_id, attacker.classe, target.x, target.y);
+
+    Map* map = st->getMap();
+
+    // apply cooldown
+    Ability::apply(st, attacker, target);
+
+    position new_target;
+    std::vector<position> cross = {{-1, 0}, {1, 0}, {0, 0}, {0, 1}, {0, -1}};
+    for (auto dxdy : cross)
+    {
+        new_target = position {target.x + dxdy.x, target.y + dxdy.y};
+
+        if (map->isPositionValid(new_target))
+        {
+            UnitVect attacked_units = st->getMap()->getUnitsOn(new_target);
+            for (unit_info attacked_unit: attacked_units)
+                st->getUnit(attacked_unit)->attacked(BARBARE_ATTAQUE, attacker);
+        }
+    }
+}
+
+/*
+ * end - Barbare - BarbareAttaque
  ******************************************************************************/
 
 /*******************************************************************************
@@ -189,17 +241,20 @@ void Bastoooon::apply(GameState* st, unit_info attacker, position target)
     // apply cooldown
     Ability::apply(st, attacker, target);
 
+    // ok :)
+    int damages = BARBARE_VIE - st->getUnit(attacker)->getCurrentLife() + 1;
+
     position new_target;
-    std::vector<std::pair<int, int>> cross = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+    std::vector<position> cross = {{-1, 0}, {1, 0}, {0, 0}, {0, 1}, {0, -1}};
     for (auto dxdy : cross)
     {
-        new_target = position {target.x + dxdy.first, target.y + dxdy.second};
+        new_target = position {target.x + dxdy.x, target.y + dxdy.y};
 
         if (map->isPositionValid(new_target))
         {
             UnitVect attacked_units = st->getMap()->getUnitsOn(new_target);
             for (unit_info attacked_unit: attacked_units)
-                st->getUnit(attacked_unit)->attacked(BARBARE_ATTAQUE, attacker);
+                st->getUnit(attacked_unit)->attacked(damages, attacker);
         }
     }
 }
@@ -283,9 +338,31 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
     if ((err = Ability::check(st, attacker, target)) != OK)
         return err;
 
-    // FIXME: halfr, vision: isInVision de chaque perso + Palantir + I See
+    Map* map = st.getMap();
 
-    return OK;
+    for (Unit_sptr unit : st.getUnits())
+        if (unit->isPositionInVision(map, target))
+            return OK;
+
+    if (st.isPalantirActivated(attacker.player_id))
+    {
+        position palantir = st.getPalantir(attacker.player_id);
+
+        auto square = map->getSquareVision(palantir, VOLEUR_VISION);
+        if (std::find(square.begin(), square.end(), target) != square.end())
+            return OK;
+    }
+
+    if (st.isElfeVisionActivated(attacker.player_id))
+    {
+        position elfe_vision = st.getElfeVision(attacker.player_id);
+
+        auto square = map->getSquareVision(elfe_vision, ELFE_VISION);
+        if (std::find(square.begin(), square.end(), target) != square.end())
+            return OK;
+    }
+
+    return POSITION_IMPOSSIBLE;
 }
 
 void ElfeAttaque::apply(GameState* st, unit_info attacker, position target)
@@ -305,7 +382,6 @@ void ElfeAttaque::apply(GameState* st, unit_info attacker, position target)
 
         st->getUnit(unit)->attacked(ELFE_ATTAQUE, attacker);
     }
-
 }
 
 /*
@@ -332,13 +408,10 @@ void ISee::apply(GameState* st, unit_info attacker, position target)
     INFO("player_id=%d unit=%d attack=isee target=(%d, %d)",
             attacker.player_id, attacker.classe, target.x, target.y);
 
-    // Map* map = st->getMap();
-
     // apply cooldown
     Ability::apply(st, attacker, target);
 
-    // FIXME: same shit as Palantir
-
+    st->setElfeVision(attacker.player_id, target);
 }
 
 /*
@@ -375,9 +448,8 @@ void Loto::apply(GameState* st, unit_info attacker, position target)
         if (unit == attacker)
             continue;
 
-        st->getUnit(unit)->attacked(ELFE_ATTAQUE, attacker);
+        st->getUnit(unit)->attacked(ELFE_ATTAQUE * 2, attacker);
     }
-
 }
 
 /*

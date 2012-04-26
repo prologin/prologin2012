@@ -78,12 +78,12 @@ TEST_F(AbilityTest, AbilityCooldown)
  * Test BasicAbility
  */
 
-TEST_F(AbilityTest, BasicAbilityCheck)
+TEST_F(AbilityTest, VoleurAttaqueheck)
 {
     unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
     Unit_sptr attacker = gamestate_->getUnit(attacker_unit);
 
-    BasicAttack attack = BasicAttack(3, 2);
+    VoleurAttaque attack = VoleurAttaque();
     position target = position {5, 4};
     // check
     EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, target));
@@ -99,18 +99,18 @@ TEST_F(AbilityTest, BasicAbilityCheck)
             attack.check(*gamestate_, attacker_unit, position {0, 3}));
 }
 
-TEST_F(AbilityTest, BasicAbilityApply)
+TEST_F(AbilityTest, VoleurAttaqueApply)
 {
     unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
     Unit_sptr attacker = gamestate_->getUnit(attacker_unit);
 
-    BasicAttack attack = BasicAttack(3, 2);
+    VoleurAttaque attack = VoleurAttaque();
     position target = position {5, 4};
 
     ASSERT_EQ(OK, attack.check(*gamestate_, attacker_unit, target));
     attack.apply(gamestate_, attacker_unit, target);
 
-    // BasicAttack has no cooldown
+    // VoleurAttaque has no cooldown
     EXPECT_EQ(0, attack.getCooldown());
 
     UnitVect units_on_target = gamestate_->getMap()->getUnitsOn(target);
@@ -142,6 +142,6 @@ TEST_F(AbilityTest, PalantirApply)
 
     attack.apply(gamestate_, attacker_unit, target);
 
-    EXPECT_TRUE(gamestate_->getPalantir(0).activated);
-    EXPECT_EQ(target, gamestate_->getPalantir(0).location);
+    EXPECT_TRUE(gamestate_->isPalantirActivated(0));
+    EXPECT_EQ(target, gamestate_->getPalantir(0));
 }

@@ -21,16 +21,17 @@ constant:
     cst_comment: Vie du Voleur
   -
     cst_name: VOLEUR_ATTAQUE
-    cst_val: 3
+    cst_val: 5
     cst_comment: Attaque du voleur
   -
-    cst_name: VOLEUR_ATT_PORTEE
-    cst_val: 1
-    cst_comment: Portée de l'arme du Voleur
+    cst_name: VOLEUR_PALANTIR_CD
+    cst_val: 3
+    cst_comment: Cooldown de l'attaque "Palantir" du Voleur
   -
-    cst_name: VOLEUR_ATT_ZONE
-    cst_val: 1
-    cst_comment: Zone de dégats de l'arme du Voleur
+    cst_name: VOLEUR_TRAITRISE_CD
+    cst_val: 5
+    cst_comment: Cooldown de l'attaque "Traîtrise" du Voleur
+
   -
     cst_name: BARBARE_VISION
     cst_val: 5
@@ -45,16 +46,17 @@ constant:
     cst_comment: Vie du Barbare
   -
     cst_name: BARBARE_ATTAQUE
-    cst_val: 5
+    cst_val: 3
     cst_comment: Attaque du Barbare
   -
-    cst_name: BARBARE_ATT_PORTEE
-    cst_val: 5
-    cst_comment: Portée de l'arme du Barbare
+    cst_name: BARBARE_BASTOOOON_CD
+    cst_val: 3
+    cst_comment: Cooldown de l'attaque "Bastoooon" du Barbare
   -
-    cst_name: BARBARE_ATT_ZONE
-    cst_val: 2
-    cst_comment: Zone de dégats de l'arme du Barbare
+    cst_name: BARBARE_FUS_RO_DAH_CD
+    cst_val: 5
+    cst_comment: Cooldown de l'attaque "Fus Ro Dah" du Barbare
+
   -
     cst_name: ELFE_VISION
     cst_val: 5
@@ -72,13 +74,13 @@ constant:
     cst_val: 2
     cst_comment: Attaque de l'Elfe
   -
-    cst_name: ELFE_ATT_PORTEE
-    cst_val: 8
-    cst_comment: Portée de l'arme de l'Elfe
+    cst_name: ELFE_LOTO_CD
+    cst_val: 3
+    cst_comment: Cooldown de l'attaque "Loto, à qui le tour ?" de l'Elfe
   -
-    cst_name: ELFE_ATT_ZONE
-    cst_val: 1
-    cst_comment: Zone de dégats de l'arme de l'Elfe
+    cst_name: ELFE_I_SEE_CD
+    cst_val: 5
+    cst_comment: Cooldown de l'attaque "I See What You Did There" de l'Elfe
 
 enum:
   -
@@ -175,6 +177,14 @@ function:
     fct_arg:
       - [pos, position, "Position de la zone"]
   -
+    fct_name: distance
+    fct_summary:
+      Renvoie la longueur du chemin le plus court entre deux points
+    fct_ret_type: int
+    fct_arg:
+      - [p1, position, "position de départ"]
+      - [p2, position, "position d'arrivée"]
+  -
     fct_name: chemin
     fct_summary:
       Renvoie le chemin le plus court entre deux points
@@ -206,8 +216,15 @@ function:
   -
     fct_name: perso_vision
     fct_summary:
-      Récupère la liste des zones sur lesquelles ``perso`` voit d'autre
-      personnages.
+      Récupère la liste des zones dans le champs de vision de ``perso``.
+    fct_ret_type: position array
+    fct_arg:
+      - [perso, perso_info, "Personnage"]
+  -
+    fct_name: perso_vision_ennemis
+    fct_summary:
+      Récupère la liste des zones dans le champs de vision de ``perso`` où sont
+      situés un ou plusieurs personnages (amis ou ennemis).
     fct_ret_type: position array
     fct_arg:
       - [perso, perso_info, "Personnage"]
@@ -216,6 +233,13 @@ function:
     fct_summary:
       Récupère la liste des zones sur lesquelles le palantír du voleur voit
       d'autre personnages.
+    fct_ret_type: position array
+    fct_arg: []
+  -
+    fct_name: elfe_vision
+    fct_summary:
+      Récupère la liste des zones sur lesquelles l'elfe peut voir via son
+      attaque "I See What You Did There".
     fct_ret_type: position array
     fct_arg: []
   -

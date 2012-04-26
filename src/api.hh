@@ -69,6 +69,10 @@ public:
 //
    std::vector<perso_info> carte_zone_perso(position pos);
 ///
+// Renvoie la longueur du chemin le plus court entre deux points
+//
+   int distance(position p1, position p2);
+///
 // Renvoie le chemin le plus court entre deux points (fonction lente)
 //
    std::vector<position> chemin(position p1, position p2);
@@ -79,19 +83,23 @@ public:
 ///
 // Récupère la liste des zones sur lesquelles des personnages ont été aperçus dans la pénombre par ``perso`` lors de son passage sur une ``zone`` de son déplacement.
 //
-   std::vector<position> perso_penombre(perso_info perso, position zone);
-///
-// Récupère la liste des zones sur lesquelles un personnage est passé au tour précédent.
-//
-   std::vector<position> perso_penombre_zone(perso_info perso);
+   std::vector<position> perso_penombre(perso_info perso);
 ///
 // Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
 //
    std::vector<position> perso_vision(perso_info perso);
 ///
+// Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
+//
+   std::vector<position> perso_vision_ennemis(perso_info perso);
+///
 // Récupère la liste des zones sur lesquelles le palantír du voleur voit d'autre personnages.
 //
    std::vector<position> palantir_vision();
+///
+// Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque "I See What You Did There".
+//
+   std::vector<position> elfe_vision();
 ///
 // Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la zone ``pos``.
 //

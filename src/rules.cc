@@ -6,12 +6,14 @@
 
 #include <utils/log.hh>
 #include <utils/buffer.hh>
+#include <rules/player.hh>
 
 #include "constant.hh"
-#include "action-move.hh"
-#include "action-attack.hh"
 #include "game.hh"
 #include "map.hh"
+
+#include "action-move.hh"
+#include "action-attack.hh"
 
 Rules::Rules(const rules::Options& opt)
     : opt_(opt),
@@ -142,6 +144,9 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
+            for (rules::Player_sptr player: players_->players)
+                api_->game_state()->deactivateElfeVision(player->id);
+
             resolve_attacks();
             resolve_points();
             resolve_end_of_attaque_phase();
@@ -198,6 +203,9 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
+            for (rules::Player_sptr player: players_->players)
+                api_->game_state()->deactivateElfeVision(player->id);
+
             resolve_attacks();
             resolve_points();
             resolve_end_of_attaque_phase();

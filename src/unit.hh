@@ -92,6 +92,7 @@ public:
     void respawn();
 
     int getVision() const;
+    void setVision(int vision);
     bool isPositionInVision(Map* map, position target) const;
 
     /**

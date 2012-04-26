@@ -24,7 +24,7 @@ GameState::GameState(const GameState& st)
       map_(new Map(*st.map_)),
       players_(st.players_),
       units_(st.units_),
-      palantiri_(st.palantiri_),
+      remote_vision_(st.remote_vision_),
       pendingMoves_(st.pendingMoves_),
       pendingAttacks_(st.pendingAttacks_),
       current_turn_(st.current_turn_)
@@ -54,10 +54,12 @@ void GameState::init()
         units_.push_back(Unit_sptr(new Elfe(player_id)));
 
         // create palantir
-        palantiri_.push_back(palantir_t
+        remote_vision_.push_back(remote_vision
                 {
-                    .activated = false,
-                    .location = {0, 0}
+                    .palantir_activated = false,
+                    .palantir_location = {0, 0},
+                    .elfe_vision_activated = false,
+                    .elfe_vision_location = {0, 0}
                 });
     }
 
@@ -84,20 +86,60 @@ Map* GameState::getMap() const
  * Palantir
  */
 
-palantir_t GameState::getPalantir(int player_id) const
+bool GameState::isPalantirActivated(int player_id) const
 {
-    CHECK((size_t)player_id < palantiri_.size());
-    return palantiri_[player_id];
+    CHECK((size_t)player_id < getPlayerCount());
+    return remote_vision_[player_id].palantir_activated;
+}
+
+position GameState::getPalantir(int player_id) const
+{
+    CHECK((size_t)player_id < getPlayerCount());
+    return remote_vision_[player_id].palantir_location;
 }
 
 void GameState::setPalantir(int player_id, position target)
 {
-    palantiri_[player_id].activated = true;
-    palantiri_[player_id].location = target;
+    CHECK((size_t)player_id < getPlayerCount());
+    remote_vision_[player_id].palantir_activated = true;
+    remote_vision_[player_id].palantir_location = target;
 }
 
 /*
  * end Palantir
+ ******************************************************************************/
+
+/*******************************************************************************
+ * ElfeVision
+ */
+
+bool GameState::isElfeVisionActivated(int player_id) const
+{
+    CHECK((size_t)player_id < getPlayerCount());
+    return remote_vision_[player_id].elfe_vision_activated;
+}
+
+position GameState::getElfeVision(int player_id) const
+{
+    CHECK((size_t)player_id < getPlayerCount());
+    return remote_vision_[player_id].elfe_vision_location;
+}
+
+void GameState::setElfeVision(int player_id, position target)
+{
+    CHECK((size_t)player_id < getPlayerCount());
+    remote_vision_[player_id].elfe_vision_activated = true;
+    remote_vision_[player_id].elfe_vision_location = target;
+}
+
+void GameState::deactivateElfeVision(int player_id)
+{
+    CHECK((size_t)player_id < getPlayerCount());
+    remote_vision_[player_id].elfe_vision_activated = false;
+}
+
+/*
+ * end ElfeVision
  ******************************************************************************/
 
 /*******************************************************************************
@@ -129,7 +171,7 @@ Unit_sptr GameState::getUnit(perso_info perso) const
  * end getUnit(s)
  ******************************************************************************/
 
-size_t GameState::getPlayerCount()
+size_t GameState::getPlayerCount() const
 {
     return players_->players.size();
 }

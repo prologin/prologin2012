@@ -88,6 +88,19 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
 }
 
 ///
+// Renvoie la longueur du chemin le plus court entre deux points
+//
+int Api::distance(position p1, position p2)
+{
+    Map* map = game_state_->getMap();
+
+    if (!map->isPositionValid(p1) || !map->isPositionValid(p2))
+        return -1;
+
+    return map->getDistance(p1, p2);
+}
+
+///
 // Renvoie le chemin le plus court entre deux points (fonction pas lente)
 //
 std::vector<position> Api::chemin(position p1, position p2)
@@ -128,7 +141,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 ///
 // Récupère la liste des zones sur lesquelles un personnage est passé au tour précédent.
 //
-std::vector<position> Api::perso_penombre_zone(perso_info perso)
+std::vector<position> Api::perso_penombre(perso_info perso)
 {
     if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
@@ -137,9 +150,25 @@ std::vector<position> Api::perso_penombre_zone(perso_info perso)
 }
 
 ///
-// Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
+// Récupère la liste des zones dans le champs de vision de ``perso``.
 //
 std::vector<position> Api::perso_vision(perso_info perso)
+{
+    // Error, you cannot see what the other team sees
+    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+        return std::vector<position>();
+
+    Unit_sptr unit = game_state_->getUnit(perso);
+    position unit_pos = unit->getPosition();
+
+    return game_state_->getMap()->getVision(unit_pos,
+            unit->getOrientation(), unit->getVision());
+}
+
+///
+// Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
+//
+std::vector<position> Api::perso_vision_ennemis(perso_info perso)
 {
     // Error, you cannot see what the other team sees
     if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
@@ -158,12 +187,22 @@ std::vector<position> Api::perso_vision(perso_info perso)
 std::vector<position> Api::palantir_vision()
 {
     // TODO test
-    palantir_t palantir = game_state_->getPalantir(player_->id);
-
-    if (!palantir.activated)
+    if (!game_state_->isPalantirActivated(player_->id))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareSurroundings(palantir.location, VOLEUR_VISION);
+    return game_state_->getMap()->getSquareVision(game_state_->getPalantir(player_->id), VOLEUR_VISION);
+}
+
+///
+// Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque "I See What You Did There".
+//
+std::vector<position> Api::elfe_vision()
+{
+    // TODO test
+    if (!game_state_->isElfeVisionActivated(player_->id))
+        return std::vector<position>();
+
+    return game_state_->getMap()->getSquareVision(game_state_->getElfeVision(player_->id), ELFE_VISION);
 }
 
 ///

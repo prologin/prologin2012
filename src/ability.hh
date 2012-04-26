@@ -11,13 +11,13 @@
  */
 
 # define VOLEUR_PALANTIR_CD 3
-# define VOLEUR_TRAITRISE_CD 8
+# define VOLEUR_TRAITRISE_CD 5
 
 # define BARBARE_BASTOOOON_CD 3
-# define BARBARE_FUS_RO_DAH_CD 10
+# define BARBARE_FUS_RO_DAH_CD 5
 
-# define ELFE_I_SEE_CD 5
-# define ELFE_LOTO_CD 8
+# define ELFE_LOTO_CD 3
+# define ELFE_I_SEE_CD 8
 
 struct unit_info;
 
@@ -38,8 +38,9 @@ class Ability
 {
 public:
     Ability(int cost)
-        : cooldown_(0), cost_(cost)
-    {};
+        : cooldown_(0),
+          cost_(cost)
+    {}
 
     /* check:
      *  - cooldown > 0
@@ -63,36 +64,24 @@ private:
 };
 
 /*******************************************************************************
- * BasicAttack
+ * VoleurAttaque
  */
 
-class BasicAttack : public Ability
+class VoleurAttaque: public Ability
 {
 public:
-    BasicAttack(int damages, int range)
-        : Ability(0),
-          damages_(damages),
-          range_(range)
-    {};
+    VoleurAttaque()
+        : Ability(0)
+    {}
 
     erreur check(const GameState& st, unit_info attacker, position target)
         const;
     void apply(GameState* st, unit_info attacker, position target);
-
-private:
-    int damages_;
-    int range_;
 };
 
 /*******************************************************************************
  * Voleur - Palantir
  */
-
-typedef struct palantir
-{
-    bool activated;
-    position location;
-} palantir_t;
 
 class Palantir : public Ability
 {
@@ -120,6 +109,22 @@ public:
     erreur check(const GameState& st, unit_info attacker, position target)
         const;
     // kill unit
+    void apply(GameState* st, unit_info attacker, position target);
+};
+
+/*******************************************************************************
+ * Barbare - BarbareAttaque
+ */
+
+class BarbareAttaque: public Ability
+{
+public:
+    BarbareAttaque()
+        : Ability(0)
+    {}
+
+    erreur check(const GameState& st, unit_info attacker, position target)
+        const;
     void apply(GameState* st, unit_info attacker, position target);
 };
 

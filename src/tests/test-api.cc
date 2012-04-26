@@ -165,7 +165,19 @@ TEST_F(ApiTest, perso_deplace_bad_phase)
 
 TEST_F(ApiTest, perso_vision)
 {
-    EXPECT_EQ(1u, api_->perso_vision(
+    EXPECT_EQ(17u, api_->perso_vision(
+        perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_VOLEUR,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        }).size());
+}
+
+TEST_F(ApiTest, perso_vision_ennemis)
+{
+    EXPECT_EQ(1u, api_->perso_vision_ennemis(
         perso_info
         {
             .equipe = 0,
@@ -188,7 +200,7 @@ TEST_F(ApiTest, perso_penombre)
 
     rules_->resolve_moves();
 
-    EXPECT_EQ(5u, api_->perso_penombre_zone(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD}).size());
+    EXPECT_EQ(5u, api_->perso_penombre(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD}).size());
 }
 
 TEST_F(ApiTest, scores)
