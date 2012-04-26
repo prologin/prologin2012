@@ -19,6 +19,7 @@ def build(bld):
             src/api.cc
             src/action-move.cc
             src/action-attack.cc
+            src/dumper.cc
         ''',
         target = 'prolo2012',
         use = ['net', 'rules', 'utils'],

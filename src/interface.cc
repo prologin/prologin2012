@@ -477,3 +477,7 @@ extern "C" void api_afficher_perso_info(perso_info v)
   std::cerr << v << std::endl;
 }
 
+extern "C" const char* api_get_dump()
+{
+    return api->get_dump();
+}

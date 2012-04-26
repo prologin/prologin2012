@@ -21,6 +21,7 @@
 
 # include "constant.hh"
 # include "game.hh"
+# include "dumper.hh"
 
 class Game;
 
@@ -147,6 +148,10 @@ public:
 // Affiche le contenu d'une valeur de type perso_info
 //
 
+///
+// Return un dump JSON de l'état complet du jeu.
+//
+    const char* get_dump();
 };
 
 

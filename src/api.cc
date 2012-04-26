@@ -236,3 +236,10 @@ int Api::tour_actuel()
     return game_state_->getCurrentTurn();
 }
 
+///
+// Return un dump JSON de l'état complet du jeu.
+//
+const char* Api::get_dump()
+{
+    return dump_game_state(*game_state_);
+}
