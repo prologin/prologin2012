@@ -107,11 +107,7 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
         }
 
         // Send actions
-        utils::Buffer send_buf;
-
-        api_->actions()->handle_buffer(send_buf);
-
-        msgr->send(send_buf);
+        msgr->send_actions(*api_->actions());
         msgr->wait_for_ack();
 
         api_->actions()->clear();
@@ -119,12 +115,7 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
         for (uint32_t i = 0; i < players_->players.size(); ++i)
         {
             // Receive actions
-            utils::Buffer* pull_buf = msgr->pull();
-
-            // Put them in the API container
-            api_->actions()->handle_buffer(*pull_buf);
-
-            delete pull_buf;
+            msgr->pull_actions(api_->actions());
 
             // Apply them onto the gamestate
             for (auto& action : api_->actions()->actions())
@@ -175,12 +166,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         for (uint32_t i = 0; i < players_->players.size(); ++i)
         {
             // Receive actions
-            utils::Buffer* pull_buf = msgr->recv();
-
-            // Put them in the API container
-            api_->actions()->handle_buffer(*pull_buf);
-
-            delete pull_buf;
+            msgr->recv_actions(api_->actions());
 
             // Apply them onto the gamestate
             for (auto& action : api_->actions()->actions())
@@ -213,11 +199,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         }
 
         // Send actions
-        utils::Buffer send_buf;
-
-        actions.handle_buffer(send_buf);
-
-        msgr->push(send_buf);
+        msgr->push_actions(actions);
+        actions.clear();
     }
 
     DEBUG("winner = %i", winner_);
