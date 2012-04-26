@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "map.hh"
+#include "cell.hh"
 #include "dumper.hh"
 
 static std::ostream& dump_scores(

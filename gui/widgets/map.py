@@ -117,11 +117,11 @@ class MapWidget(BaseWidget):
                     y = unit.y + i * dy + j * dx
                     if (
                         not utils.is_in_rect(x, y, width, height) or
-                        is_blocked[i + j + 1]
+                        is_blocked[j + distance]
                     ):
                         continue
                     cell = self.game_state.map[y][x]
-                    not_near = utils.is_near(x, y, unit.x, unit.y)
+                    not_near = not utils.is_near(x, y, unit.x, unit.y)
                     if (
                         (not_near and cell == ZONE_FORET) or
                         (
@@ -129,8 +129,9 @@ class MapWidget(BaseWidget):
                             cell == ZONE_MUR
                         )
                     ):
-                        is_blocked[i + j + 1] = True
-                    self._remove_fog(x, y)
+                        is_blocked[j + distance] = True
+                    elif (cell != ZONE_MUR):
+                        self._remove_fog(x, y)
 
         self.update_display((
             unit.x - self.center[0],

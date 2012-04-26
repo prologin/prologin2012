@@ -281,14 +281,14 @@ std::vector<position> Map::getVision(position pos, orientation direction, int ra
             int x = pos.x + i * East + j * North;
             int y = pos.y + i * North + j * East;
 
-            if (!isPositionValid(position({x,y})) || isBlocked[j + i + 1])
+            if (!isPositionValid(position({x,y})) || isBlocked[j + range + 1])
               continue;
 
             zone_type zoneType = map_[y][x]->getType();
             if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||
                     ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
-                isBlocked[j + i + 1] = true;
-            else
+                isBlocked[j + range + 1] = true;
+            else if (zoneType != ZONE_MUR)
                 visionCone.push_back(position({x, y}));
         }
     return visionCone;
