@@ -119,7 +119,7 @@ TEST_F(AbilityTest, VoleurAttaqueApply)
         if (*it == attacker_unit)
             EXPECT_EQ(VOLEUR_VIE, attacker->getCurrentLife());
         else
-            EXPECT_EQ(7 /* _VIE - dmg = 10 - 3 */,
+            EXPECT_EQ(VOLEUR_VIE - VOLEUR_ATTAQUE,
                     gamestate_->getUnit(*it)->getCurrentLife());
     }
 }

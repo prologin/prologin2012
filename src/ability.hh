@@ -6,18 +6,8 @@
 
 # include "constant.hh"
 
-/*******************************************************************************
- * Cooldown
- */
-
-# define VOLEUR_PALANTIR_CD 3
-# define VOLEUR_TRAITRISE_CD 5
-
-# define BARBARE_BASTOOOON_CD 3
-# define BARBARE_FUS_RO_DAH_CD 5
-
-# define ELFE_LOTO_CD 3
-# define ELFE_I_SEE_CD 8
+# define ACTION_MOVE 0
+# define ACTION_ATTACK 1
 
 struct unit_info;
 

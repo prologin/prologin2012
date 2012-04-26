@@ -13,13 +13,10 @@
 #ifndef CONSTANT_HH_
 # define CONSTANT_HH_
 
-#define ACTION_MOVE 0
-#define ACTION_ATTACK 1
-
 ///
 // Vision du Voleur
 //
-# define VOLEUR_VISION             8
+# define VOLEUR_VISION             4
 
 ///
 // Déplacement du Voleur
@@ -34,22 +31,22 @@
 ///
 // Attaque du voleur
 //
-# define VOLEUR_ATTAQUE            3
+# define VOLEUR_ATTAQUE            5
 
 ///
-// Portée de l'arme du Voleur
+// Cooldown de l'attaque "Palantir" du Voleur
 //
-# define VOLEUR_ATT_PORTEE         1
+# define VOLEUR_PALANTIR_CD        3
 
 ///
-// Zone de dégats de l'arme du Voleur
+// Cooldown de l'attaque "Traîtrise" du Voleur
 //
-# define VOLEUR_ATT_ZONE           1
+# define VOLEUR_TRAITRISE_CD       5
 
 ///
 // Vision du Barbare
 //
-# define BARBARE_VISION            8
+# define BARBARE_VISION            5
 
 ///
 // Déplacement du Barbare
@@ -64,22 +61,22 @@
 ///
 // Attaque du Barbare
 //
-# define BARBARE_ATTAQUE           5
+# define BARBARE_ATTAQUE           3
 
 ///
-// Portée de l'arme du Barbare
+// Cooldown de l'attaque "Bastoooon" du Barbare
 //
-# define BARBARE_ATT_PORTEE        5
+# define BARBARE_BASTOOOON_CD      3
 
 ///
-// Zone de dégats de l'arme du Barbare
+// Cooldown de l'attaque "Fus Ro Dah" du Barbare
 //
-# define BARBARE_ATT_ZONE          2
+# define BARBARE_FUS_RO_DAH_CD     5
 
 ///
 // Vision de l'Elfe
 //
-# define ELFE_VISION               8
+# define ELFE_VISION               5
 
 ///
 // Déplacement de l'Elfe
@@ -97,22 +94,22 @@
 # define ELFE_ATTAQUE              2
 
 ///
-// Portée de l'arme de l'Elfe
+// Cooldown de l'attaque "Loto, à qui le tour ?" de l'Elfe
 //
-# define ELFE_ATT_PORTEE           8
+# define ELFE_LOTO_CD              3
 
 ///
-// Zone de dégats de l'arme de l'Elfe
+// Cooldown de l'attaque "I See What You Did There" de l'Elfe
 //
-# define ELFE_ATT_ZONE             1
+# define ELFE_I_SEE_CD             5
 
 ///
 // Type de personnage
 //
 typedef enum perso_classe {
-  PERSO_VOLEUR = 0, /* <- Voleur */
-  PERSO_BARBARE = 1, /* <- Barbare */
-  PERSO_ELFE = 2, /* <- Elfe */
+  PERSO_VOLEUR, /* <- Voleur */
+  PERSO_BARBARE, /* <- Barbare */
+  PERSO_ELFE, /* <- Elfe */
 } perso_classe;
 
 
@@ -126,7 +123,7 @@ typedef enum zone_type {
   ZONE_MARAIS, /* <- Marais */
   ZONE_MUR, /* <- Mur */
   ZONE_TOUR, /* <- Tour de guet */
-  ZONE_ERREUR /* <- Erreur, mauvaise position */
+  ZONE_ERREUR, /* <- Erreur, case impossible */
 } zone_type;
 
 
@@ -134,9 +131,9 @@ typedef enum zone_type {
 // Type d'attaque
 //
 typedef enum attaque_type {
-  ATTAQUE_NORMALE, /* <- Attaque normale */
+  ATTAQUE_NORMALE, /* <- Attaque normale dont les dégats dépendent du personnage */
   ATTAQUE_PALANTIR, /* <- Attaque 'Palantir' du Voleur */
-  ATTAQUE_TRAITRISE, /* <- Attaque 'Dans ton dos' du Voleur */
+  ATTAQUE_TRAITRISE, /* <- Attaque 'Traîtrise' du Voleur */
   ATTAQUE_BASTOOOON, /* <- Attaque 'Bastoooon' de du Barbare */
   ATTAQUE_FUS_RO_DAH, /* <- Attaque 'Fus Ro Dah' du Barbare */
   ATTAQUE_I_SEE, /* <- Attaque 'I see what you did there.' de l'Elfe */
