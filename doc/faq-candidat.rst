@@ -23,6 +23,11 @@ Si mon personnage est sur une tour, peut-il voir dans une forêt ?
 Non, par contre vous pourrez voir au-delà de la forêt si c'est toujours dans la
 vision de la tour.
 
+Que voit un Palantír/un I See What You Did There dans la forêt ?
+----------------------------------------------------------------
+
+Rien. Le cas est en fait exactement le même que la question précédente.
+
 La fonction ``perso_vision`` renvoit-elle le contenu de la case où est situé le personnage ?
 --------------------------------------------------------------------------------------------
 
