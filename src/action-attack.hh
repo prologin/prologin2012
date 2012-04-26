@@ -26,14 +26,11 @@ public:
         { return id_; }
 
     attaque_type getType() const;
-    void markFusRohDah(GameState* gameState, std::map<int, int>& markedUnits) const;
+    void markFusRoDah(GameState* gameState, std::map<int, int>& markedUnits) const;
     void applyAttack(GameState* gameState) const;
 
 protected:
     virtual void apply_on(GameState* gameState) const;
-    void applySimpleAttack(GameState* gameState, int power, bool friendlyFire) const;
-    void applyBarbareAttack(GameState* gameState) const;
-    void applyFusRohDah(GameState* gameState) const;
 
 protected:
     perso_info unit_;

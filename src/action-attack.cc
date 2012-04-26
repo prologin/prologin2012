@@ -30,7 +30,7 @@ int ActionAttack::check(const GameState* gameState) const
     Ability* ability = unit->getAbility(atk_id_);
 
     if (!ability)
-      return ATTAQUE_INDISPONIBLE;
+        return ATTAQUE_INDISPONIBLE;
 
     unit_info info = { unit_.equipe, unit_.classe };
     position target = { target_.x, target_.y };
@@ -50,61 +50,46 @@ attaque_type ActionAttack::getType() const
     return atk_id_;
 }
 
-void ActionAttack::markFusRohDah(GameState* gameState, std::map<int, int>& markedUnits) const
+void ActionAttack::markFusRoDah(GameState* gameState, std::map<int, int>& markedUnits) const
 {
-    auto unit = gameState->getUnit(unit_);
-    auto unitsPosition = gameState->getMap()->getSurroundings(unit->getPosition(),
-            unit->getOrientation(), unit->getVision());
+    Map* map = gameState->getMap();
+    auto attacker = gameState->getUnit(unit_);
+    auto unitsPositions = map->getSurroundings(attacker->getPosition(),
+            attacker->getOrientation(), attacker->getVision());
 
-    for (auto unitPosition : unitsPosition)
+    for (auto unitsPosition : unitsPositions)
     {
-        for (auto unitInfo : gameState->getMap()->getCell(unitPosition)->getUnits())
+        for (auto victimInfo : map->getCell(unitsPosition)->getUnits())
         {
-            int unitInfoId = unitInfo.player_id * 10 + unitInfo.classe;
-            auto it = markedUnits.find(unitInfoId);
-            if (it != markedUnits.end())
+            int victimId= victimInfo.player_id * 10 + victimInfo.classe;
+            int attackerId = unit_.equipe * 10 + unit_.classe;
+            unit_info attackerInfo = { unit_.equipe, unit_.classe };
+
+            auto searchVictim = markedUnits.find(victimId);
+            if (searchVictim != markedUnits.end())
             {
-                gameState->getUnit(unitInfo)->attacked(9001, unit_info { unit_.equipe, unit_.classe });
-                gameState->getUnit(unitInfo)->attacked(9001,
-                        unit_info { it->second / 10, (perso_classe)(it->second % 10)});
+                unit_info otherInfo =
+                {
+                    searchVictim->second / 10,
+                    (perso_classe)(searchVictim->second % 10)
+                };
+                gameState->getUnit(victimInfo)->attacked(255, attackerInfo);
+                gameState->getUnit(victimInfo)->attacked(255, otherInfo);
             }
             else
-                markedUnits.insert(std::make_pair(unitInfoId, unit_.equipe * 10 + unit_.classe));
+                markedUnits.insert(std::make_pair(victimId, attackerId));
         }
     }
 }
 
 void ActionAttack::applyAttack(GameState *gameState) const
 {
-    switch (atk_id_)
-    {
-        case ATTAQUE_NORMALE:
-            if (unit_.classe == PERSO_BARBARE)
-                applyBarbareAttack(gameState);
-            else if (unit_.classe == PERSO_VOLEUR)
-                applySimpleAttack(gameState, VOLEUR_ATTAQUE, true);
-            else
-                applySimpleAttack(gameState, ELFE_ATTAQUE, true);
-            break;
-        case ATTAQUE_PALANTIR:
-            gameState->setPalantir(player_, target_);
-            break;
-        case ATTAQUE_TRAITRISE:
-            applySimpleAttack(gameState, 9001, false);
-            break;
-        case ATTAQUE_FUS_RO_DAH:
-            applyFusRohDah(gameState);
-            break;
-        case ATTAQUE_I_SEE:
-            //FIXME: NOT A PALANTIR
-            gameState->setPalantir(player_, target_);
-            break;
-        case ATTAQUE_LOTO:
-            applySimpleAttack(gameState, ELFE_ATTAQUE, true);
-            break;
-        default:
-            break;
-    }
+    Ability* attack = gameState->getUnit(unit_)->getAbility(atk_id_);
+
+    unit_info info = { unit_.equipe, unit_.classe };
+    position target = { target_.x, target_.y };
+
+    attack->apply(gameState, info, target);
 }
 
 void ActionAttack::apply_on(GameState* gameState) const
@@ -114,74 +99,4 @@ void ActionAttack::apply_on(GameState* gameState) const
         pendingAttacks.push_front(this);
     else
         pendingAttacks.push_back(this);
-}
-
-void ActionAttack::applySimpleAttack(GameState* gameState, int power, bool friendlyFire) const
-{
-    Cell* target = gameState->getMap()->getCell(target_);
-
-    for (auto unitInfo : target->getUnits())
-    {
-        auto unit = gameState->getUnit(unitInfo);
-
-        if (!friendlyFire && unit->getPlayer() == player_)
-            continue;
-        unit->attacked(power, unit_info { unit_.equipe, unit_.classe });
-    }
-}
-
-void ActionAttack::applyBarbareAttack(GameState* gameState) const
-{
-    position center = target_;
-    applySimpleAttack(gameState, BARBARE_ATTAQUE, true);
-
-    ActionAttack* action = const_cast<ActionAttack*> (this);
-    action->target_ = { center.x + 1, center.y };
-    if (gameState->getMap()->isPositionValid(action->target_))
-        action->applySimpleAttack(gameState, BARBARE_ATTAQUE, true);
-    action->target_ = { center.x - 1, center.y };
-    if (gameState->getMap()->isPositionValid(action->target_))
-        action->applySimpleAttack(gameState, BARBARE_ATTAQUE, true);
-    action->target_ = { center.x, center.y + 1};
-    if (gameState->getMap()->isPositionValid(action->target_))
-        applySimpleAttack(gameState, BARBARE_ATTAQUE, true);
-    action->target_ = { center.x, center.y - 1};
-    if (gameState->getMap()->isPositionValid(action->target_))
-        action->applySimpleAttack(gameState, BARBARE_ATTAQUE, true);
-
-    action->target_ = center;
-}
-
-void ActionAttack::applyFusRohDah(GameState* gameState) const
-{
-    auto unit = gameState->getUnit(unit_);
-    position ownPosition = unit->getPosition();
-    orientation dir = unit->getOrientation();
-    int vision = unit->getVision();
-    auto unitsPosition = gameState->getMap()->getSurroundings(ownPosition, dir, vision);
-
-    for (auto unitPosition : unitsPosition)
-    {
-        position newPosition = unitPosition;
-        int North = (dir == ORIENTATION_SUD) - (dir == ORIENTATION_NORD);
-        int East = (dir == ORIENTATION_EST) - (dir == ORIENTATION_OUEST);
-        int maxDistance = unit->getVision() - abs((unitPosition.x - ownPosition.x) * East)
-            + abs((unitPosition.y - ownPosition.y) * North);
-
-        for (int i = 0; i < maxDistance; ++i)
-        {
-            newPosition = { newPosition.x + East, newPosition.y + North };
-            if (gameState->getMap()->isPositionValid(newPosition) &&
-                    gameState->getMap()->getCell(newPosition)->getType() != ZONE_MUR)
-                continue;
-            newPosition = { newPosition.x - East, newPosition.y - North };
-            break;
-        }
-
-        for (auto unitInfo : gameState->getMap()->getCell(unitPosition)->getUnits())
-        {
-            gameState->getUnit(unitInfo)->setPosition(newPosition);
-            gameState->getMap()->moveUnit(unitInfo, unitPosition, newPosition);
-        }
-    }
 }

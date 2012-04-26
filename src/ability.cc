@@ -4,6 +4,7 @@
 #include "ability.hh"
 
 #include "map.hh"
+#include "cell.hh"
 #include "game.hh"
 #include "unit.hh"
 
@@ -224,12 +225,44 @@ void FusRoDah::apply(GameState* st, unit_info attacker, position target)
     INFO("player_id=%d unit=%d attack=fusrodah target=(%d, %d)",
             attacker.player_id, attacker.classe, target.x, target.y);
 
-    // Map* map = st->getMap();
-
     // apply cooldown
     Ability::apply(st, attacker, target);
 
-    // FIXME: jicks move the code here
+    Map* map = st->getMap();
+    Unit_sptr attackerUnit = st->getUnit(attacker);
+    position attackerPosition = attackerUnit->getPosition();
+    orientation direction = attackerUnit->getOrientation();
+    int vision = attackerUnit->getVision();
+    int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
+    int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
+
+    auto unitsPositions = map->getSurroundings(attackerPosition, direction, vision);
+    for (auto unitsPosition : unitsPositions)
+    {
+        int maxDistance = vision - abs((unitsPosition.x - attackerPosition.x) * East)
+            + abs((unitsPosition.y - attackerPosition.y) * North) + 1;
+
+        // We calculate how much we can push the units on the cell
+        position newPosition = unitsPosition;
+        for (int i = 0; i < maxDistance; ++i)
+        {
+            newPosition = { newPosition.x + East, newPosition.y + North };
+            if (map->isPositionValid(newPosition) &&
+                    map->getCell(newPosition)->getType() != ZONE_MUR)
+                continue;
+            newPosition = { newPosition.x - East, newPosition.y - North };
+            break;
+        }
+
+        // We move the units
+        for (auto unitInfo : map->getCell(unitsPosition)->getUnits())
+        {
+            if (st->getUnit(unitInfo)->getCurrentLife() <= 0)
+                continue;
+            st->getUnit(unitInfo)->setPosition(newPosition);
+            map->moveUnit(unitInfo, unitsPosition, newPosition);
+        }
+    }
 }
 
 /*

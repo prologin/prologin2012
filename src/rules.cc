@@ -250,7 +250,7 @@ void Rules::resolve_attacks()
     {
         if (attack->getType() != ATTAQUE_FUS_RO_DAH)
             break;
-        attack->markFusRohDah(api_->game_state(), markedUnits);
+        attack->markFusRoDah(api_->game_state(), markedUnits);
     }
     for (auto attack : pendingAttacks)
         attack->applyAttack(api_->game_state());
