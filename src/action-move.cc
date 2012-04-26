@@ -26,7 +26,6 @@ ActionMove::ActionMove(perso_info unit, std::vector<position>& path,
 
 int ActionMove::check(const GameState* st) const
 {
-    // TODO: test
     DEBUG("ActionMove::check");
 
     Unit_sptr unit = st->getUnit(unit_);

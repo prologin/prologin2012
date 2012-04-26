@@ -158,8 +158,7 @@ function:
   -
     fct_name: carte_taille
     fct_summary:
-      Retourne la taille de la carte sous la forme d'une position
-      correspondant aux coordonnées du point extrême.
+      Retourne la taille de la carte.
     fct_ret_type: position
     fct_arg: []
   -

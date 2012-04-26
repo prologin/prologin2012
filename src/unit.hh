@@ -21,6 +21,7 @@ typedef struct unit_info
 {
     int player_id;
     perso_classe classe;
+
 } unit_info;
 
 typedef std::vector<unit_info> UnitVect;
@@ -56,11 +57,12 @@ public:
           current_position_(position {0, 0}),
           move_points_(move_points),
           attackers_(),
+          displacement_({0, 0}),
           orientation_(ORIENTATION_NORD),
           penombre_()
     {}
 
-    // by default, for test purposes only, creata a Voleur
+    // For test purposes only, create a Voleur
     Unit(int player_id, int move_points)
         : Unit(player_id, move_points, VOLEUR_VISION, VOLEUR_VIE, PERSO_VOLEUR)
     {}
@@ -87,7 +89,7 @@ public:
     /**
      * reset cooldown on all abilities
      * reset life
-     * reset its position but does not move the unit on the map TODO
+     * reset its position but does not move the unit on the map
      */
     void respawn();
 
@@ -102,6 +104,10 @@ public:
     void attacked(int damages, unit_info attacker);
     UnitVect getAttackers() const;
     void resetAttackers();
+
+    // FIXME: don't forget to reset to {0, 0}
+    void setDisplacement(position disp);
+    position getDisplacement() const;
 
     bool isDead();
 
@@ -132,6 +138,7 @@ private:
     int move_points_;
 
     UnitVect attackers_;
+    position displacement_;
 
     orientation orientation_;
 

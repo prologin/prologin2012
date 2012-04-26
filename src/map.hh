@@ -58,14 +58,6 @@ public:
      */
     UnitVect getUnitsOn(position cell) const;
 
-    /*
-     * // TODO DO
-     * @return If the path is valid
-     *  - unit on first cell of the path,
-     *  - path is contiguous,
-     *  - unit have enought movePoints
-     */
-    erreur checkMove(unit_info unit, path_t path) const;
     bool isPositionValid(position p) const;
 
     void moveUnit(unit_info unit, position from, position to);

@@ -83,6 +83,7 @@ void Unit::respawn()
 
     resetLife();
     current_position_ = getSpawn();
+    orientation_ = ORIENTATION_NORD;
 }
 
 int Unit::getVision() const
@@ -117,6 +118,16 @@ UnitVect Unit::getAttackers() const
 void Unit::resetAttackers()
 {
     attackers_.clear();
+}
+
+void Unit::setDisplacement(position disp)
+{
+    displacement_ = disp;
+}
+
+position Unit::getDisplacement() const
+{
+    return displacement_;
 }
 
 // Return true if unit's life is less or equal to zero

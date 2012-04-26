@@ -87,9 +87,11 @@ void ActionAttack::applyAttack(GameState *gameState) const
     Ability* attack = gameState->getUnit(unit_)->getAbility(atk_id_);
 
     unit_info info = { unit_.equipe, unit_.classe };
-    position target = { target_.x, target_.y };
+    position displacement = gameState->getUnit(info)->getDisplacement();
+    position target = { target_.x + displacement.x, target_.y + displacement.y };
 
-    attack->apply(gameState, info, target);
+    if (attack->check(*gameState) == OK)
+        attack->apply(gameState, info, target);
 }
 
 void ActionAttack::apply_on(GameState* gameState) const

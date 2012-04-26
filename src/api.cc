@@ -35,11 +35,8 @@ Api::Api(GameState* game_state, rules::Player_sptr player)
   api = this;
 }
 
-// FIXME: Y U NO DTOR?
-
 ///
-// Retourne la taille de la carte sous la forme d'une position correspondant aux coordonnées du point extrême.
-// XXX: ÇA NE CORRESPOND PAS VRAIMENT À LA DÉFINITION D'UNE TAILLE
+// Retourne la taille de la carte.
 //
 position Api::carte_taille()
 {
@@ -186,7 +183,6 @@ std::vector<position> Api::perso_vision_ennemis(perso_info perso)
 //
 std::vector<position> Api::palantir_vision()
 {
-    // TODO test
     if (!game_state_->isPalantirActivated(player_->id))
         return std::vector<position>();
 
@@ -198,7 +194,6 @@ std::vector<position> Api::palantir_vision()
 //
 std::vector<position> Api::elfe_vision()
 {
-    // TODO test
     if (!game_state_->isElfeVisionActivated(player_->id))
         return std::vector<position>();
 
@@ -227,7 +222,6 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     game_state_ = dynamic_cast<GameState*>(action->apply(game_state_));
     actions_.add(action);
 
-    // TODO More tests
     return OK;
 }
 
@@ -239,7 +233,6 @@ int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
     if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
       return -1;
 
-    // TODO test + getAbilityCooldown for ELFE and BARBARE
     return game_state_->getUnit(perso)->getAbilityCooldown(attaque);
 }
 

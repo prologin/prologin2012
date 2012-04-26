@@ -164,20 +164,6 @@ void Map::moveUnit(unit_info unit, position from, position to)
     getCell(to)->addUnit(unit);
 }
 
-erreur Map::checkMove(unit_info unit, path_t path) const
-{
-    position from = path.front();
-    position to = path.back();
-
-    if (!isPositionValid(from) || !isPositionValid(to))
-        return POSITION_IMPOSSIBLE;
-
-    if (!getCell(from)->isUnitOnCell(unit))
-        return PERSONNAGE_IMPOSSIBLE;
-
-    return OK;
-}
-
 void Map::initializeDistance(int from, int to)
 {
     int cost = map_[from % height_][from / height_]->getCost();

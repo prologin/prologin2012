@@ -337,8 +337,6 @@ void Rules::resolve_end_of_deplacement_phase()
     INFO("end of move turn %d", st->getCurrentTurn());
 
     st->setPhase(PHASE_ATTAQUE);
-
-    // FIXME: (halfr) is that all?
 }
 
 void Rules::resolve_end_of_attaque_phase()
