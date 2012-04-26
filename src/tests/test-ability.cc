@@ -87,8 +87,11 @@ TEST_F(AbilityTest, BasicAbilityCheck)
     position target = position {5, 4};
     // check
     EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, target));
-    EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, position {5, 5}));
+    EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, position {5, 3}));
 
+    // target is behind
+    EXPECT_EQ(POSITION_IMPOSSIBLE,
+        attack.check(*gamestate_, attacker_unit, position {5, 5}));
     // target is not in range
     EXPECT_EQ(POSITION_IMPOSSIBLE,
             attack.check(*gamestate_, attacker_unit, position {1, 2}));

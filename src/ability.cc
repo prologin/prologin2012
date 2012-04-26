@@ -53,6 +53,8 @@ erreur BasicAttack::check(const GameState& st, unit_info attacker,
     if (abs(target.x - attacker_pos.x)
             + abs(target.y - attacker_pos.y) > range_)
         return POSITION_IMPOSSIBLE;
+    if (!st.getUnit(attacker)->isPositionInVision(st.getMap(), target))
+      return POSITION_IMPOSSIBLE;
 
     return OK;
 }
@@ -89,7 +91,8 @@ erreur Palantir::check(const GameState& st, unit_info attacker,
     if ((err = Ability::check(st, attacker, target)) != OK)
         return err;
 
-    // TODO CHECK VISION
+    if (!st.getUnit(attacker)->isPositionInVision(st.getMap(), target))
+      return POSITION_IMPOSSIBLE;
 
     return OK;
 }
@@ -280,7 +283,7 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
     if ((err = Ability::check(st, attacker, target)) != OK)
         return err;
 
-    // FIXME: halfr, vision
+    // FIXME: halfr, vision: isInVision de chaque perso + Palantir + I See
 
     return OK;
 }
