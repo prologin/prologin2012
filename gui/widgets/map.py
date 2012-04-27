@@ -41,17 +41,6 @@ class MapWidget(BaseWidget):
             self.update_display((x - self.center[0], y - self.center[1]))
         return True
 
-    def _blit_number(self, number, x, y):
-        text_black = self.font.render(u'%d' % number, True, utils.BLACK)
-        text_white = self.font.render(u'%d' % number, True, utils.WHITE)
-        text_w, text_h = text_black.get_size()
-        x = x + data.WIDTH - text_w - 1
-        y = y + data.HEIGHT - text_h - 1
-        for dx in (-1, 1):
-            for dy in (-1, 1):
-                self.map_surface.blit(text_black, (x + dx, y + dy))
-        return (text_white, (x, y))
-
     def update_game(self, game_state):
         self.game_state = game_state
         self.position_max = (
@@ -81,7 +70,12 @@ class MapWidget(BaseWidget):
                 self.map_surface.blit(data.pix_cells[cell], coords)
                 if units:
                     self.map_surface.blit(data.pix['many'], coords)
-                    unit_numbers.append(self._blit_number(len(units), *coords))
+                    unit_number = utils.make_bordered_text(str(len(units)), self.font)
+                    unit_number_w, unit_number_h = unit_number.get_size()
+                    unit_numbers.append((unit_number, (
+                        coords[0] + data.WIDTH - unit_number_w,
+                        coords[1] + data.HEIGHT - unit_number_h,
+                    )))
         for args in unit_numbers:
             self.map_surface.blit(*args)
 

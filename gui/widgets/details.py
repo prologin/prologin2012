@@ -20,10 +20,10 @@ class DetailsWidget(ScrolledWidget):
         self.position = None
 
         self.directions = {
-            ORIENTATION_NORD: self.font.render(u'↑', True, utils.WHITE),
-            ORIENTATION_EST: self.font.render(u'→', True, utils.WHITE),
-            ORIENTATION_SUD: self.font.render(u'↓', True, utils.WHITE),
-            ORIENTATION_OUEST: self.font.render(u'←', True, utils.WHITE),
+            ORIENTATION_NORD: utils.make_bordered_text(u'↑', self.font),
+            ORIENTATION_EST: utils.make_bordered_text(u'→', self.font),
+            ORIENTATION_SUD: utils.make_bordered_text(u'↓', self.font),
+            ORIENTATION_OUEST: utils.make_bordered_text(u'←', self.font),
         }
 
     def plug(self, widgets):
