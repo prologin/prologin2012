@@ -48,7 +48,7 @@ protected:
 
         gamestate_->init();
 
-        api_ = new Api(gamestate_, players->players[0]);
+        api_ = new Api(gamestate_, players->players[0], 0);
 
         rules_ = new Rules(players, api_);
     }

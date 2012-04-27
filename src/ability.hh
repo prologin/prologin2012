@@ -6,9 +6,6 @@
 
 # include "constant.hh"
 
-# define ACTION_MOVE 0
-# define ACTION_ATTACK 1
-
 struct unit_info;
 
 class GameState;

@@ -31,7 +31,7 @@ class Game;
 class Api
 {
 public:
-    Api(GameState* game_state, rules::Player_sptr player);
+    Api(GameState* game_state, rules::Player_sptr player, int equipe);
     virtual ~Api() { }
 
     const rules::Player_sptr player() const
@@ -52,6 +52,7 @@ public:
 private:
     GameState* game_state_;
     rules::Player_sptr player_;
+    int equipe_;
     rules::Actions actions_;
 
 public:
@@ -63,7 +64,7 @@ public:
 ///
 // Retourne la position de départ des personnages sur la map.
 //
-   position carte_starting_position();
+   position carte_depart();
 ///
 // Retourne la nature de la zone désignée par ``pos``.
 //

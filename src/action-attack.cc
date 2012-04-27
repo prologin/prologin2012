@@ -15,11 +15,11 @@ ActionAttack::ActionAttack()
 {
 }
 
-ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target)
+ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target, int player)
     : unit_(unit),
       atk_id_(atk),
       target_(target),
-      player_(unit.equipe),
+      player_(player),
       id_(ACTION_ATTACK)
 {
 }
@@ -45,6 +45,7 @@ void ActionAttack::handle_buffer(utils::Buffer& buf)
     buf.handle(unit_);
     buf.handle(atk_id_);
     buf.handle(target_);
+    buf.handle(player_);
 }
 
 attaque_type ActionAttack::getType() const

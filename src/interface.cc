@@ -228,6 +228,14 @@ extern "C" position api_carte_taille()
 }
 
 ///
+// Retourne la position de départ des personnages sur la map.
+//
+extern "C" position api_carte_depart()
+{
+    return api->carte_depart();
+}
+
+///
 // Retourne la nature de la zone désignée par ``pos``.
 //
 extern "C" zone_type api_carte_zone_type(position pos)

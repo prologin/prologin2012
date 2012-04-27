@@ -16,6 +16,12 @@ enum game_phase {
     PHASE_ATTAQUE,
 };
 
+enum action_id {
+    ACTION_MOVE = 0,
+    ACTION_ATTACK = 1,
+    ACTION_ACK = 2
+};
+
 typedef struct remote_vision
 {
     bool palantir_activated;

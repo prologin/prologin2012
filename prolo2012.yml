@@ -166,7 +166,7 @@ function:
     fct_ret_type: position
     fct_arg: []
   -
-    fct_name: carte_starting_position
+    fct_name: carte_depart
     fct_summary:
       Retourne la position de départ des personnages sur la map.
     fct_ret_type: position

@@ -19,6 +19,7 @@ def build(bld):
             src/api.cc
             src/action-move.cc
             src/action-attack.cc
+            src/action-ack.cc
             src/dumper.cc
             src/interface.cc
         ''',

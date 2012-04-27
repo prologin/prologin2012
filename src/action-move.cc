@@ -55,6 +55,7 @@ void ActionMove::handle_buffer(utils::Buffer& buf)
     buf.handle(unit_);
     buf.handle(path_);
     buf.handle(direction_);
+    buf.handle(player_);
 }
 
 void ActionMove::applyDirection(GameState* gameState) const

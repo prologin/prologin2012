@@ -12,7 +12,7 @@
 class ActionAttack : public rules::Action<GameState>
 {
 public:
-    ActionAttack(perso_info unit, attaque_type atk, position target);
+    ActionAttack(perso_info unit, attaque_type atk, position target, int player);
 
     ActionAttack();
 
@@ -39,6 +39,7 @@ protected:
     attaque_type atk_id_;
     position target_;
 
+    // stechec-id
     int player_;
     int id_;
 };

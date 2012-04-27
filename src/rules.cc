@@ -14,6 +14,7 @@
 
 #include "action-move.hh"
 #include "action-attack.hh"
+#include "action-ack.hh"
 
 Rules::Rules(const rules::Options& opt)
     : opt_(opt),
@@ -21,7 +22,7 @@ Rules::Rules(const rules::Options& opt)
       sandbox_(opt.time)
 {
     // Load map from file
-    std::ifstream ifs(opt.map_name);
+    std::ifstream ifs(opt.map_file);
 
     Map* map = new Map();
     map->load(ifs);
@@ -30,7 +31,15 @@ Rules::Rules(const rules::Options& opt)
 
     game_state->init();
 
-    api_ = new Api(game_state, opt.player);
+    int equipe = 0;
+    if (opt.player.get() != nullptr)
+    {
+        for (; (unsigned)equipe < opt.players->players.size(); ++equipe)
+            if (opt.players->players[equipe]->id == opt.player->id)
+                break;
+    }
+
+    api_ = new Api(game_state, opt.player, equipe);
 
     // Get the champion library if we are a client
     if (!opt.champion_lib.empty())
@@ -54,12 +63,15 @@ Rules::Rules(const rules::Options& opt)
     }
 
     players_ = opt.players;
+    spectators_ = opt.spectators;
 
     // Register Actions
     api_->actions()->register_action(ACTION_MOVE,
             []() -> rules::IAction* { return new ActionMove(); });
     api_->actions()->register_action(ACTION_ATTACK,
             []() -> rules::IAction* { return new ActionAttack(); });
+    api_->actions()->register_action(ACTION_ACK,
+            []() -> rules::IAction* { return new ActionAck(); });
 }
 
 
@@ -75,6 +87,8 @@ Rules::Rules(rules::Players_sptr players, Api* api)
             []() -> rules::IAction* { return new ActionMove(); });
     api_->actions()->register_action(ACTION_ATTACK,
             []() -> rules::IAction* { return new ActionAttack(); });
+    api_->actions()->register_action(ACTION_ACK,
+            []() -> rules::IAction* { return new ActionAck(); });
 }
 
 Rules::~Rules()
@@ -115,10 +129,8 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             break;
         }
 
-        DEBUG("sending");
         // Send actions
         msgr->send_actions(*api_->actions());
-        DEBUG("wait4ack");
         msgr->wait_for_ack();
         DEBUG("ack ok");
 
@@ -147,8 +159,8 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
-            for (rules::Player_sptr player: players_->players)
-                api_->game_state()->deactivateElfeVision(player->id - 1);
+            for (uint32_t i = 0; i < players_->players.size(); ++i)
+                api_->game_state()->deactivateElfeVision(i);
 
             resolve_attacks();
             resolve_points();
@@ -159,6 +171,80 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
     }
 
     DEBUG("winner = %i", winner_);
+}
+
+void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
+{
+    CHECK(champion_ != nullptr);
+
+    rules::Actions actions;
+    game_phase phase;
+
+    while (!is_finished())
+    {
+        DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
+
+        phase = api_->game_state()->getPhase();
+
+        api_->actions()->clear();
+
+        // No sandbox: spectators can't timeout
+        switch (phase)
+        {
+        case PHASE_PLACEMENT:
+            champion_jouer_placement();
+            break;
+        case PHASE_DEPLACEMENT:
+            champion_jouer_deplacement();
+            break;
+        case PHASE_ATTAQUE:
+            champion_jouer_attaque();
+            break;
+        }
+
+        api_->actions()->clear();
+        rules::IAction_sptr ack(new ActionAck(api_->player()->id));
+        api_->actions()->add(ack);
+
+        // Send actions
+        msgr->send_actions(*api_->actions());
+        msgr->wait_for_ack();
+
+        api_->actions()->clear();
+
+        // Receive actions
+        msgr->pull_actions(api_->actions());
+
+        // Apply them onto the gamestate
+        for (auto& action : api_->actions()->actions())
+        {
+            api_->game_state_set(action->apply(api_->game_state()));
+        }
+
+        switch (phase)
+        {
+        case PHASE_PLACEMENT:
+            resolve_moves();
+            resolve_end_of_placement_turn();
+            break;
+        case PHASE_DEPLACEMENT:
+            resolve_moves();
+            resolve_end_of_deplacement_phase();
+            break;
+        case PHASE_ATTAQUE:
+            for (uint32_t i = 0; i < players_->players.size(); ++i)
+                api_->game_state()->deactivateElfeVision(i);
+
+            resolve_attacks();
+            resolve_points();
+            resolve_end_of_attaque_phase();
+            break;
+        }
+
+    }
+
+    DEBUG("winner = %i", winner_);
+
 }
 
 void Rules::server_loop(rules::ServerMessenger_sptr msgr)
@@ -176,7 +262,9 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
         api_->actions()->clear();
 
-        for (uint32_t i = 0; i < players_->players.size(); ++i)
+        uint32_t size = players_->players.size() + spectators_->players.size();
+
+        for (uint32_t i = 0; i < size; ++i)
         {
             // Receive actions
             msgr->recv_actions(api_->actions());
@@ -195,23 +283,22 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         DEBUG("resolving %d", phase);
         switch (phase)
         {
-        case PHASE_PLACEMENT:
-            resolve_moves();
-            resolve_end_of_placement_turn();
-            break;
-        case PHASE_DEPLACEMENT:
-            resolve_moves();
-            resolve_end_of_deplacement_phase();
-            break;
-        case PHASE_ATTAQUE:
-            for (rules::Player_sptr player: players_->players)
-                // - 1 because stechec assigns id starting from 1
-                api_->game_state()->deactivateElfeVision(player->id - 1);
+            case PHASE_PLACEMENT:
+                resolve_moves();
+                resolve_end_of_placement_turn();
+                break;
+            case PHASE_DEPLACEMENT:
+                resolve_moves();
+                resolve_end_of_deplacement_phase();
+                break;
+            case PHASE_ATTAQUE:
+                for (uint32_t i = 0; i < players_->players.size(); ++i)
+                    api_->game_state()->deactivateElfeVision(i);
 
-            resolve_attacks();
-            resolve_points();
-            resolve_end_of_attaque_phase();
-            break;
+                resolve_attacks();
+                resolve_points();
+                resolve_end_of_attaque_phase();
+                break;
         }
 
         // Send actions
@@ -233,7 +320,7 @@ void Rules::resolve_moves()
         unit->resetPenombre();
 
     if (pendingMoves.size() == 0)
-      return;
+        return;
 
     for (auto& moves : pendingMoves)
     {
@@ -241,7 +328,7 @@ void Rules::resolve_moves()
         {
             Unit_sptr unit = api_->game_state()->getUnit(move.second->getUnitInfo());
             api_->game_state()->getMap()->moveUnit(unit->getUnitInfo(),
-                        unit->getPosition(), move.first);
+                    unit->getPosition(), move.first);
             unit->setPosition(move.first);
             unit->setOrientation(Map::getOrientation(move.first,
                         unit->getPosition()));
@@ -269,7 +356,7 @@ void Rules::resolve_attacks()
     for (auto& attack : pendingAttacks)
     {
         if (attack->getType() != ATTAQUE_FUS_RO_DAH)
-          break;
+            break;
         attack->markFusRoDah(api_->game_state(), markedUnits);
     }
     for (auto& attack : pendingAttacks)
@@ -313,16 +400,16 @@ void Rules::resolve_points()
                 players_->players[team]->score += 1;
             players_->players[unit->getPlayer()]->score -= 1;
         }
-            // else
-            // mixed teamkill and offensive kill
-            // no points given
+        // else
+        // mixed teamkill and offensive kill
+        // no points given
 
         // reset life & cooldowns
         unit->respawn();
 
         // Move unit to spawn position
         st->getMap()->moveUnit(unit->getUnitInfo(), unit->getPosition(),
-            unit->getSpawn());
+                unit->getSpawn());
     }
 }
 

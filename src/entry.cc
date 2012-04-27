@@ -39,6 +39,11 @@ void client_loop(rules::ClientMessenger_sptr msgr)
     rules_->client_loop(msgr);
 }
 
+void spectator_loop(rules::ClientMessenger_sptr msgr)
+{
+    rules_->spectator_loop(msgr);
+}
+
 void server_loop(rules::ServerMessenger_sptr msgr)
 {
     rules_->server_loop(msgr);

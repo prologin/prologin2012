@@ -28,9 +28,10 @@
 // global used in interface.cc
 Api* api;
 
-Api::Api(GameState* game_state, rules::Player_sptr player)
+Api::Api(GameState* game_state, rules::Player_sptr player,int equipe)
     : game_state_(game_state),
-      player_(player)
+      player_(player),
+      equipe_(equipe)
 {
   api = this;
 }
@@ -47,7 +48,7 @@ position Api::carte_taille()
 ///
 // Retourne la position de départ des personnages sur la map.
 //
-position Api::carte_starting_position()
+position Api::carte_depart()
 {
     return game_state_->getMap()->getStartingPos();
 }
@@ -128,7 +129,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
     if (game_state_->getPhase() == PHASE_ATTAQUE)
       return CHEMIN_IMPOSSIBLE;
 
-    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
 
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
@@ -150,7 +151,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 //
 std::vector<position> Api::perso_penombre(perso_info perso)
 {
-    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     return game_state_->getUnit(perso)->getPenombre();
@@ -162,7 +163,7 @@ std::vector<position> Api::perso_penombre(perso_info perso)
 std::vector<position> Api::perso_vision(perso_info perso)
 {
     // Error, you cannot see what the other team sees
-    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     Unit_sptr unit = game_state_->getUnit(perso);
@@ -178,7 +179,7 @@ std::vector<position> Api::perso_vision(perso_info perso)
 std::vector<position> Api::perso_vision_ennemis(perso_info perso)
 {
     // Error, you cannot see what the other team sees
-    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     Unit_sptr unit = game_state_->getUnit(perso);
@@ -193,10 +194,10 @@ std::vector<position> Api::perso_vision_ennemis(perso_info perso)
 //
 std::vector<position> Api::palantir_vision()
 {
-    if (!game_state_->isPalantirActivated(player_->id))
+    if (!game_state_->isPalantirActivated(mon_equipe()))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareSurroundings(game_state_->getPalantir(player_->id), VOLEUR_VISION);
+    return game_state_->getMap()->getSquareSurroundings(game_state_->getPalantir(mon_equipe()), VOLEUR_VISION);
 }
 
 ///
@@ -204,10 +205,10 @@ std::vector<position> Api::palantir_vision()
 //
 std::vector<position> Api::elfe_vision()
 {
-    if (!game_state_->isElfeVisionActivated(player_->id))
+    if (!game_state_->isElfeVisionActivated(mon_equipe()))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareSurroundings(game_state_->getElfeVision(player_->id), ELFE_VISION);
+    return game_state_->getMap()->getSquareSurroundings(game_state_->getElfeVision(mon_equipe()), ELFE_VISION);
 }
 
 ///
@@ -218,10 +219,10 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     if (game_state_->getPhase() != PHASE_ATTAQUE)
       return ATTAQUE_INDISPONIBLE;
 
-    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
 
-    rules::IAction_sptr action(new ActionAttack(perso, attaque, pos));
+    rules::IAction_sptr action(new ActionAttack(perso, attaque, pos, player_->id));
 
     erreur err;
 
@@ -239,7 +240,7 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 //
 int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
-    if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
+    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return -1;
 
     return game_state_->getUnit(perso)->getAbilityCooldown(attaque);
@@ -250,7 +251,7 @@ int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 //
 int Api::mon_equipe()
 {
-    return player_->id;
+    return equipe_;
 }
 
 ///

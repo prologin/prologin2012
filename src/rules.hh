@@ -25,6 +25,7 @@ public:
     virtual ~Rules();
 
     void client_loop(rules::ClientMessenger_sptr msgr);
+    void spectator_loop(rules::ClientMessenger_sptr msgr);
     void server_loop(rules::ServerMessenger_sptr msgr);
 
     void resolve_moves();
@@ -49,6 +50,7 @@ private:
     utils::DLL* champion_;
     Api* api_;
     rules::Players_sptr players_;
+    rules::Players_sptr spectators_;
 
     int winner_;
 
