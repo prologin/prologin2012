@@ -50,7 +50,7 @@ disqus_site = u""""""
 # built documents.
 #
 # The short X.Y version.
-#version = ''
+version = '0.42'
 # The full version, including alpha/beta/rc tags.
 #release = ''
 
@@ -60,7 +60,7 @@ language = "fr"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
-#today = ''
+today = 'Samedi 28 avril 2012'
 # Else, today_fmt is used as the format for a strftime call.
 #today_fmt = '%B %d, %Y'
 
@@ -186,7 +186,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Prolo-proto.tex', u'Prolo-proto',
+  ('index', 'CasusBelli.tex', u'Prologin 2012 Casus Belli',
    u'prologin-sadm', 'manual'),
 ]
 
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'prolo-proto', u'Prolo-proto',
+    ('index', 'Prologin', u'Prologin',
      [u'prologin-sadm'], 1)
 ]
 

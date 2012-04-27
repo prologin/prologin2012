@@ -11,4 +11,6 @@ Pages:
    :maxdepth: 1
 
    finale
+   api
    faq-candidat
+   meta

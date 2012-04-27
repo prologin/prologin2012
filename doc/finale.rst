@@ -2,10 +2,6 @@
 Finale Prologin 2012 - Casus Belli
 ==================================
 
-**TODO: Ajouter les tiles pour les types de terrain**
-
-**TODO: Ajouter les tiles pour les unités**
-
 -----
 Intro
 -----
@@ -108,13 +104,13 @@ Il peut tirer sur toutes les cases visibles par le membres de son équipe. C'est
   :dégats: 2 points de vie
 
 *Loto, à qui le tour*
-  :description: Arc très long. Le tireur d'élite peut tirer sur n'importe
-    quelle case de la carte.
+  :description: Arc très long. L'Elfe peut tirer sur n'importe quelle case de
+    la carte.
   :dégats: 4 points de vie
   :cooldown: 5 tours
 
 *I see what you did there.*
-  :description: Le tireur d'élite peut réveler une zone carrée (comme si l'Elfe
+  :description: L'Elfe peut réveler une zone carrée (comme si il
     était sur une tour) de la carte. Elle sera visible jusqu'à la prochaine
     phase d'attaque.
   :cooldown: 5 tours
@@ -124,6 +120,7 @@ Champs de vision
 
 Le champs de vision définit les cases visible par un personnage. C'est un cône
 de la géométrie suivante :
+
 Taille 1 : ::
 
   .....
@@ -207,7 +204,8 @@ Les différentes cases que l'on peut rencontrer sur une carte sont :
 Herbe
 -----
 
-Zone normale. Un déplacement coûte **deux** points de déplacement.
+Zone normale. Un déplacement vers cette case coûte **deux** points de
+déplacement.
 
 Route
 -----
@@ -234,6 +232,7 @@ Forêt
 Un personnage qui regarde vers la foret ne peut voir qu'une seule case en face
 de lui et un personnage hors de la foret ne peut pas voir l'intérieur de
 celle-ci.
+
 Un déplacement coûte **deux** points de déplacement.
 
 
@@ -416,8 +415,8 @@ Déplacement
 Une case peut accueillir un nombre quelconque de personnages. Tout le monde se
 déplace en même temps.
 
-Pour déplacer un personnage le champion doit donner la liste des déplacements
-relatifs qui composent le chemin.
+Pour déplacer un personnage le champion doit donner la liste des cases qui
+composent le chemin.
 
 *Pénombre*
 
