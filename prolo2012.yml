@@ -232,7 +232,7 @@ function:
   -
     fct_name: palantir_vision
     fct_summary:
-      Récupère la liste des zones sur lesquelles le palantír du voleur voit
+      Récupère la liste des positions sur lesquelles le palantír du voleur voit
       d'autre personnages.
     fct_ret_type: position array
     fct_arg: []

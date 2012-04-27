@@ -32,6 +32,11 @@ int Ability::getCooldown() const
     return cooldown_;
 }
 
+void Ability::decrementCooldown()
+{
+    cooldown_ = (cooldown_ > 0) ? cooldown_ - 1 : 0;
+}
+
 void Ability::resetCooldown()
 {
     cooldown_ = 0;

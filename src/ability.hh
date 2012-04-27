@@ -36,15 +36,16 @@ public:
      *  - cooldown > 0
      *  - target is on the map
      */
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
 
     /* apply:
      *  - add decrease life points
      */
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual void apply(GameState* st, unit_info attacker, position target);
 
     int getCooldown() const;
+    void decrementCooldown();
     void resetCooldown();
 
 private:
@@ -64,9 +65,9 @@ public:
         : Ability(0)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -80,9 +81,9 @@ public:
         : Ability(VOLEUR_PALANTIR_CD)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -96,10 +97,10 @@ public:
         : Ability(VOLEUR_TRAITRISE_CD)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
     // kill unit
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -113,9 +114,9 @@ public:
         : Ability(0)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -129,9 +130,9 @@ public:
         : Ability(BARBARE_BASTOOOON_CD)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -145,9 +146,9 @@ public:
         : Ability(BARBARE_FUS_RO_DAH_CD)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -161,9 +162,9 @@ public:
         : Ability(0)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -177,9 +178,9 @@ public:
         : Ability(ELFE_I_SEE_CD)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 /*******************************************************************************
@@ -193,9 +194,9 @@ public:
         : Ability(ELFE_LOTO_CD)
     {}
 
-    erreur check(const GameState& st, unit_info attacker, position target)
-        const;
-    void apply(GameState* st, unit_info attacker, position target);
+    virtual erreur check(const GameState& st, unit_info attacker,
+        position target) const;
+    virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
 #endif // !ABILITY_HH_

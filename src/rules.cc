@@ -329,7 +329,7 @@ void Rules::resolve_end_of_deplacement_phase()
 {
     GameState* st = api_->game_state();
 
-    INFO("end of move turn %d", st->getCurrentTurn());
+    INFO("end of move phase %d", st->getCurrentTurn());
 
     st->setPhase(PHASE_ATTAQUE);
 }
@@ -338,7 +338,7 @@ void Rules::resolve_end_of_attaque_phase()
 {
     GameState* st = api_->game_state();
 
-    INFO("end of move turn %d", st->getCurrentTurn());
+    INFO("end of attack phase %d", st->getCurrentTurn());
 
     st->incrementTurn();
     st->setPhase(PHASE_DEPLACEMENT);

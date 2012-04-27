@@ -12,8 +12,7 @@
 class ActionAttack : public rules::Action<GameState>
 {
 public:
-    ActionAttack(perso_info unit, attaque_type atk, position target,
-            int player);
+    ActionAttack(perso_info unit, attaque_type atk, position target);
 
     ActionAttack();
 

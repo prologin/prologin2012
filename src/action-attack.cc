@@ -15,10 +15,11 @@ ActionAttack::ActionAttack()
 {
 }
 
-ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target, int)
+ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target)
     : unit_(unit),
       atk_id_(atk),
       target_(target),
+      player_(unit.equipe),
       id_(ACTION_ATTACK)
 {
 }

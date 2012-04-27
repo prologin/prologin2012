@@ -188,7 +188,7 @@ std::vector<position> Api::palantir_vision()
     if (!game_state_->isPalantirActivated(player_->id))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareVision(game_state_->getPalantir(player_->id), VOLEUR_VISION);
+    return game_state_->getMap()->getSquareSurroundings(game_state_->getPalantir(player_->id), VOLEUR_VISION);
 }
 
 ///
@@ -199,7 +199,7 @@ std::vector<position> Api::elfe_vision()
     if (!game_state_->isElfeVisionActivated(player_->id))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareVision(game_state_->getElfeVision(player_->id), ELFE_VISION);
+    return game_state_->getMap()->getSquareSurroundings(game_state_->getElfeVision(player_->id), ELFE_VISION);
 }
 
 ///
@@ -213,8 +213,7 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     if ((unsigned int)perso.equipe != player_->id || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
 
-    rules::IAction_sptr action(new ActionAttack(perso, attaque, pos,
-                player_->id));
+    rules::IAction_sptr action(new ActionAttack(perso, attaque, pos));
 
     erreur err;
 

@@ -14,10 +14,12 @@ class ApiTest : public ::testing::Test
 protected:
     virtual void SetUp()
     {
+        utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
+
         f << "10 9\n";
         f << "5 4\n";
         f << "10\n";
-        f << "10\n";
+        f << "20\n";
         f << "##########\n";
         f << "#FFF_....#\n";
         f << "#FFF_..T.#\n";
@@ -125,14 +127,16 @@ TEST_F(ApiTest, perso_deplace)
     );
 
     for (auto& move : api_->actions()->actions())
-        move->apply(gamestate_);
+        api_->game_state_set(move->apply(api_->game_state()));
 
+    gamestate_ = api_->game_state();
     rules_->resolve_moves();
 
     Unit_sptr elfe = gamestate_->getUnit(unit_info {0, PERSO_ELFE});
     position test_elfe_pos = elfe->getPosition();
     position elfe_pos = {5, 2};
-    EXPECT_EQ(elfe_pos, test_elfe_pos);
+    EXPECT_EQ(elfe_pos.x, test_elfe_pos.x);
+    EXPECT_EQ(elfe_pos.y, test_elfe_pos.y);
     EXPECT_EQ(ORIENTATION_SUD, elfe->getOrientation());
 
     Unit_sptr voleur = gamestate_->getUnit(unit_info {0, PERSO_VOLEUR});
@@ -167,6 +171,30 @@ TEST_F(ApiTest, perso_deplace_bad_phase)
     EXPECT_EQ(CHEMIN_IMPOSSIBLE, err);
 }
 
+TEST_F(ApiTest, perso_penombre)
+{
+    api_->perso_deplace(
+        perso_info {0, PERSO_ELFE, 10, ORIENTATION_NORD},
+        api_->chemin(map_->getStartingPos(), position {5, 2}),
+        ORIENTATION_SUD
+    );
+
+    for (auto& move : api_->actions()->actions())
+        api_->game_state_set(move->apply(api_->game_state()));
+
+    gamestate_ = api_->game_state();
+
+    rules_->resolve_moves();
+
+    std::vector<position> p = api_->perso_penombre(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD});
+
+    EXPECT_EQ(4u, p.size());
+    EXPECT_TRUE(p[0].x == 5 && p[0].y == 4);
+    EXPECT_TRUE(p[1].x == 5 && p[1].y == 3);
+    EXPECT_TRUE(p[2].x == 5 && p[2].y == 4);
+    EXPECT_TRUE(p[3].x == 5 && p[3].y == 2);
+}
+
 TEST_F(ApiTest, perso_vision)
 {
     EXPECT_EQ(17u, api_->perso_vision(
@@ -191,35 +219,129 @@ TEST_F(ApiTest, perso_vision_ennemis)
         }).size());
 }
 
-TEST_F(ApiTest, perso_penombre)
+TEST_F(ApiTest, palantir_vision)
 {
-    api_->perso_deplace(
-        perso_info {0, PERSO_ELFE, 10, ORIENTATION_NORD},
-        api_->chemin(map_->getStartingPos(), position {5, 2}),
-        ORIENTATION_SUD
-    );
+    EXPECT_FALSE(gamestate_->isPalantirActivated(0));
+    EXPECT_EQ(0u, api_->palantir_vision().size());
 
-    for (auto& move : api_->actions()->actions())
-        move->apply(gamestate_);
+    gamestate_->setPhase(PHASE_ATTAQUE);
+    perso_info voleur = perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_VOLEUR,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        };
+    api_->perso_attaque(voleur, ATTAQUE_PALANTIR, position {5, 4});
+    for (auto& attack : api_->actions()->actions())
+        api_->game_state_set(attack->apply(api_->game_state()));
 
-    rules_->resolve_moves();
+    gamestate_ = api_->game_state();
 
-    std::vector<position> p = api_->perso_penombre(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD});
+    rules_->resolve_attacks();
+    gamestate_->setPhase(PHASE_PLACEMENT);
 
-    EXPECT_EQ(4u, p.size());
-    EXPECT_TRUE(p[0].x == 5 && p[0].y == 4);
-    EXPECT_TRUE(p[1].x == 5 && p[1].y == 3);
-    EXPECT_TRUE(p[2].x == 5 && p[2].y == 4);
-    EXPECT_TRUE(p[3].x == 5 && p[3].y == 2);
+    EXPECT_TRUE(gamestate_->isPalantirActivated(0));
+    EXPECT_EQ(1u, api_->palantir_vision().size());
+}
+
+TEST_F(ApiTest, elfe_vision)
+{
+    EXPECT_FALSE(gamestate_->isElfeVisionActivated(0));
+    EXPECT_EQ(0u, api_->elfe_vision().size());
+
+    gamestate_->setPhase(PHASE_ATTAQUE);
+    perso_info elfe = perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_ELFE,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        };
+    api_->perso_attaque(elfe, ATTAQUE_I_SEE, position {5, 4});
+    for (auto& attack : api_->actions()->actions())
+        api_->game_state_set(attack->apply(api_->game_state()));
+
+    gamestate_ = api_->game_state();
+
+    rules_->resolve_attacks();
+    gamestate_->setPhase(PHASE_PLACEMENT);
+
+    EXPECT_TRUE(gamestate_->isElfeVisionActivated(0));
+    EXPECT_EQ(1u, api_->elfe_vision().size());
+}
+
+TEST_F(ApiTest, perso_attaque_recharge)
+{
+    perso_info elfe = perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_ELFE,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        };
+    EXPECT_EQ(0, api_->perso_attaque_recharge(elfe, ATTAQUE_I_SEE));
+
+    gamestate_->setPhase(PHASE_ATTAQUE);
+    api_->perso_attaque(elfe, ATTAQUE_I_SEE, position {5, 4});
+    for (auto& attack : api_->actions()->actions())
+        api_->game_state_set(attack->apply(api_->game_state()));
+
+    gamestate_ = api_->game_state();
+
+    rules_->resolve_attacks();
+    gamestate_->setPhase(PHASE_PLACEMENT);
+    EXPECT_EQ(5, api_->perso_attaque_recharge(elfe, ATTAQUE_I_SEE));
+
+    // fake turns
+    for (int i = 0; i < 3; ++i)
+        rules_->resolve_end_of_attaque_phase();
+
+    EXPECT_EQ(2, api_->perso_attaque_recharge(elfe, ATTAQUE_I_SEE));
+
+    for (int i = 0; i < 3; ++i)
+        rules_->resolve_end_of_attaque_phase();
+
+    EXPECT_EQ(0, api_->perso_attaque_recharge(elfe, ATTAQUE_I_SEE));
+
+}
+
+TEST_F(ApiTest, mon_equipe)
+{
+    EXPECT_EQ(0, api_->mon_equipe());
 }
 
 TEST_F(ApiTest, scores)
 {
-    std::vector<int> default_scores(2, 0);
+    std::vector<int> default_scores(api_->nombre_equipes(), 0);
     std::vector<int> actual_scores = api_->scores();
 
     for (int i = 0; i < api_->nombre_equipes(); ++i)
         EXPECT_EQ(default_scores[i], actual_scores[i]);
+
+    gamestate_->setPhase(PHASE_ATTAQUE);
+    perso_info voleur = perso_info
+        {
+            .equipe = 0,
+            .classe = PERSO_VOLEUR,
+            .vie = 10,
+            .direction = ORIENTATION_NORD
+        };
+    api_->perso_attaque(voleur, ATTAQUE_TRAITRISE, position {5, 4});
+    for (auto& attack : api_->actions()->actions())
+        api_->game_state_set(attack->apply(api_->game_state()));
+
+    gamestate_ = api_->game_state();
+
+    rules_->resolve_attacks();
+    rules_->resolve_points();
+    rules_->resolve_end_of_attaque_phase();
+
+    actual_scores = api_->scores();
+
+    EXPECT_EQ(-3, actual_scores[1]);
+    EXPECT_EQ(3, actual_scores[0]);
+
 }
 
 TEST_F(ApiTest, nombre_equipes)
@@ -230,4 +352,20 @@ TEST_F(ApiTest, nombre_equipes)
 TEST_F(ApiTest, tour_actuel)
 {
     EXPECT_EQ(0, api_->tour_actuel());
+
+    for (int i = 0; i < 3; ++i)
+        rules_->resolve_end_of_placement_turn();
+
+    EXPECT_EQ(3, api_->tour_actuel());
+
+    for (int i = 0; i < 7; ++i)
+        rules_->resolve_end_of_placement_turn();
+
+    EXPECT_EQ(PHASE_DEPLACEMENT, api_->game_state()->getPhase());
+
+    for (int i = 0; i < 10; ++i)
+        rules_->resolve_end_of_attaque_phase();
+
+    EXPECT_TRUE(api_->game_state()->isFinished());
+
 }

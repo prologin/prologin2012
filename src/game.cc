@@ -198,6 +198,8 @@ int GameState::getCurrentTurn() const
 void GameState::incrementTurn()
 {
     current_turn_ += 1;
+    for (auto unit : units_)
+      unit->decrementAbilitiesCooldown();
 }
 
 void GameState::setPhase(game_phase phase)

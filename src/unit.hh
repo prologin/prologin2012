@@ -117,6 +117,7 @@ public:
 
     virtual Ability* getAbility(attaque_type id);
     virtual int getAbilityCooldown(attaque_type id) const;
+    void decrementAbilitiesCooldown();
 
     void resetPenombre();
     void addPenombre(std::vector<position> newPenombre);

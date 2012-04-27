@@ -160,6 +160,12 @@ int Unit::getAbilityCooldown(attaque_type id) const
     return pickAbilityCooldown(id);
 }
 
+void Unit::decrementAbilitiesCooldown()
+{
+    for (Ability* ability : abilities_)
+        ability->decrementCooldown();
+}
+
 int Unit::pickAbilityCooldown(int ability_id) const
 {
     CHECK((size_t)ability_id < abilities_.size());
@@ -228,6 +234,7 @@ int Voleur::getAbilityCooldown(attaque_type id) const
     }
 }
 
+
 /******************************************************************************
  * Barbare
  **/
@@ -273,6 +280,7 @@ int Barbare::getAbilityCooldown(attaque_type id) const
         return -1;
     }
 }
+
 
 /******************************************************************************
  * Elfe

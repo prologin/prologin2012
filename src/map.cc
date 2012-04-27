@@ -21,6 +21,7 @@ Map::Map()
 {
 }
 
+/*
 Map::Map(const Map& copy_from)
     : map_(),
       paths_(copy_from.paths_),
@@ -41,7 +42,7 @@ Map::Map(const Map& copy_from)
         for (int x = 0; x < width_; ++x)
             cell_line[x] = new Cell(*copy_from.map_[y][x]);
     }
-}
+}*/
 
 Map::~Map()
 {
