@@ -28,6 +28,8 @@ Rules::Rules(const rules::Options& opt)
 
     GameState* game_state = new GameState(map, opt.players);
 
+    game_state->init();
+
     api_ = new Api(game_state, opt.player);
 
     // Get the champion library if we are a client
@@ -87,7 +89,7 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        DEBUG("NEW TURN");
+        DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
 
         phase = api_->game_state()->getPhase();
 
@@ -106,24 +108,27 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             break;
         }
 
+        DEBUG("sending");
         // Send actions
         msgr->send_actions(*api_->actions());
+        DEBUG("wait4ack");
         msgr->wait_for_ack();
+        DEBUG("ack ok");
 
         api_->actions()->clear();
 
-        for (uint32_t i = 0; i < players_->players.size(); ++i)
-        {
-            // Receive actions
-            msgr->pull_actions(api_->actions());
+        // Receive actions
+        DEBUG("pull");
+        msgr->pull_actions(api_->actions());
+        DEBUG("pulled");
 
-            // Apply them onto the gamestate
-            for (auto& action : api_->actions()->actions())
-            {
-                api_->game_state_set(action->apply(api_->game_state()));
-            }
+        // Apply them onto the gamestate
+        for (auto& action : api_->actions()->actions())
+        {
+            api_->game_state_set(action->apply(api_->game_state()));
         }
 
+        DEBUG("resolving %d", phase);
         switch (phase)
         {
         case PHASE_PLACEMENT:
@@ -136,13 +141,14 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
             break;
         case PHASE_ATTAQUE:
             for (rules::Player_sptr player: players_->players)
-                api_->game_state()->deactivateElfeVision(player->id);
+                api_->game_state()->deactivateElfeVision(player->id - 1);
 
             resolve_attacks();
             resolve_points();
             resolve_end_of_attaque_phase();
             break;
         }
+        DEBUG("end resolving");
     }
 
     DEBUG("winner = %i", winner_);
@@ -157,7 +163,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        DEBUG("NEW TURN");
+        DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
 
         phase = api_->game_state()->getPhase();
 
@@ -175,9 +181,11 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
                 actions.add(action);
             }
 
+            DEBUG("acked");
             msgr->ack();
         }
 
+        DEBUG("resolving %d", phase);
         switch (phase)
         {
         case PHASE_PLACEMENT:
@@ -190,7 +198,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             break;
         case PHASE_ATTAQUE:
             for (rules::Player_sptr player: players_->players)
-                api_->game_state()->deactivateElfeVision(player->id);
+                // - 1 because stechec assigns id starting from 1
+                api_->game_state()->deactivateElfeVision(player->id - 1);
 
             resolve_attacks();
             resolve_points();
@@ -199,7 +208,9 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         }
 
         // Send actions
+        DEBUG("sending");
         msgr->push_actions(actions);
+        DEBUG("sent");
         actions.clear();
     }
 
@@ -208,6 +219,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
 void Rules::resolve_moves()
 {
+    DEBUG("resolve_moves");
     auto& pendingMoves = api_->game_state()->getPendingMoves();
 
     for (auto unit : api_->game_state()->getUnits())
@@ -242,6 +254,7 @@ void Rules::resolve_moves()
 
 void Rules::resolve_attacks()
 {
+    DEBUG("resolve_attacks");
     auto& pendingAttacks = api_->game_state()->getPendingAttacks();
     auto& pendingBastoooon = api_->game_state()->getPendingBastoooon();
     std::map<int, int> markedUnits;
@@ -265,6 +278,7 @@ void Rules::resolve_attacks()
 
 void Rules::resolve_points()
 {
+    DEBUG("resolve_points");
     GameState* st = api_->game_state();
 
     for (auto unit : st->getUnits())
@@ -316,6 +330,7 @@ void Rules::resolve_end_of_placement_turn()
 
     if (st->getCurrentTurn() == map->getPlacementTurns())
     {
+        INFO("end of placement phase");
         st->setPhase(PHASE_DEPLACEMENT);
 
         // End of placement phase

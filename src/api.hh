@@ -61,6 +61,10 @@ public:
 //
    position carte_taille();
 ///
+// Retourne la position de départ des personnages sur la map.
+//
+   position carte_starting_position();
+///
 // Retourne la nature de la zone désignée par ``pos``.
 //
    zone_type carte_zone_type(position pos);

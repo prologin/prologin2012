@@ -68,6 +68,7 @@ Map::~Map()
 // v
 int Map::load(std::istream& s)
 {
+    INFO("Loading map");
     std::string line;
     int start_x, start_y;
 

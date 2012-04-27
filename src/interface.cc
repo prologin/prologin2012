@@ -13,6 +13,7 @@
 #include "api.hh"
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 // from api.cc
@@ -88,6 +89,7 @@ std::string convert_to_string(zone_type in){
     case ZONE_MARAIS: return "\"zone_marais\"";
     case ZONE_MUR: return "\"zone_mur\"";
     case ZONE_TOUR: return "\"zone_tour\"";
+    case ZONE_ERREUR: return "\"zone_erreur\"";
   }
   return "bad value";
 }
@@ -107,7 +109,7 @@ std::string convert_to_string(attaque_type in){
   {
     case ATTAQUE_NORMALE: return "\"attaque_normale\"";
     case ATTAQUE_PALANTIR: return "\"attaque_palantir\"";
-    case ATTAQUE_DANS_TO_DOS: return "\"attaque_dans_to_dos\"";
+    case ATTAQUE_TRAITRISE: return "\"attaque_traitrise\"";
     case ATTAQUE_BASTOOOON: return "\"attaque_bastoooon\"";
     case ATTAQUE_FUS_RO_DAH: return "\"attaque_fus_ro_dah\"";
     case ATTAQUE_I_SEE: return "\"attaque_i_see\"";
@@ -154,7 +156,7 @@ std::string convert_to_string(erreur in){
     case PERSONNAGE_IMPOSSIBLE: return "\"personnage_impossible\"";
     case CHEMIN_IMPOSSIBLE: return "\"chemin_impossible\"";
     case ATTAQUE_INDISPONIBLE: return "\"attaque_indisponible\"";
-    case OK; return "\"ok\"";
+    case OK: return "\"ok\"";
   }
   return "bad value";
 }
@@ -218,7 +220,7 @@ std::string convert_to_string(std::vector<perso_info> in){
   }
 }
 ///
-// Retourne la taille de la carte sous la forme d'une position correspondant aux coordonnées du point extrême.
+// Retourne la taille de la carte.
 //
 extern "C" position api_carte_taille()
 {
@@ -234,14 +236,6 @@ extern "C" zone_type api_carte_zone_type(position pos)
 }
 
 ///
-// Retourne ``true`` si un cadavre se trouve sur la zone ``pos``.
-//
-extern "C" bool api_carte_zone_cadavre(position pos)
-{
-  return api->carte_zone_cadavre(pos);
-}
-
-///
 // Retourne la liste des personnages sur la zone.
 //
 extern "C" std::vector<perso_info> api_carte_zone_perso(position pos)
@@ -250,7 +244,15 @@ extern "C" std::vector<perso_info> api_carte_zone_perso(position pos)
 }
 
 ///
-// Renvoie le chemin le plus court entre deux points (fonction lente)
+// Renvoie la longueur du chemin le plus court entre deux points. Renvoie -1 en cas de positions invalides ou de chemin inexistant.
+//
+extern "C" int api_distance(position p1, position p2)
+{
+  return api->distance(p1, p2);
+}
+
+///
+// Renvoie le chemin le plus court entre deux points. Si le chemin n'existe pas, ou si les positions sont invalides, le chemin renvoyé est vide.
 //
 extern "C" std::vector<position> api_chemin(position p1, position p2)
 {
@@ -258,35 +260,51 @@ extern "C" std::vector<position> api_chemin(position p1, position p2)
 }
 
 ///
-// Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
+// Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite de ``position``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
 //
-extern "C" erreur api_perso_deplace(perso_info perso, std::vector<orientation> chemin, orientation direction)
+extern "C" erreur api_perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {
   return api->perso_deplace(perso, chemin, direction);
 }
 
 ///
-// Récupère la liste des zones sur lesquelles des personnages ont été aperçus dans la pénombre par ``perso`` lors de son passage sur une ``zone`` de son déplacement.
+// Récupère la liste des zones sur lesquelles des personnages ont été aperçus dans la pénombre par ``perso``.
 //
-extern "C" std::vector<position> api_perso_penombre(perso_info perso, position zone)
+extern "C" std::vector<position> api_perso_penombre(perso_info perso)
 {
-  return api->perso_penombre(perso, zone);
+  return api->perso_penombre(perso);
 }
 
 ///
-// Récupère la liste des zones sur lesquelles un personnage est passé au tour précédent.
-//
-extern "C" std::vector<position> api_perso_penombre_zone(perso_info perso)
-{
-  return api->perso_penombre_zone(perso);
-}
-
-///
-// Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
+// Récupère la liste des zones dans le champs de vision de ``perso``.
 //
 extern "C" std::vector<position> api_perso_vision(perso_info perso)
 {
   return api->perso_vision(perso);
+}
+
+///
+// Récupère la liste des zones dans le champs de vision de ``perso`` où sont situés un ou plusieurs personnages (amis ou ennemis).
+//
+extern "C" std::vector<position> api_perso_vision_ennemis(perso_info perso)
+{
+  return api->perso_vision_ennemis(perso);
+}
+
+///
+// Récupère la liste des positions sur lesquelles le palantír du voleur voit d'autre personnages.
+//
+extern "C" std::vector<position> api_palantir_vision()
+{
+  return api->palantir_vision();
+}
+
+///
+// Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque "I See What You Did There".
+//
+extern "C" std::vector<position> api_elfe_vision()
+{
+  return api->elfe_vision();
 }
 
 ///
@@ -303,14 +321,6 @@ extern "C" erreur api_perso_attaque(perso_info perso, attaque_type attaque, posi
 extern "C" int api_perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
   return api->perso_attaque_recharge(perso, attaque);
-}
-
-///
-// Annule l'action précédente. Renvoie ``true`` si une action a été annulée, ``false`` sinon.
-//
-extern "C" bool api_annuler()
-{
-  return api->annuler();
 }
 
 ///
@@ -374,6 +384,7 @@ std::ostream& operator<<(std::ostream& os, zone_type v)
   case ZONE_MARAIS: os << "ZONE_MARAIS"; break;
   case ZONE_MUR: os << "ZONE_MUR"; break;
   case ZONE_TOUR: os << "ZONE_TOUR"; break;
+  case ZONE_ERREUR: os << "ZONE_ERREUR"; break;
   }
   return os;
 }
@@ -390,7 +401,7 @@ std::ostream& operator<<(std::ostream& os, attaque_type v)
   switch (v) {
   case ATTAQUE_NORMALE: os << "ATTAQUE_NORMALE"; break;
   case ATTAQUE_PALANTIR: os << "ATTAQUE_PALANTIR"; break;
-  case ATTAQUE_DANS_TO_DOS: os << "ATTAQUE_DANS_TO_DOS"; break;
+  case ATTAQUE_TRAITRISE: os << "ATTAQUE_TRAITRISE"; break;
   case ATTAQUE_BASTOOOON: os << "ATTAQUE_BASTOOOON"; break;
   case ATTAQUE_FUS_RO_DAH: os << "ATTAQUE_FUS_RO_DAH"; break;
   case ATTAQUE_I_SEE: os << "ATTAQUE_I_SEE"; break;
@@ -431,6 +442,7 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   case PERSONNAGE_IMPOSSIBLE: os << "PERSONNAGE_IMPOSSIBLE"; break;
   case CHEMIN_IMPOSSIBLE: os << "CHEMIN_IMPOSSIBLE"; break;
   case ATTAQUE_INDISPONIBLE: os << "ATTAQUE_INDISPONIBLE"; break;
+  case OK: os << "OK"; break;
   }
   return os;
 }
@@ -477,7 +489,3 @@ extern "C" void api_afficher_perso_info(perso_info v)
   std::cerr << v << std::endl;
 }
 
-extern "C" const char* api_get_dump()
-{
-    return api->get_dump();
-}

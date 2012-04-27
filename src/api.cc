@@ -45,6 +45,14 @@ position Api::carte_taille()
 }
 
 ///
+// Retourne la position de départ des personnages sur la map.
+//
+position Api::carte_starting_position()
+{
+    return game_state_->getMap()->getStartingPos();
+}
+
+///
 // Retourne la nature de la zone désignée par ``pos``.
 //
 zone_type Api::carte_zone_type(position pos)

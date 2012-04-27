@@ -46,6 +46,7 @@ GameState::~GameState()
 
 void GameState::init()
 {
+    DEBUG("GameState::init");
     size_t player_count = getPlayerCount();
     for (uint32_t player_id = 0; player_id < player_count; ++player_id)
     {
@@ -55,6 +56,7 @@ void GameState::init()
         units_.push_back(Unit_sptr(new Elfe(player_id)));
 
         // create palantir
+        DEBUG("REMOTE VISION");
         remote_vision_.push_back(remote_vision
                 {
                     .palantir_activated = false,
