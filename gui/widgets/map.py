@@ -19,7 +19,7 @@ class MapWidget(BaseWidget):
         self.map_surface = None
         self.font = pygame.font.Font(data.get_font('font.ttf'), 12)
         self.cells_width = self.width / data.WIDTH
-        self.cells_height = self.height / (data.HEIGHT - data.OVERLAY)
+        self.cells_height = (self.height - data.OVERLAY) / (data.HEIGHT - data.OVERLAY)
         self.center = (self.cells_width / 2, self.cells_height / 2)
 
     def plug(self, widgets):
