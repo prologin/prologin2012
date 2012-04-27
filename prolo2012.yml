@@ -53,6 +53,10 @@ constant:
     cst_val: 3
     cst_comment: Cooldown de l'attaque "Bastoooon" du Barbare
   -
+    cst_name: BARBARE_BASTOOOON_PORTEE
+    cst_val: 3
+    cst_comment: Portée de l'attaque "Bastoooon" du Barbare
+  -
     cst_name: BARBARE_FUS_RO_DAH_CD
     cst_val: 5
     cst_comment: Cooldown de l'attaque "Fus Ro Dah" du Barbare

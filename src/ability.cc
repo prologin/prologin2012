@@ -229,9 +229,18 @@ erreur Bastoooon::check(const GameState& st, unit_info attacker,
     if ((err = Ability::check(st, attacker, target)) != OK)
         return err;
 
-    // In range?
-    if (!st.getUnit(attacker)->isPositionInVision(st.getMap(), target))
+    Unit_sptr unit = st.getUnit(attacker);
+
+    unit->setVision(BARBARE_BASTOOOON_PORTEE);
+
+    // check range
+    if (!unit->isPositionInVision(st.getMap(), target))
+    {
+        unit->setVision(BARBARE_VISION);
         return POSITION_IMPOSSIBLE;
+    }
+
+    unit->setVision(BARBARE_VISION);
 
     return OK;
 }

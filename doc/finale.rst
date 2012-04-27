@@ -85,6 +85,7 @@ Il a une arme de dégât de zone qu'il peut utiliser dans son cône de vision.
   :description: Le Barbare s'énerve puis effectue son attaque normale.
   :dégats: 11 - *vie restante du Barbare*
   :cooldown: 3 tours
+  :portée: 3
 
 *Fus ro dah!*
   :description: Le barbare repousse tous les personnages de son champs de

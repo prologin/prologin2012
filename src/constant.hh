@@ -69,6 +69,11 @@
 # define BARBARE_BASTOOOON_CD      3
 
 ///
+// Portée de l'attaque "Bastoooon" du Barbare
+//
+# define BARBARE_BASTOOOON_PORTEE  3
+
+///
 // Cooldown de l'attaque "Fus Ro Dah" du Barbare
 //
 # define BARBARE_FUS_RO_DAH_CD     5
