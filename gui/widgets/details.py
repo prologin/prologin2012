@@ -11,7 +11,7 @@ from widgets.scrolled import ScrolledWidget
 
 class DetailsWidget(ScrolledWidget):
     PADDING = 8
-    LINE_HEIGHT = 30
+    LINE_HEIGHT = 36
 
     def __init__(self, *args):
         self.font = pygame.font.Font(data.get_font('font.ttf'), 12)

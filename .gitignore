@@ -1,5 +1,2 @@
 build
-*.tmp.svg
-gui/data/*.png
 *.pyc
-gui/data/Makefile

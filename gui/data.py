@@ -41,7 +41,7 @@ OVERLAY = 8 * 2
 
 classes = ('voleur', 'barbare', 'elfe')
 cases = ('herbe', 'route', 'foret', 'marais', 'mur', 'tour')
-specials = ('cadavre', 'many')
+specials = ('many',)
 images = [
     (name, get_image('%s.png' % name))
     for name in classes + cases + specials
