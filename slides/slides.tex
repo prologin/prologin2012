@@ -1,0 +1,72 @@
+\documentclass[pdftex]{beamer}
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{pxfonts}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+\usetheme{Warsaw}
+
+\title{Présentation du sujet}
+\author{Rémi Audebert - Nicolas Hureau - Benoît Zanotti}
+\date{\today}
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Plan}
+    \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/show/hide]
+  \end{frame}
+}
+
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Plan}
+    \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide]
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}
+    \center \includegraphics[width=0.6\textwidth]{prologin2012}
+    \titlepage
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Casus Belli}
+    % Insérer le logo de la finale
+\end{frame}
+
+\begin{frame}{Casus Belli}
+    Jeu de tactique :
+    \begin{itemize}
+        \item Contrôle de 3 personnages ;
+        \item Gagner des points en tuant les autres ;
+        \item Déplacements simultanés et combats simultanés ;
+        \item 2 à n joueurs.
+    \end{itemize}
+\end{frame}
+
+\section{Règles}
+
+\subsection{Unités}
+
+\section{Conclusion}
+
+\begin{frame}
+    \begin{center}
+        Questions-réponses.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        Bon courage !
+    \end{center}
+\end{frame}
+
+\end{document}
