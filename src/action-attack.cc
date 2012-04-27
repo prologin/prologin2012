@@ -94,6 +94,8 @@ void ActionAttack::applyAttack(GameState *gameState) const
 
     if (attack->check(*gameState, info, target) == OK)
         attack->apply(gameState, info, target);
+
+    gameState->getUnit(info)->setDisplacement(position {0, 0});
 }
 
 void ActionAttack::applyBastoooon(GameState *gameState) const

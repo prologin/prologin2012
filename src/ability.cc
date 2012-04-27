@@ -154,7 +154,6 @@ void Traitrise::apply(GameState* st, unit_info attacker, position target)
     UnitVect attacked_units = st->getMap()->getUnitsOn(target);
     for (unit_info attacked_unit : attacked_units)
     {
-        // TODO TEST
         // same unit or same team, skip
         if (attacked_unit == attacker
                 || attacked_unit.player_id == attacker.player_id)

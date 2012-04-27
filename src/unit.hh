@@ -109,7 +109,6 @@ public:
     UnitVect getAttackers() const;
     void resetAttackers();
 
-    // FIXME: don't forget to reset to {0, 0}
     void setDisplacement(position disp);
     position getDisplacement() const;
 

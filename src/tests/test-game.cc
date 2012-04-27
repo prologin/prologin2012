@@ -68,5 +68,3 @@ TEST_F(GameTest, GameCreate)
         EXPECT_EQ(starting_pos, unit_pos);
     }
 }
-
-// TODO Test vision from palantir

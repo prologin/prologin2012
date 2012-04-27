@@ -130,7 +130,6 @@ TEST_F(AbilityTest, VoleurAttaqueApply)
 
 TEST_F(AbilityTest, PalantirCheck)
 {
-    // TODO CHECK VISION;
 }
 
 TEST_F(AbilityTest, PalantirApply)
