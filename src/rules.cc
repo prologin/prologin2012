@@ -64,6 +64,7 @@ Rules::Rules(const rules::Options& opt)
 
     players_ = opt.players;
     spectators_ = opt.spectators;
+    timeout_ = opt.time;
 
     // Register Actions
     api_->actions()->register_action(ACTION_MOVE,
@@ -254,6 +255,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
     rules::Actions actions;
     game_phase phase;
 
+    uint32_t size = players_->players.size() + spectators_->players.size();
+
     while (!is_finished())
     {
         DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
@@ -262,22 +265,34 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
         api_->actions()->clear();
 
-        uint32_t size = players_->players.size() + spectators_->players.size();
+        uint32_t players_playing = 0;
+        uint32_t spectators_count = spectators_->players.size();
 
         for (uint32_t i = 0; i < size; ++i)
         {
+            if (!msgr->poll(timeout_))
+                break;
             // Receive actions
             msgr->recv_actions(api_->actions());
-
-            // Apply them onto the gamestate
-            for (auto& action : api_->actions()->actions())
-            {
-                api_->game_state_set(action->apply(api_->game_state()));
-                actions.add(action);
-            }
-
-            DEBUG("acked");
             msgr->ack();
+            if (api_->actions()->actions().back()->id() == ACTION_ACK)
+              spectators_count--;
+            else
+              players_playing++;
+        }
+        while (spectators_count > 0)
+        {
+          msgr->recv_actions(api_->actions());
+          msgr->ack();
+          spectators_count--;
+        }
+        size = players_playing + spectators_->players.size();
+
+        // Apply them onto the gamestate
+        for (auto& action : api_->actions()->actions())
+        {
+            api_->game_state_set(action->apply(api_->game_state()));
+            actions.add(action);
         }
 
         DEBUG("resolving %d", phase);

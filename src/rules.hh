@@ -52,6 +52,7 @@ private:
     rules::Players_sptr players_;
     rules::Players_sptr spectators_;
 
+    int timeout_;
     int winner_;
 
     utils::Sandbox sandbox_;
