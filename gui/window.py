@@ -10,8 +10,8 @@ import logs
 import settings
 import utils
 from widgets import (
-    ActionsWidget, DetailsWidget, HelpWidget, MapWidget, ScoresWidget,
-    StateWidget
+    ActionsWidget, DetailsWidget, HelpWidget, MinimapWidget, MapWidget,
+    ScoresWidget, StateWidget
 )
 
 
@@ -100,7 +100,7 @@ class Window(object):
 
         self.map_widget = MapWidget(*map_rect)
         self.actions_widget = ActionsWidget(*actions_rect[:3])
-        # self.minimap_rect = MinimapWidget(*minimap_rect)
+        self.minimap_widget = MinimapWidget(*minimap_rect)
         self.state_widget = StateWidget(*state_rect[:3])
         self.details_widget = DetailsWidget(*details_rect)
         self.help_widget = HelpWidget(*screen_dim)
@@ -109,7 +109,7 @@ class Window(object):
         self.widgets = {
             'map': self.map_widget,
             'actions': self.actions_widget,
-            #'minimap': self.minimap_widget,
+            'minimap': self.minimap_widget,
             'state': self.state_widget,
             'details': self.details_widget,
             'help': self.help_widget,
@@ -214,7 +214,7 @@ class Window(object):
             self.game_state = game_state
             self.map_widget.update_game(game_state)
             self.details_widget.update_game(game_state)
-            # self.minimap_widget.update_game(game_state)
+            self.minimap_widget.update_game(game_state)
             self.state_widget.update_turn(game_state.turn, game_state.turn_max)
             self.actions_widget.update_actions(game_state.actions)
             self.scores_widget.update_scores(game_state.scores)
@@ -224,7 +224,7 @@ class Window(object):
 
     def update_window(self):
         self.screen.fill(utils.BLACK)
-        #self.minimap_widget.display(self.screen)
+        self.minimap_widget.display(self.screen)
         self.map_widget.display(self.screen)
         self.state_widget.display(self.screen)
         self.details_widget.display(self.screen)

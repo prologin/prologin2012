@@ -24,6 +24,16 @@ class MapWidget(BaseWidget):
 
     def plug(self, widgets):
         self.details_widget = widgets['details']
+        self.minimap = widgets['minimap']
+
+    def handle_view_click(self, x, y, but1, but2, but3):
+        x = x / data.WIDTH + self.position[0]
+        y = (y - data.OVERLAY) / (data.HEIGHT - data.OVERLAY) + self.position[1]
+        if but1:
+            self.details_widget.update_position(x, y)
+            self.update_subjective()
+        elif but3:
+            self.update_display((x - self.center[0], y - self.center[1]))
 
     def handle_click(self, x, y, but1, but2, but3):
         coords = self.is_click_inside(x, y)
@@ -31,14 +41,7 @@ class MapWidget(BaseWidget):
             return False
         if self.game_state is None:
             return True
-
-        x = coords[0] / data.WIDTH + self.position[0]
-        y = (coords[1] - data.OVERLAY) / (data.HEIGHT - data.OVERLAY) + self.position[1]
-        if but1:
-            self.details_widget.update_position(x, y)
-            self.update_subjective()
-        elif but3:
-            self.update_display((x - self.center[0], y - self.center[1]))
+        self.handle_view_click(coords[0], coords[1], but1, but2, but3)
         return True
 
     def update_game(self, game_state):
@@ -170,3 +173,5 @@ class MapWidget(BaseWidget):
                 self.position[1] * (data.HEIGHT - data.OVERLAY),
                 self.width, self.height
             ))
+
+        self.minimap.update_view()

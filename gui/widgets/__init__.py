@@ -3,7 +3,7 @@
 from actions import ActionsWidget
 from details import DetailsWidget
 from help import HelpWidget
-# from minimap import MiniMapWidget
+from minimap import MinimapWidget
 from map import MapWidget
 from scores import ScoresWidget
 from state import StateWidget
