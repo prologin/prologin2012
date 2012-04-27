@@ -212,24 +212,32 @@ void Rules::resolve_moves()
 
     for (auto unit : api_->game_state()->getUnits())
         unit->resetPenombre();
+
+    if (pendingMoves.size() == 0)
+      return;
+
     for (auto& moves : pendingMoves)
     {
         for (auto& move : moves)
         {
-            move.second->setPosition(move.first);
-            api_->game_state()->getMap()->moveUnit(move.second->getUnitInfo(),
-                        move.second->getPosition(), move.first);
-            move.second->setOrientation(Map::getOrientation(move.first,
-                        move.second->getPosition()));
+            Unit_sptr unit = api_->game_state()->getUnit(move.second->getUnitInfo());
+            api_->game_state()->getMap()->moveUnit(unit->getUnitInfo(),
+                        unit->getPosition(), move.first);
+            unit->setPosition(move.first);
+            unit->setOrientation(Map::getOrientation(move.first,
+                        unit->getPosition()));
         }
         for (auto unit : api_->game_state()->getUnits())
             unit->addPenombre(
                     api_->game_state()->getMap()->getSurroundings(
                         unit->getPosition(),
                         unit->getOrientation(), unit->getVision()));
-        moves.clear();
     }
-    pendingMoves.clear();
+    // It's kind of ugly but we're running out of time
+    for (auto& move : pendingMoves[0])
+        move.second->applyDirection(api_->game_state());
+    for (auto& moves : pendingMoves)
+        moves.clear();
 }
 
 void Rules::resolve_attacks()

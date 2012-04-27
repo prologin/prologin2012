@@ -52,6 +52,12 @@ Fus Ro Dah génère-t-il de la pénombre ?
 
 Non. :)
 
+Mon personnage est-il inclus dans sa propre pénombre ?
+------------------------------------------------------
+
+Oui, il fait nuit et il est difficile de dicerner la différence entre son ombre
+et celle des autres.
+
 Attaques
 ========
 

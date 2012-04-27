@@ -121,7 +121,7 @@ TEST_F(ApiTest, perso_deplace)
     api_->perso_deplace(
         perso_info {0, PERSO_VOLEUR, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
         api_->chemin(map_->getStartingPos(), position {4, 5}),
-        ORIENTATION_SUD
+        ORIENTATION_EST
     );
 
     for (auto& move : api_->actions()->actions())
@@ -129,13 +129,17 @@ TEST_F(ApiTest, perso_deplace)
 
     rules_->resolve_moves();
 
-    position test_elfe_pos = gamestate_->getUnit(unit_info {0, PERSO_ELFE})->getPosition();
+    Unit_sptr elfe = gamestate_->getUnit(unit_info {0, PERSO_ELFE});
+    position test_elfe_pos = elfe->getPosition();
     position elfe_pos = {5, 2};
     EXPECT_EQ(elfe_pos, test_elfe_pos);
+    EXPECT_EQ(ORIENTATION_SUD, elfe->getOrientation());
 
-    position test_voleur_pos = gamestate_->getUnit(unit_info {0, PERSO_VOLEUR})->getPosition();
+    Unit_sptr voleur = gamestate_->getUnit(unit_info {0, PERSO_VOLEUR});
+    position test_voleur_pos = voleur->getPosition();
     position voleur_pos = {4, 5};
     EXPECT_EQ(voleur_pos, test_voleur_pos);
+    EXPECT_EQ(ORIENTATION_EST, voleur->getOrientation());
 }
 
 TEST_F(ApiTest, perso_deplace_chemin_impossible)
@@ -200,7 +204,13 @@ TEST_F(ApiTest, perso_penombre)
 
     rules_->resolve_moves();
 
-    EXPECT_EQ(5u, api_->perso_penombre(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD}).size());
+    std::vector<position> p = api_->perso_penombre(perso_info {0, PERSO_VOLEUR, 10, ORIENTATION_NORD});
+
+    EXPECT_EQ(4u, p.size());
+    EXPECT_TRUE(p[0].x == 5 && p[0].y == 4);
+    EXPECT_TRUE(p[1].x == 5 && p[1].y == 3);
+    EXPECT_TRUE(p[2].x == 5 && p[2].y == 4);
+    EXPECT_TRUE(p[3].x == 5 && p[3].y == 2);
 }
 
 TEST_F(ApiTest, scores)

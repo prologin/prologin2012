@@ -57,6 +57,11 @@ void ActionMove::handle_buffer(utils::Buffer& buf)
     buf.handle(direction_);
 }
 
+void ActionMove::applyDirection(GameState* gameState) const
+{
+    gameState->getUnit(unit_)->setOrientation(direction_);
+}
+
 void ActionMove::apply_on(GameState* gameState) const
 {
     auto& pendingMoves = gameState->getPendingMoves();
@@ -64,9 +69,9 @@ void ActionMove::apply_on(GameState* gameState) const
     for (size_t i = 0; i < path_.size(); ++i)
     {
         if (i < pendingMoves.size())
-            pendingMoves[i].push_back(std::make_pair(path_[i], gameState->getUnit(unit_)));
+            pendingMoves[i].push_back(std::make_pair(path_[i], this));
         else
-            pendingMoves.push_back(std::vector<std::pair<position, Unit_sptr>>(1,
-                        std::make_pair(path_[i], gameState->getUnit(unit_))));
+            pendingMoves.push_back(std::vector<std::pair<position,
+                const ActionMove*>>(1, std::make_pair(path_[i], this)));
     }
 }

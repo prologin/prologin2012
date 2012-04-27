@@ -28,6 +28,7 @@ typedef struct remote_vision
 
 class Map;
 class ActionAttack;
+class ActionMove;
 
 class GameState : public rules::GameState
 {
@@ -70,7 +71,7 @@ public:
      */
     bool isFinished();
 
-    std::vector<std::vector<std::pair<position, Unit_sptr>>>& getPendingMoves();
+    std::vector<std::vector<std::pair<position, const ActionMove*>>>& getPendingMoves();
     std::list<const ActionAttack*>& getPendingBastoooon();
     std::list<const ActionAttack*>& getPendingAttacks();
 
@@ -81,7 +82,7 @@ private:
     Units units_;
     std::vector<remote_vision> remote_vision_;
 
-    std::vector<std::vector<std::pair<position, Unit_sptr>>> pendingMoves_;
+    std::vector<std::vector<std::pair<position, const ActionMove*>>> pendingMoves_;
     std::list<const ActionAttack*> pendingAttacks_;
     std::list<const ActionAttack*> pendingBastoooon_;
 

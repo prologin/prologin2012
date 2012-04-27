@@ -129,34 +129,6 @@ public:
 //
    int tour_actuel();
 ///
-// Affiche le contenu d'une valeur de type perso_classe
-//
-
-///
-// Affiche le contenu d'une valeur de type zone_type
-//
-
-///
-// Affiche le contenu d'une valeur de type attaque_type
-//
-
-///
-// Affiche le contenu d'une valeur de type orientation
-//
-
-///
-// Affiche le contenu d'une valeur de type erreur
-//
-
-///
-// Affiche le contenu d'une valeur de type position
-//
-
-///
-// Affiche le contenu d'une valeur de type perso_info
-//
-
-///
 // Return un dump JSON de l'état complet du jeu.
 //
     const char* get_dump();

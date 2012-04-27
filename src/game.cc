@@ -64,14 +64,16 @@ void GameState::init()
                 });
     }
 
-    Cell* starting_cell = map_->getCell(map_->getStartingPos());
+    position starting_pos = map_->getStartingPos();
+    Cell* starting_cell = map_->getCell(starting_pos);
     for (auto it = units_.begin(); it != units_.end(); ++it)
     {
         starting_cell->addUnit(unit_info {
                 .player_id = (*it)->getPlayer(),
                 .classe = (*it)->getClasse()
                 });
-        (*it)->setPosition(map_->getStartingPos());
+        (*it)->setPosition(starting_pos);
+        (*it)->setSpawn(starting_pos);
     }
 
     // initialize the shortest path calcul
@@ -213,7 +215,7 @@ bool GameState::isFinished()
     return current_turn_ == map_->getMaxTurns();
 }
 
-std::vector<std::vector<std::pair<position, Unit_sptr>>>& GameState::getPendingMoves()
+std::vector<std::vector<std::pair<position, const ActionMove*>>>& GameState::getPendingMoves()
 {
     return pendingMoves_;
 }

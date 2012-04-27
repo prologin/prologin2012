@@ -69,9 +69,9 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
     UnitVect units = map->getUnitsOn(pos);
 
     std::vector<perso_info> persos;
-    for (auto it  = units.begin(); it != units.end(); ++it)
+    for (auto unitInfo : units)
     {
-        Unit_sptr unit = game_state_->getUnit(*it);
+        Unit_sptr unit = game_state_->getUnit(unitInfo);
 
         persos.push_back(perso_info {
                 .equipe = unit->getPlayer(),
@@ -94,7 +94,9 @@ int Api::distance(position p1, position p2)
     if (!map->isPositionValid(p1) || !map->isPositionValid(p2))
         return -1;
 
-    return map->getDistance(p1, p2);
+    int distance = map->getDistance(p1, p2);
+
+    return (distance < 255) ? distance : -1;
 }
 
 ///
@@ -111,7 +113,7 @@ std::vector<position> Api::chemin(position p1, position p2)
 }
 
 ///
-// Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite d'``orientation``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
+// Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite de ``position``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
 //
 erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
 {

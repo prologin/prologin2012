@@ -22,6 +22,10 @@ public:
         { return player_; }
     uint32_t id() const
         { return id_; }
+    perso_info getUnitInfo() const
+        { return unit_; }
+
+    void applyDirection(GameState* st) const;
 
 protected:
     virtual void apply_on(GameState* st) const;
