@@ -41,6 +41,17 @@ class MapWidget(BaseWidget):
             self.update_display((x - self.center[0], y - self.center[1]))
         return True
 
+    def _blit_number(self, number, x, y):
+        text_black = self.font.render(u'%d' % number, True, utils.BLACK)
+        text_white = self.font.render(u'%d' % number, True, utils.WHITE)
+        text_w, text_h = text_black.get_size()
+        x = x + data.WIDTH - text_w - 1
+        y = y + data.HEIGHT - text_h - 1
+        for dx in (-1, 1):
+            for dy in (-1, 1):
+                self.map_surface.blit(text_black, (x + dx, y + dy))
+        return (text_white, (x, y))
+
     def update_game(self, game_state):
         self.game_state = game_state
         self.position_max = (
@@ -63,13 +74,16 @@ class MapWidget(BaseWidget):
 
         map = game_state.map
         map_units = game_state.map_units
+        unit_numbers = []
         for y, (row, row_units) in enumerate(zip(map, map_units)):
             for x, (cell, units) in enumerate(zip(row, row_units)):
                 coords = (data.WIDTH * x, (data.HEIGHT - data.OVERLAY) * y)
                 self.map_surface.blit(data.pix_cells[cell], coords)
                 if units:
                     self.map_surface.blit(data.pix['many'], coords)
-                    self._blit_number(len(units), *coords)
+                    unit_numbers.append(self._blit_number(len(units), *coords))
+        for args in unit_numbers:
+            self.map_surface.blit(*args)
 
         self.update_display()
 
@@ -162,14 +176,3 @@ class MapWidget(BaseWidget):
                 self.position[1] * (data.HEIGHT - data.OVERLAY),
                 self.width, self.height
             ))
-
-    def _blit_number(self, number, x, y):
-        text_black = self.font.render(u'%d' % number, True, utils.BLACK)
-        text_white = self.font.render(u'%d' % number, True, utils.WHITE)
-        text_w, text_h = text_black.get_size()
-        x = x + data.WIDTH - text_w - 1
-        y = y + data.HEIGHT - text_h - 1
-        for dx in (-1, 1):
-            for dy in (-1, 1):
-                self.map_surface.blit(text_black, (x + dx, y + dy))
-        self.map_surface.blit(text_white, (x, y))
