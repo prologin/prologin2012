@@ -7,6 +7,7 @@ import pygame
 
 import data
 import logs
+import settings
 import utils
 from widgets import (
     ActionsWidget, DetailsWidget, HelpWidget, MapWidget, ScoresWidget,
@@ -52,6 +53,15 @@ class State:
         self.is_closed = True
 
 
+WIDGETS_PADDING = 5
+RIGHT_COLUMN_WIDTH = 250
+def get_below(rect):
+    return rect[1] + rect[3] + WIDGETS_PADDING
+
+def get_right(rect):
+    return rect[0] + rect[2] + WIDGETS_PADDING
+
+
 class Window(object):
     FPS = 20
 
@@ -60,20 +70,30 @@ class Window(object):
         self.state_reader = state_reader
         self.current_state = None
 
-        map_rect = (5, 5, 700, 500)
-        actions_rect = (5, 510, 700, ActionsWidget.HEIGHT)
-        minimap_rect = (710, 5, 250, 100)
-        state_rect = (710, 110, 250, StateWidget.HEIGHT)
+        width = settings.options.width
+        height = settings.options.height
+        lcol_w = width - RIGHT_COLUMN_WIDTH - 3 * WIDGETS_PADDING
+        rcol_x = lcol_w + 2 * WIDGETS_PADDING
+        map_rect = (
+            WIDGETS_PADDING, WIDGETS_PADDING,
+            lcol_w, height - ActionsWidget.HEIGHT - 3 * WIDGETS_PADDING
+        )
+        actions_rect = (
+            WIDGETS_PADDING, get_below(map_rect),
+            lcol_w, ActionsWidget.HEIGHT
+        )
+        minimap_rect = (rcol_x, 5, RIGHT_COLUMN_WIDTH, 250)
+        state_rect = (
+            rcol_x, get_below(minimap_rect),
+            RIGHT_COLUMN_WIDTH, StateWidget.HEIGHT
+        )
         details_rect = (
-            710, 115 + StateWidget.HEIGHT,
-            250, 510 + ActionsWidget.HEIGHT - (115 + StateWidget.HEIGHT)
+            rcol_x, get_below(state_rect),
+            RIGHT_COLUMN_WIDTH, height - state_rect[1] - StateWidget.HEIGHT - 2 * WIDGETS_PADDING
         )
 
         flags = pygame.DOUBLEBUF | pygame.HWSURFACE
-        screen_dim = (
-            minimap_rect[0] + minimap_rect[2],
-            actions_rect[1] + actions_rect[3]
-        )
+        screen_dim = (width, height)
         self.screen = pygame.display.set_mode(screen_dim, flags)
         self.clock = pygame.time.Clock()
         data.load_images()

@@ -8,11 +8,13 @@ import pygame
 pygame.init()
 
 import logs
+import settings
 from state_reader import DumpReader
 from window import Window
 
+settings.load(sys.argv)
 try:
-    filename = sys.argv[1]
+    filename = settings.args[0]
 except IndexError:
     logs.write('Error: a file is needed.')
 
