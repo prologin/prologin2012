@@ -18,6 +18,7 @@ class DetailsWidget(ScrolledWidget):
         super(DetailsWidget, self).__init__(*args)
         self.game_state = None
         self.position = None
+        self.selection = None
 
         self.directions = {
             ORIENTATION_NORD: utils.make_bordered_text(u'↑', self.font),
@@ -34,7 +35,7 @@ class DetailsWidget(ScrolledWidget):
         if self.position:
             self.update_position(*self.position)
 
-    def update_position(self, x, y):
+    def update_position(self, x, y, selection=None):
         if not self.game_state:
             return
         if (
@@ -45,12 +46,18 @@ class DetailsWidget(ScrolledWidget):
             self.scroll(0)
             return
 
+        self.selection = selection
         self.position = (x, y)
         units = self.game_state.map_units[y][x]
         self.set_list_length(len(units) + 1)
         self._display_position(x, y)
         self._display_cell(self.game_state.map[y][x])
         for i, unit in enumerate(units, 1):
+            if self.selection == i - 1:
+                self.list_surface.fill(utils.DARK_GREY, (
+                    0, i * self.LINE_HEIGHT,
+                    self.width, self.LINE_HEIGHT
+                ))
             self._display_unit(self.game_state.units[unit], i)
 
         self.scroll(0)
@@ -144,6 +151,7 @@ class DetailsWidget(ScrolledWidget):
         item -= 1
         units = self.game_state.map_units[self.position[1]][self.position[0]]
         if item < len(units):
+            self.update_position(self.position[0], self.position[1], item)
             self.map_widget.update_subjective(
                 self.game_state.units[units[item]]
             )
