@@ -17,6 +17,8 @@ GameState::GameState(Map* map, rules::Players_sptr players)
       game_phase_(PHASE_PLACEMENT),
       current_turn_(0)
 {
+    game_phase_ = (map->getPlacementTurns() > 0) ? PHASE_PLACEMENT
+                                                 : PHASE_DEPLACEMENT;
 }
 
 GameState::GameState(const GameState& st)
