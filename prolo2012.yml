@@ -285,7 +285,7 @@ function:
       Retourne le personnage de type ``classe`` de sa propre équipe.
     fct_ret_type: perso_info
     fct_arg:
-      [classe, perso_classe, "Classe"]
+      - [classe, perso_classe, "Classe"]
 
 # Autre
   -
