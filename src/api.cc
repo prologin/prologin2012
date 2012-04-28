@@ -11,6 +11,7 @@
 */
 
 #include <stdlib.h>
+#include <algorithm>
 
 #include <rules/game-state.hh>
 #include <rules/player.hh>
@@ -70,9 +71,35 @@ zone_type Api::carte_zone_type(position pos)
 std::vector<perso_info> Api::carte_zone_perso(position pos)
 {
     Map* map = game_state_->getMap();
+    bool ok = false;
 
     // invalid position, return something considered null
     if (!map->isPositionValid(pos))
+        return std::vector<perso_info>();
+    for (Unit_sptr unit : game_state_->getUnits())
+        if (unit->getPlayer() == equipe_ &&
+                unit->isPositionInVision(map, pos))
+            ok = true;
+
+    if (game_state_->isPalantirActivated(equipe_))
+    {
+        position palantir = game_state_->getPalantir(equipe_);
+
+        auto square = map->getSquareVision(palantir, VOLEUR_VISION);
+        if (std::find(square.begin(), square.end(), pos) != square.end())
+            ok = true;
+    }
+
+    if (game_state_->isElfeVisionActivated(equipe_))
+    {
+        position elfe_vision = game_state_->getElfeVision(equipe_);
+
+        auto square = map->getSquareVision(elfe_vision, ELFE_VISION);
+        if (std::find(square.begin(), square.end(), pos) != square.end())
+            ok = true;
+    }
+
+    if (!ok)
         return std::vector<perso_info>();
 
     UnitVect units = map->getUnitsOn(pos);
@@ -131,6 +158,13 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
+
+    for (auto action : actions_.actions())
+    {
+        perso_info persoInfo = dynamic_cast<const ActionMove*>(action.get())->getPersoInfo();
+        if (persoInfo.equipe == perso.equipe && persoInfo.classe == perso.classe)
+            return PERSONNAGE_IMPOSSIBLE;
+    }
 
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
                 player_->id));
@@ -221,6 +255,14 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
+
+    for (auto action : actions_.actions())
+    {
+        perso_info persoInfo = dynamic_cast<const ActionAttack*>(action.get())->getPersoInfo();
+        if (persoInfo.equipe == perso.equipe && persoInfo.classe == perso.classe)
+            return PERSONNAGE_IMPOSSIBLE;
+    }
+
 
     rules::IAction_sptr action(new ActionAttack(perso, attaque, pos, player_->id));
 

@@ -359,7 +359,8 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
     Map* map = st.getMap();
 
     for (Unit_sptr unit : st.getUnits())
-        if (unit->isPositionInVision(map, target))
+        if (unit->getPlayer() == attacker.player_id && 
+                unit->isPositionInVision(map, target))
             return OK;
 
     if (st.isPalantirActivated(attacker.player_id))

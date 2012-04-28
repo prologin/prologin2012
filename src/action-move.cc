@@ -43,7 +43,7 @@ int ActionMove::check(const GameState* st) const
             return CHEMIN_IMPOSSIBLE;
 
         current_unit_position = pos;
-        move_points -= st->getMap()->getCell(pos)->getCost();
+        move_points -= st->getMap()->getCell(current_unit_position)->getCost();
 
         if (move_points < 0)
             return CHEMIN_IMPOSSIBLE;

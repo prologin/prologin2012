@@ -326,7 +326,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
                     DEBUG("client resurected");
                     // client resurected
                     playerActions_.clear();
-										i--;
+                    i--;
                 }
                 else
                 {
@@ -337,7 +337,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
             for (auto playerAction : playerActions_.actions())
                 api_->actions()->add(playerAction);
-            
+
             playerActions_.clear();
         }
         while (spectators_count > 0)
@@ -404,7 +404,7 @@ void Rules::resolve_moves()
     {
         for (auto& move : moves)
         {
-            Unit_sptr unit = api_->game_state()->getUnit(move.second->getUnitInfo());
+            Unit_sptr unit = api_->game_state()->getUnit(move.second->getPersoInfo());
             api_->game_state()->getMap()->moveUnit(unit->getUnitInfo(),
                     unit->getPosition(), move.first);
             unit->setPosition(move.first);
@@ -466,7 +466,7 @@ void Rules::resolve_points()
 
         // Only teamkill
         if (teamkill == unit->getAttackers().size())
-            api_->player()->score -= 1;
+            api_->player()->score -= 2;
         // no teamkill, every team get a point
         else if (teamkill == 0)
         {

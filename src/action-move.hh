@@ -22,7 +22,7 @@ public:
         { return player_; }
     uint32_t id() const
         { return id_; }
-    perso_info getUnitInfo() const
+    perso_info getPersoInfo() const
         { return unit_; }
 
     void applyDirection(GameState* st) const;
