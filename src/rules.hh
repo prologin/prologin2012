@@ -57,8 +57,6 @@ private:
 
     int timeout_;
     int winner_;
-
-    utils::Sandbox sandbox_;
 };
 
 #endif // !RULES_HH_

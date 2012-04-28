@@ -18,8 +18,7 @@
 
 Rules::Rules(const rules::Options& opt)
     : opt_(opt),
-      champion_(nullptr),
-      sandbox_(opt.time)
+      champion_(nullptr)
 {
     // Load map from file
     std::ifstream ifs(opt.map_file);
@@ -66,7 +65,7 @@ Rules::Rules(const rules::Options& opt)
         {
         }
 
-        sandbox_.execute(champion_partie_init);
+        champion_partie_init();
     }
 
     players_ = opt.players;
@@ -92,8 +91,7 @@ Rules::Rules(const rules::Options& opt)
 Rules::Rules(rules::Players_sptr players, Api* api)
     : champion_(nullptr),
       api_(api),
-      players_(players),
-      sandbox_()
+      players_(players)
 {
     // Register Actions
     api_->actions()->register_action(ACTION_MOVE,
@@ -114,7 +112,7 @@ Rules::~Rules()
 {
     if (champion_)
     {
-        sandbox_.execute(champion_partie_fin);
+        champion_partie_fin();
         delete champion_;
     }
 
@@ -138,13 +136,13 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
         switch (phase)
         {
         case PHASE_PLACEMENT:
-            sandbox_.execute(champion_jouer_placement);
+            champion_jouer_placement();
             break;
         case PHASE_DEPLACEMENT:
-            sandbox_.execute(champion_jouer_deplacement);
+            champion_jouer_deplacement();
             break;
         case PHASE_ATTAQUE:
-            sandbox_.execute(champion_jouer_attaque);
+            champion_jouer_attaque();
             break;
         }
 
@@ -273,9 +271,6 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
     uint32_t size = players_->players.size() + spectators_->players.size();
 
-    std::vector<bool> last_turn_players(players_->players.size(), true);
-    std::vector<bool> turn_players(players_->players.size(), false);
-
     while (!is_finished())
     {
         INFO("TURN %d", api_->game_state()->getCurrentTurn());
@@ -284,74 +279,19 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
         api_->actions()->clear();
 
-        uint32_t players_playing = 0;
-        uint32_t spectators_count = spectators_->players.size();
-
         DEBUG("Expecting %d clients", size);
         for (uint32_t i = 0; i < size; ++i)
         {
-            if (!msgr->poll(timeout_))
-            {
-                DEBUG("time out");
-                break;
-            }
-
             // Receive actions from one player
             DEBUG("recieving actions");
             msgr->recv_actions(&playerActions_);
             msgr->ack();
-
-            // FIXME: THIS IS NOT WORKING, WALKING DEAD CLIENT CAN COME BACK IN
-            // THE PLAY IF HE DOES NOT SEND AN ACTION AFTER TIMEOUTING
-            if (playerActions_.actions().empty())
-            {
-                DEBUG("actions() empty");
-                players_playing++;
-                continue;
-            }
-
-            // client sent no action, spectator sent ActionAck
-            if (playerActions_.actions().back()->id() == ACTION_ACK)
-            {
-                DEBUG("spectator obtained");
-                spectators_count--;
-            }
-            else
-            {
-                uint32_t player_id = playerActions_.actions().back()->player_id();
-
-                turn_players[player_id] = true;
-                if (turn_players[player_id] != last_turn_players[player_id])
-                {
-                    DEBUG("client resurected");
-                    // client resurected
-                    playerActions_.clear();
-                    i--;
-                }
-                else
-                {
-                    DEBUG("client obtained");
-                    players_playing++;
-                }
-            }
 
             for (auto playerAction : playerActions_.actions())
                 api_->actions()->add(playerAction);
 
             playerActions_.clear();
         }
-        while (spectators_count > 0)
-        {
-            msgr->recv_actions(api_->actions());
-            msgr->ack();
-            spectators_count--;
-        }
-
-        last_turn_players = turn_players;
-        for (unsigned i = 0; i < turn_players.size(); ++i)
-            turn_players[i] = false;
-
-        size = players_playing + spectators_->players.size();
 
         // Apply them onto the gamestate
         for (auto& action : api_->actions()->actions())
