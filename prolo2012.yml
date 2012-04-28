@@ -188,8 +188,9 @@ function:
   -
     fct_name: distance
     fct_summary:
-      Renvoie la longueur du chemin le plus court entre deux points. Renvoie -1
-      en cas de positions invalides ou de chemin inexistant.
+      Renvoie le nombre de points nécessaires pour parcourir le chemin le plus
+      court entre deux points. Renvoie -1 en cas de positions invalides ou de
+      chemin inexistant.
     fct_ret_type: int
     fct_arg:
       - [p1, position, "position de départ"]
