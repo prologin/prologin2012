@@ -85,6 +85,7 @@ public:
      * @return the positions where units could be seen
      */
     std::vector<position> getSurroundings(position pos, orientation direction, int range);
+    std::vector<position> getNormalSurroundings(position pos, orientation direction, int range);
     std::vector<position> getSquareSurroundings(position pos, int range);
 
     static orientation getOrientation(position p1, position p2);

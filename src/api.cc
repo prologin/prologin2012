@@ -325,5 +325,8 @@ int Api::tour_actuel()
 //
 const char* Api::get_dump()
 {
-    return dump_game_state(*game_state_);
+    if (player_->type == rules::SPECTATOR)
+        return dump_game_state(*game_state_);
+    else
+        return nullptr;
 }

@@ -59,6 +59,7 @@ public:
           move_points_(move_points),
           attackers_(),
           displacement_({0, 0}),
+          FusRoDahed_(false),
           orientation_(ORIENTATION_NORD),
           penombre_()
     {}
@@ -112,6 +113,9 @@ public:
     void setDisplacement(position disp);
     position getDisplacement() const;
 
+    void setFusRoDahed();
+    bool isFusRoDahed() const;
+
     bool isDead();
 
     virtual Ability* getAbility(attaque_type id);
@@ -144,6 +148,7 @@ private:
 
     UnitVect attackers_;
     position displacement_;
+    bool FusRoDahed_;
 
     orientation orientation_;
 

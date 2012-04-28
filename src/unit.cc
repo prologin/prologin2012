@@ -118,6 +118,8 @@ bool Unit::isPositionInVision(Map* map, position target) const
 
 void Unit::attacked(int damages, unit_info attacker)
 {
+    if (FusRoDahed_)
+        return;
     life_current_ -= damages;
     attackers_.push_back(attacker);
 }
@@ -130,6 +132,7 @@ UnitVect Unit::getAttackers() const
 void Unit::resetAttackers()
 {
     attackers_.clear();
+    FusRoDahed_ = false;
 }
 
 void Unit::setDisplacement(position disp)
@@ -140,6 +143,16 @@ void Unit::setDisplacement(position disp)
 position Unit::getDisplacement() const
 {
     return displacement_;
+}
+
+void Unit::setFusRoDahed()
+{
+    FusRoDahed_ = true;
+}
+
+bool Unit::isFusRoDahed() const
+{
+    return FusRoDahed_;
 }
 
 // Return true if unit's life is less or equal to zero

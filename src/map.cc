@@ -280,7 +280,6 @@ std::vector<position> Map::getVision(position pos, orientation direction, int ra
                 visionCone.push_back(position({x, y}));
         }
     return visionCone;
-
 }
 
 std::vector<position> Map::getSquareVision(position pos, int range)
@@ -320,6 +319,32 @@ std::vector<position> Map::getSurroundings(position pos, orientation direction, 
           unitsPositions.push_back(visionPosition);
 
     return unitsPositions;
+}
+
+std::vector<position> Map::getNormalSurroundings(position pos, orientation direction, int range)
+{
+    std::vector<position> visionCone;
+    std::vector<bool> isBlocked(2 * range + 3, false);
+    int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
+    int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
+
+    for (int i = 0; i <= range; ++i)
+        for (int j = -(i + 1); j <= (i + 1); ++j)
+        {
+            int x = pos.x + i * East + j * North;
+            int y = pos.y + i * North + j * East;
+
+            if (!isPositionValid(position({x,y})) || isBlocked[j + range + 1])
+              continue;
+
+            zone_type zoneType = map_[y][x]->getType();
+            if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||
+                    ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
+                isBlocked[j + range + 1] = true;
+            else if (zoneType != ZONE_MUR && !map_[y][x]->getUnits().empty())
+                visionCone.push_back(position({x, y}));
+        }
+    return visionCone;
 }
 
 // Check the square of length (2 * range + 1) around pos

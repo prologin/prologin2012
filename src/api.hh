@@ -114,10 +114,6 @@ public:
 //
    int perso_attaque_recharge(perso_info perso, attaque_type attaque);
 ///
-// Annule l'action précédente. Renvoie ``true`` si une action a été annulée, ``false`` sinon.
-//
-   bool annuler();
-///
 // Retourne le numéro de votre équipe
 //
    int mon_equipe();

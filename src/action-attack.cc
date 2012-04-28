@@ -57,13 +57,14 @@ void ActionAttack::markFusRoDah(GameState* gameState, std::map<int, int>& marked
 {
     Map* map = gameState->getMap();
     auto attacker = gameState->getUnit(unit_);
-    auto unitsPositions = map->getSurroundings(attacker->getPosition(),
+    auto unitsPositions = map->getNormalSurroundings(attacker->getPosition(),
             attacker->getOrientation(), attacker->getVision());
 
     for (auto unitsPosition : unitsPositions)
     {
         for (auto victimInfo : map->getCell(unitsPosition)->getUnits())
         {
+            auto victimUnit = gameState->getUnit(victimInfo);
             int victimId= victimInfo.player_id * 10 + victimInfo.classe;
             int attackerId = unit_.equipe * 10 + unit_.classe;
             unit_info attackerInfo = { unit_.equipe, unit_.classe };
@@ -76,8 +77,9 @@ void ActionAttack::markFusRoDah(GameState* gameState, std::map<int, int>& marked
                     searchVictim->second / 10,
                     (perso_classe)(searchVictim->second % 10)
                 };
-                gameState->getUnit(victimInfo)->attacked(255, attackerInfo);
-                gameState->getUnit(victimInfo)->attacked(255, otherInfo);
+                victimUnit->attacked(255, attackerInfo);
+                victimUnit->attacked(255, otherInfo);
+                victimUnit->setFusRoDahed();
             }
             else
                 markedUnits.insert(std::make_pair(victimId, attackerId));
@@ -87,13 +89,15 @@ void ActionAttack::markFusRoDah(GameState* gameState, std::map<int, int>& marked
 
 void ActionAttack::applyAttack(GameState *gameState) const
 {
-    Ability* attack = gameState->getUnit(unit_)->getAbility(atk_id_);
+    auto unit = gameState->getUnit(unit_);
+    Ability* attack = unit->getAbility(atk_id_);
 
     unit_info info = { unit_.equipe, unit_.classe };
     position displacement = gameState->getUnit(info)->getDisplacement();
     position target = { target_.x + displacement.x, target_.y + displacement.y };
 
-    if (attack->check(*gameState, info, target) == OK)
+    if (!(atk_id_ != ATTAQUE_FUS_RO_DAH && unit->isFusRoDahed())
+            && attack->check(*gameState, info, target) == OK)
         attack->apply(gameState, info, target);
 
     gameState->getUnit(info)->setDisplacement(position {0, 0});
