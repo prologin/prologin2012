@@ -287,12 +287,13 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
             // Receive actions from one player
             DEBUG("recieving actions");
-            msgr->recv_actions(api_->actions());
+						rules::Actions playerActions;	
+            msgr->recv_actions(&playerActions);
             msgr->ack();
 
             // FIXME: THIS IS NOT WORKING, WALKING DEAD CLIENT CAN COME BACK IN
             // THE PLAY IF HE DOES NOT SEND AN ACTION AFTER TIMEOUTING
-            if (api_->actions()->actions().empty())
+            if (playerActions.actions().empty())
             {
                 DEBUG("actions() empty");
                 players_playing++;
@@ -300,21 +301,22 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             }
 
             // client sent no action, spectator sent ActionAck
-            if (api_->actions()->actions().back()->id() == ACTION_ACK)
+            if (playerActions.actions().back()->id() == ACTION_ACK)
             {
                 DEBUG("spectator obtained");
                 spectators_count--;
             }
             else
             {
-                uint32_t player_id = api_->actions()->actions().back()->player_id();
+                uint32_t player_id = playerActions.actions().back()->player_id();
 
                 turn_players[player_id] = true;
                 if (turn_players[player_id] != last_turn_players[player_id])
                 {
                     DEBUG("client resurected");
                     // client resurected
-                    api_->actions()->clear();
+										// WRONG
+                    playerActions.clear();
                 }
                 else
                 {
@@ -322,6 +324,9 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
                     players_playing++;
                 }
             }
+
+						for (auto playerAction : playerActions.actions())
+								api_->actions()->add(playerAction);
         }
         while (spectators_count > 0)
         {
