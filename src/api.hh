@@ -114,6 +114,22 @@ public:
 //
    int perso_attaque_recharge(perso_info perso, attaque_type attaque);
 ///
+// Retourne la position du personnage ``perso``.
+//
+   position perso_position(perso_info perso);
+///
+// Retourne le barbare de son équipe.
+//
+   perso_info perso_barbare();
+///
+// Retourne le elfe de son équipe.
+//
+   perso_info perso_elfe();
+///
+// Retourne le voleur de son équipe.
+//
+   perso_info perso_voleur();
+///
 // Retourne le numéro de votre équipe
 //
    int mon_equipe();
@@ -129,6 +145,15 @@ public:
 // Retourne le numéro du tour actuel
 //
    int tour_actuel();
+///
+// Retourne le nombre de tours de placements
+//
+   int nombre_tours_placement();
+///
+// Retourne le nombre total de tours
+//
+   int nombre_tours();
+
 ///
 // Return un dump JSON de l'état complet du jeu.
 //

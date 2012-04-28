@@ -308,7 +308,7 @@ extern "C" std::vector<position> api_palantir_vision()
 }
 
 ///
-// Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque "I See What You Did There".
+// Récupère la liste des zones sur lesquelles l'elfe peut voir des personnages via son attaque "I See What You Did There".
 //
 extern "C" std::vector<position> api_elfe_vision()
 {
@@ -329,6 +329,38 @@ extern "C" erreur api_perso_attaque(perso_info perso, attaque_type attaque, posi
 extern "C" int api_perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
   return api->perso_attaque_recharge(perso, attaque);
+}
+
+///
+// Retourne la position du personnage ``perso``.
+//
+extern "C" position api_perso_position(perso_info perso)
+{
+  return api->perso_position(perso);
+}
+
+///
+// Retourne le barbare de son équipe.
+//
+extern "C" perso_info api_perso_barbare()
+{
+    return api->perso_barbare();
+}
+
+///
+// Retourne le elfe de son équipe.
+//
+extern "C" perso_info api_perso_elfe()
+{
+    return api->perso_elfe();
+}
+
+///
+// Retourne le voleur de son équipe.
+//
+extern "C" perso_info api_perso_voleur()
+{
+    return api->perso_voleur();
 }
 
 ///
@@ -361,6 +393,22 @@ extern "C" int api_nombre_equipes()
 extern "C" int api_tour_actuel()
 {
   return api->tour_actuel();
+}
+
+///
+// Retourne le nombre de tours de placements
+//
+extern "C" int api_nombre_tours_placement()
+{
+    return api->nombre_tours_placement();
+}
+
+///
+// Retourne le nombre total de tours
+//
+extern "C" int api_nombre_tours()
+{
+    return api->nombre_tours();
 }
 
 ///

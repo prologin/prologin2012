@@ -289,6 +289,47 @@ int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 }
 
 ///
+// Retourne la position du personnage ``perso``.
+//
+position Api::perso_position(perso_info perso)
+{
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+      return {-1, -1};
+
+    return game_state_->getUnit(perso)->getPosition();
+}
+
+///
+// Retourne le barbare de son équipe.
+//
+perso_info Api::perso_barbare()
+{
+    auto barbare = game_state_->getUnit(unit_info {equipe_, PERSO_BARBARE});
+
+    return { equipe_, PERSO_BARBARE, barbare->getCurrentLife(), barbare->getOrientation()};
+}
+
+///
+// Retourne le elfe de son équipe.
+//
+perso_info Api::perso_elfe()
+{
+    auto elfe = game_state_->getUnit(unit_info {equipe_, PERSO_ELFE});
+
+    return { equipe_, PERSO_ELFE, elfe->getCurrentLife(), elfe->getOrientation()};
+}
+
+///
+// Retourne le voleur de son équipe.
+//
+perso_info Api::perso_voleur()
+{
+    auto voleur = game_state_->getUnit(unit_info {equipe_, PERSO_VOLEUR});
+
+    return { equipe_, PERSO_VOLEUR, voleur->getCurrentLife(), voleur->getOrientation()};
+}
+
+///
 // Retourne le numéro de votre équipe
 //
 int Api::mon_equipe()
@@ -318,6 +359,22 @@ int Api::nombre_equipes()
 int Api::tour_actuel()
 {
     return game_state_->getCurrentTurn();
+}
+
+///
+// Retourne le nombre de tours de placements
+//
+int Api::nombre_tours_placement()
+{
+    return game_state_->getMap()->getPlacementTurns();
+}
+
+///
+// Retourne le nombre total de tours
+//
+int Api::nombre_tours()
+{
+    return game_state_->getMap()->getMaxTurns();
 }
 
 ///
