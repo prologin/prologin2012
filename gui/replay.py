@@ -12,7 +12,7 @@ import settings
 from state_reader import DumpReader
 from window import Window
 
-settings.load(sys.argv)
+settings.load(sys.argv[1:])
 try:
     filename = settings.args[0]
 except IndexError:

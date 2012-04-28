@@ -12,7 +12,6 @@ def unit_from_json(unit):
 class GameState(object):
 
     def __init__(self, json):
-        print(json)
         self.turn = json['turn']
         self.turn_max = json['turn_max']
         self.scores = json['scores']
