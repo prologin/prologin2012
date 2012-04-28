@@ -74,24 +74,6 @@ Mon personnage est-il inclus dans sa propre pénombre ?
 Oui, il fait nuit et il est difficile de dicerner la différence entre son ombre
 et celle des autres.
 
-Attaques
-========
-
-Que se passe-t'il quand mon personnage se fait toucher par deux ``Fus Roh Dah`` ?
----------------------------------------------------------------------------------
-
-Il meurt, son corps ne résistant pas au choc de deux attaques si puissantes.
-
-L'attaque "Traîtrise" du Voleur attaque-t-elle mes unités ?
------------------------------------------------------------
-
-Non, car le Voleur est suffisament intelligent pour reconnaitre ses copains.
-
-L'attaque normale du Barbare attaque-t-elle mes unités ?
---------------------------------------------------------
-
-Oui, le Barbare est un peu débile.
-
 Quel est l'algorithme de la fonction vision ?
 ---------------------------------------------
 
@@ -137,6 +119,25 @@ Quel est l'algorithme de la fonction vision ?
         }
         retourner visionCone;
     }
+
+
+Attaques
+========
+
+Que se passe-t'il quand mon personnage se fait toucher par deux ``Fus Roh Dah`` ?
+---------------------------------------------------------------------------------
+
+Il meurt, son corps ne résistant pas au choc de deux attaques si puissantes.
+
+L'attaque "Traîtrise" du Voleur attaque-t-elle mes unités ?
+-----------------------------------------------------------
+
+Non, car le Voleur est suffisament intelligent pour reconnaitre ses copains.
+
+L'attaque normale du Barbare attaque-t-elle mes unités ?
+--------------------------------------------------------
+
+Oui, le Barbare est un peu débile.
 
 
 Chemin
