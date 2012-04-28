@@ -92,6 +92,53 @@ L'attaque normale du Barbare attaque-t-elle mes unités ?
 
 Oui, le Barbare est un peu débile.
 
+Quel est l'algorithme de la fonction vision ?
+---------------------------------------------
+
+::
+
+    position liste getVision(position pos, orientation direction, entier vision)
+    {
+        si type_case(pos) = ZONE_TOUR
+        {
+            retourne getSquareVision(pos, vision); //Si on est sur une tour, la vision est carrée
+        }
+
+        position liste visionCone;
+        bool liste estBloqué[2 * range + 3, false];
+
+        entier South <- (direction = ORIENTATION_SUD) - (direction = ORIENTATION_NORD); // si on regarde vers le nord, South vaut -1 et le cône est inversé
+        entier East <- (direction = ORIENTATION_EST) - (direction = ORIENTATION_OUEST); // si on regarde vers l'Ouest, East vaut -1 et le cône est inversé
+
+        pour i allant de 0 à vision
+        {
+            pour j allant de -(i + 1) à (i + 1)
+            {
+                entier x <- pos.x + i * East + j * South;
+                entier y <- pos.y + i * South + j * East;
+
+                si position_non_valide(position({x,y})) ou estBloqué[j + vision + 1]
+                {
+                  continuer la boucle à la prochaine itération;
+                }
+
+                zone_type zoneType <- type_case(map_[y][x]); // Type de la case devant la position courante
+
+                //Si zoneType est une forêt et qu'on est pas à la lisière, ou si il y a un mur
+                si (non proche(x, y, pos) et zoneType = ZONE_FORET) ou ((non proche(x, y, pos) ou i = 1) et zoneType = ZONE_MUR)
+                {
+                    isBlocked[j + vision + 1] = true; // La case est bloquée
+                }
+                sinon si zoneType différent de ZONE_MUR // Si on n'est pas devant un mur
+                {
+                    visionCone.ajouter(position({x, y})); // La case est visible, on l'ajoute à la liste à retourner
+                }
+            }
+        }
+        retourner visionCone;
+    }
+
+
 Chemin
 ======
 

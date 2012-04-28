@@ -52,6 +52,8 @@ Il a une arme de corps à corps et donc une portée de 1.
     distance. Elle reste sur le terrain jusqu'à ce que le Voleur pose un autre
     palantír. Le champs de vision est le même que celui qu'aurait un Voleur sur
     un tour.
+    Il peut le poser sur n'importe quelle case (même hors de son champ de
+    vision)
   :cooldown: 3 tours
 
 *Traîtrise*
@@ -113,6 +115,8 @@ Il peut tirer sur toutes les cases visibles par le membres de son équipe. C'est
   :description: L'Elfe peut réveler une zone carrée (comme si il
     était sur une tour) de la carte. Elle sera visible jusqu'à la prochaine
     phase d'attaque.
+    Il peut révéler n'importe quelle case de la carte, même hors de son
+    champ de vision.
   :cooldown: 5 tours
 
 Champs de vision
