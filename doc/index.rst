@@ -17,3 +17,4 @@ Pages:
    api
    faq-candidat
    stechec2
+   gui
