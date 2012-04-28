@@ -10,6 +10,7 @@ Pages:
 .. toctree::
    :maxdepth: 1
 
+   news
    finale
    api
    faq-candidat
