@@ -290,7 +290,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         DEBUG("Expecting %d clients", size);
         for (uint32_t i = 0; i < size; ++i)
         {
-            if (!msgr->poll(timeout_))
+            // halfr, quick fix,
+            if (!msgr->poll(timeout_*10))
             {
                 DEBUG("time out");
                 break;
