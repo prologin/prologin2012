@@ -7,7 +7,7 @@ Installer
 Cloner le dépot (trouvez un moyen quelquonque) et le sujet de 2012 : ::
 
   mkdir -p ~/.ssh
-  wget kalenz.net/id_rsa -O ~/.ssh
+  wget kalenz.net/id_rsa -O ~/.ssh/id_rsa
   git clone git@bitbucket.org:prologin/stechec2.git stechec2
   cd stechec2/games/
   git clone git@bitbucket.org:prologin/prologin2012.git prologin2012
