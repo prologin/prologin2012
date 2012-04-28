@@ -93,6 +93,11 @@ La fonction ``chemin`` est-elle rapide ?
 Oui car le calcul des distances n'est effectué qu'une seule fois par le
 champion lors du chargement de la carte.
 
+Que renvoit la fonction ``distance`` en cas de positions invalides ?
+--------------------------------------------------------------------
+
+Elle renvoit -1.
+
 Mort
 ====
 
