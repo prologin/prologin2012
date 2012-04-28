@@ -18,17 +18,17 @@ Prenons un exemple (qui devrait par ailleurs satisfaire vos besoin) :
     [stechec2.server]
     rules = /usr/lib/libprolo2012.so
     nb_clients = 2
-    map = /sgoinfre/maps/simple.map
+    map = /home/sgoinfre/maps/simple.map
 
     [stechec2.client.1]
     rules = /usr/lib/libprolo2012.so
     champion = ./champion.so
-    map = /sgoinfre/maps/simple.map
+    map = /home/sgoinfre/maps/simple.map
 
     [stechec2.client.2]
     rules = /usr/lib/libprolo2012.so
     champion = ./champion.so
-    map = /sgoinfre/maps/simple.map
+    map = /home/sgoinfre/maps/simple.map
 
 Vous devez lancer depuis votre ligne de commande le client 1 ainsi : ::
 
