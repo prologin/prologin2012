@@ -153,6 +153,11 @@ Que renvoit la fonction ``distance`` en cas de positions invalides ?
 
 Elle renvoit -1.
 
+La fonction ``chemin`` renvoit parfois des valeurs abhérates
+------------------------------------------------------------
+
+On sait.
+
 Mort
 ====
 
@@ -225,4 +230,12 @@ En java
 Ça ne compile pas
 -----------------
 
-On sait, quelqu'un est sur ça, désolé.
+Maintenant ça fonctionne, si vous avez toujours de problèmes venez nous voir.
+
+En python
+=========
+
+``No module named prologin``
+----------------------------
+
+Vous devez lancer ``stechec-client`` dans le même dossiers que le champion.

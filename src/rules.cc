@@ -306,7 +306,16 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             if (playerActions_.actions().empty())
             {
                 DEBUG("actions() empty");
-                players_playing++;
+                uint32_t player_id = msgr->last_client_id();
+                turn_players[player_id] = true;
+                if (turn_players[player_id] != last_turn_players[player_id])
+                {
+                    DEBUG("client resurected");
+                    playerActions_.clear();
+                    i--;
+                }
+                else
+                    players_playing++;
                 continue;
             }
 
@@ -318,7 +327,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             }
             else
             {
-                uint32_t player_id = playerActions_.actions().back()->player_id();
+                uint32_t player_id = msgr->last_client_id();
 
                 turn_players[player_id] = true;
                 if (turn_players[player_id] != last_turn_players[player_id])
