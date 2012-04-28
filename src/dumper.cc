@@ -2,6 +2,10 @@
 #include <cstdlib>
 #include <sstream>
 
+#include <rules/action.hh>
+#include <rules/actions.hh>
+#include <utils/buffer.hh>
+
 #include "map.hh"
 #include "cell.hh"
 #include "dumper.hh"
@@ -74,7 +78,18 @@ static std::ostream& dump_units(std::ostream& ss, const Units &units)
     return ss;
 }
 
-const char* dump_game_state(const GameState& st)
+static std::ostream& dump_actions(std::ostream& ss, rules::Actions& acts)
+{
+    utils::Buffer buf;
+    acts.handle_buffer(buf);
+    ss << "\"";
+    for (unsigned i = 0; i < buf.size(); ++i)
+        ss << "\\x" << std::hex << buf.data()[i] << std::dec;
+    ss << "\"";
+    return ss;
+}
+
+const char* dump_game_state(const GameState& st, rules::Actions& acts)
 {
     std::stringstream ss;
 
@@ -90,7 +105,8 @@ const char* dump_game_state(const GameState& st)
     ss << "\"units\": ";
         dump_units(ss, st.getUnits());
         ss << ", ";
-    ss << "\"actions\": []"; // TODO
+    ss << "\"actions\": ";
+        dump_actions(ss, acts);
     ss << "}";
 
     char* result = new char[ss.str().size() + 1];
