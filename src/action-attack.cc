@@ -116,6 +116,7 @@ void ActionAttack::apply_on(GameState* gameState) const
     auto& pendingAttacks = gameState->getPendingAttacks();
     auto& pendingBastoooon = gameState->getPendingBastoooon();
 
+    DEBUG("Apply_by: %d (%d)", player_, unit_.equipe);
     if (atk_id_ == ATTAQUE_FUS_RO_DAH)
         pendingAttacks.push_front(this);
     else if (atk_id_ == ATTAQUE_BASTOOOON)

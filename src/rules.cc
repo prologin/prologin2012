@@ -157,13 +157,14 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
         api_->actions()->clear();
 
         // Receive actions
-        DEBUG("pull");
+        DEBUG("pull %d actions", api_->actions()->actions().size());
         msgr->pull_actions(api_->actions());
-        DEBUG("pulled");
+        DEBUG("pulled %d actions", api_->actions()->actions().size());
 
         // Apply them onto the gamestate
-        for (auto& action : api_->actions()->actions())
+        for (auto action : api_->actions()->actions())
         {
+            DEBUG("Applying action");
             api_->game_state_set(action->apply(api_->game_state()));
         }
 
@@ -363,7 +364,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         size = players_playing + spectators_->players.size();
 
         // Apply them onto the gamestate
-        for (auto& action : api_->actions()->actions())
+        for (auto action : api_->actions()->actions())
         {
             api_->game_state_set(action->apply(api_->game_state()));
             actions.add(action);
@@ -431,6 +432,7 @@ void Rules::resolve_moves()
         move.second->applyDirection(api_->game_state());
     for (auto& moves : pendingMoves)
         moves.clear();
+    pendingMoves.clear();
 }
 
 void Rules::resolve_attacks()
@@ -440,10 +442,12 @@ void Rules::resolve_attacks()
     auto& pendingBastoooon = api_->game_state()->getPendingBastoooon();
     std::map<int, int> markedUnits;
 
+    DEBUG("acttacks: %d", pendingAttacks.size());
     for (auto& attack : pendingAttacks)
     {
         if (attack->getType() != ATTAQUE_FUS_RO_DAH)
             break;
+        DEBUG("FusRoDah");
         attack->markFusRoDah(api_->game_state(), markedUnits);
     }
     for (auto& attack : pendingAttacks)
@@ -475,7 +479,7 @@ void Rules::resolve_points()
 
         // Only teamkill
         if (teamkill == unit->getAttackers().size())
-            api_->player()->score -= 2;
+            players_->players[unit->getPlayer()]->score -= 2;
         // no teamkill, every team get a point
         else if (teamkill == 0)
         {
