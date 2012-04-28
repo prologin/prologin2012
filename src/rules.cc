@@ -66,7 +66,10 @@ Rules::Rules(const rules::Options& opt)
         {
         }
 
-        sandbox_.execute(champion_partie_init);
+        if (opt.player->type == rules::SPECTATOR)
+            champion_partie_init();
+        else
+            sandbox_.execute(champion_partie_init);
     }
 
     players_ = opt.players;
@@ -114,7 +117,11 @@ Rules::~Rules()
 {
     if (champion_)
     {
-        sandbox_.execute(champion_partie_fin);
+        if (opt_.player->type == rules::SPECTATOR)
+            champion_partie_fin();
+        else
+            sandbox_.execute(champion_partie_fin);
+
         delete champion_;
     }
 
