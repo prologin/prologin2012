@@ -554,7 +554,7 @@ Fonctions
 
 .. c:function:: position array palantir_vision()
 
-    Récupère la liste des positions sur lesquelles le palantír du voleur voit d'autre personnages.
+    Récupère la liste des positions sur lesquelles le palantír du voleur voit d'autres personnages.
 
     
 
@@ -565,7 +565,7 @@ Fonctions
 
 .. c:function:: position array elfe_vision()
 
-    Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque "I See What You Did There".
+    Récupère la liste des positions sur lesquelles l'elfe voit d'autre personnages *via* son attaque spéciale.
 
     
 

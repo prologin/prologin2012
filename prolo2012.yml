@@ -250,8 +250,8 @@ function:
   -
     fct_name: elfe_vision
     fct_summary:
-      Récupère la liste des zones sur lesquelles l'elfe peut voir via son
-      attaque "I See What You Did There".
+      Récupère la liste des positions sur lesquelles l'elfe voit
+      d'autres personnages *via* son attaque spéciale.
     fct_ret_type: position array
     fct_arg: []
   -
