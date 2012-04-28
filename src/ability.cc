@@ -463,12 +463,7 @@ void Loto::apply(GameState* st, unit_info attacker, position target)
     UnitVect units = st->getMap()->getUnitsOn(target);
 
     for (auto unit : units)
-    {
-        if (unit == attacker)
-            continue;
-
         st->getUnit(unit)->attacked(ELFE_ATTAQUE * 2, attacker);
-    }
 }
 
 /*
