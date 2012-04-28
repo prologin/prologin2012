@@ -107,3 +107,36 @@ Quelle est la limite de temps ?
 Chaque tour (``deplacement``, ``placement`` ou ``attaque``) ne doit pas prendre
 plus d'une seconde sinon votre champion sera interrompu et vos actions ne
 seront pas prisent en compte.
+
+En c++
+======
+
+Beuh, j'ai un comportement étrange (segfault) à des endrois encore plus étranges.
+---------------------------------------------------------------------------------
+
+Vous ne pouvez pas appeler vos classes par les noms suivants :
+
+- class Ability
+- class ActionAck
+- class ActionAttack
+- class ActionMove
+- class Api
+- class Barbare
+- class BarbareAttaque
+- class Bastoooon
+- class Cell
+- class Elfe
+- class ElfeAttaque
+- class FusRoDah
+- class Game
+- class GameState
+- class ISee
+- class Loto
+- class Map
+- class Palantir
+- class Rules
+- class Traitrise
+- class Unit
+- class Voleur
+- class VoleurAttaque
+
