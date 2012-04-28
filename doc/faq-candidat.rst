@@ -196,7 +196,7 @@ En c++
 ======
 
 Beuh, j'ai un comportement étrange (segfault) à des endroits encore plus étranges.
----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 
 Vous ne pouvez pas appeler vos classes par les noms suivants :
 
