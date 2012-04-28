@@ -14,3 +14,4 @@ Pages:
    api
    faq-candidat
    meta
+   stechec2
