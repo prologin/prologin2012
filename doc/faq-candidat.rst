@@ -106,6 +106,11 @@ Que renvoit la fonction ``distance`` en cas de positions invalides ?
 
 Elle renvoit -1.
 
+La fonction ``chemin`` renvoit parfois des valeurs abhérates
+------------------------------------------------------------
+
+On sait.
+
 Mort
 ====
 
