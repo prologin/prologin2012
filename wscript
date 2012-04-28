@@ -23,7 +23,7 @@ def build(bld):
             src/dumper.cc
             src/interface.cc
         ''',
-        target = 'prolo2012',
+        target = 'prolo2012-no-timeout',
         use = ['net', 'rules', 'utils'],
         defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
         lib = ['dl'],
