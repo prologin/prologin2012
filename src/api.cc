@@ -304,7 +304,7 @@ position Api::perso_position(perso_info perso)
 //
 perso_info Api::perso_classe_info(perso_classe classe)
 {
-    if (classe < 0 && classe > 2)
+    if (classe < 0 || classe > 2)
         return { -1, PERSO_VOLEUR, -1, ORIENTATION_NORD};
 
     auto barbare = game_state_->getUnit(unit_info {equipe_, classe});
