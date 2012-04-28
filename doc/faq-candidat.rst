@@ -183,7 +183,7 @@ En java
 Ça ne compile pas
 -----------------
 
-On sait, quelqu'un est sur ça, désolé.
+Maintenant ça fonctionne, si vous avez toujours de problèmes venez nous voir.
 
 En python
 =========
