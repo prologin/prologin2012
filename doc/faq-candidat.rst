@@ -41,6 +41,14 @@ La fonction ``perso_vision`` renvoit-elle le contenu de la case où est situé l
 
 Oui, votre personnage voit les personnages sur la même case que lui.
 
+Déplacement
+===========
+
+Pourquoi mes points de déplacement ne sont pas correctement dépensés ?
+----------------------------------------------------------------------
+
+Les coûts des déplacements d'une case sont ceux dépensés lors du déplacement **depuis** cette case.
+
 Pénombre
 ========
 
@@ -105,6 +113,17 @@ Quelle est l'orientation de mon personnage quand il revit ?
 -----------------------------------------------------------
 
 Il est orienté vers le Nord.
+
+Map
+===
+
+Quelle est la taille maximale de la map ?
+-----------------------------------------
+
+Il n'y a pas de maximum théorique. Cependant, les chemins sont calculés à
+l'initialisation de la partie avec un algorithme en O(N^3), c'est pourquoi
+lors de la correction nous ne testerons pas vos champions sur des maps
+de dimensions supérieures à *200x200*.
 
 Misc
 ====

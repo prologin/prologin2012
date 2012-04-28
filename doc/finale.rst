@@ -204,7 +204,7 @@ Les différentes cases que l'on peut rencontrer sur une carte sont :
 Herbe
 -----
 
-Zone normale. Un déplacement vers cette case coûte **deux** points de
+Zone normale. Un déplacement depuis cette case coûte **deux** points de
 déplacement.
 
 Route
@@ -417,6 +417,9 @@ déplace en même temps.
 
 Pour déplacer un personnage le champion doit donner la liste des cases qui
 composent le chemin.
+
+Chaque déplacement **depuis** une case de type T dépense le nombre de points
+de déplacement correspondant au type T.
 
 *Pénombre*
 
