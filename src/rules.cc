@@ -325,8 +325,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
                 {
                     DEBUG("client resurected");
                     // client resurected
-                    // WRONG
                     playerActions_.clear();
+										i--;
                 }
                 else
                 {
