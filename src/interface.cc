@@ -340,27 +340,11 @@ extern "C" position api_perso_position(perso_info perso)
 }
 
 ///
-// Retourne le barbare de son équipe.
+// Retourne le personnage de type ``classe`` de sa propre équipe.
 //
-extern "C" perso_info api_perso_barbare()
+extern "C" perso_info api_perso_classe_info(perso_classe classe)
 {
-    return api->perso_barbare();
-}
-
-///
-// Retourne le elfe de son équipe.
-//
-extern "C" perso_info api_perso_elfe()
-{
-    return api->perso_elfe();
-}
-
-///
-// Retourne le voleur de son équipe.
-//
-extern "C" perso_info api_perso_voleur()
-{
-    return api->perso_voleur();
+    return api->perso_classe_info(classe);
 }
 
 ///

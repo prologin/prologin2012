@@ -118,18 +118,10 @@ public:
 //
    position perso_position(perso_info perso);
 ///
-// Retourne le barbare de son équipe.
+// Retourne le personnage de type ``classe`` de sa propre équipe.
 //
-   perso_info perso_barbare();
-///
-// Retourne le elfe de son équipe.
-//
-   perso_info perso_elfe();
-///
-// Retourne le voleur de son équipe.
-//
-   perso_info perso_voleur();
-///
+   perso_info perso_classe_info(perso_classe classe);
+
 // Retourne le numéro de votre équipe
 //
    int mon_equipe();

@@ -300,33 +300,16 @@ position Api::perso_position(perso_info perso)
 }
 
 ///
-// Retourne le barbare de son équipe.
+// Retourne le personnage de type ``classe`` de sa propre équipe.
 //
-perso_info Api::perso_barbare()
+perso_info Api::perso_classe_info(perso_classe classe)
 {
-    auto barbare = game_state_->getUnit(unit_info {equipe_, PERSO_BARBARE});
+    if (classe < 0 && classe > 2)
+        return { -1, PERSO_VOLEUR, -1, ORIENTATION_NORD};
+
+    auto barbare = game_state_->getUnit(unit_info {equipe_, classe});
 
     return { equipe_, PERSO_BARBARE, barbare->getCurrentLife(), barbare->getOrientation()};
-}
-
-///
-// Retourne le elfe de son équipe.
-//
-perso_info Api::perso_elfe()
-{
-    auto elfe = game_state_->getUnit(unit_info {equipe_, PERSO_ELFE});
-
-    return { equipe_, PERSO_ELFE, elfe->getCurrentLife(), elfe->getOrientation()};
-}
-
-///
-// Retourne le voleur de son équipe.
-//
-perso_info Api::perso_voleur()
-{
-    auto voleur = game_state_->getUnit(unit_info {equipe_, PERSO_VOLEUR});
-
-    return { equipe_, PERSO_VOLEUR, voleur->getCurrentLife(), voleur->getOrientation()};
 }
 
 ///
