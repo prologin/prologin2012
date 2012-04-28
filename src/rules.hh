@@ -52,6 +52,9 @@ private:
     rules::Players_sptr players_;
     rules::Players_sptr spectators_;
 
+    // tmp playerAction holder
+    rules::Actions playerActions_;
+
     int timeout_;
     int winner_;
 

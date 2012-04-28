@@ -80,8 +80,13 @@ Rules::Rules(const rules::Options& opt)
             []() -> rules::IAction* { return new ActionAttack(); });
     api_->actions()->register_action(ACTION_ACK,
             []() -> rules::IAction* { return new ActionAck(); });
+    playerActions_.register_action(ACTION_MOVE,
+            []() -> rules::IAction* { return new ActionMove(); });
+    playerActions_.register_action(ACTION_ATTACK,
+            []() -> rules::IAction* { return new ActionAttack(); });
+    playerActions_.register_action(ACTION_ACK,
+            []() -> rules::IAction* { return new ActionAck(); });
 }
-
 
 // a bit ugly, but used to test
 Rules::Rules(rules::Players_sptr players, Api* api)
@@ -96,6 +101,12 @@ Rules::Rules(rules::Players_sptr players, Api* api)
     api_->actions()->register_action(ACTION_ATTACK,
             []() -> rules::IAction* { return new ActionAttack(); });
     api_->actions()->register_action(ACTION_ACK,
+            []() -> rules::IAction* { return new ActionAck(); });
+    playerActions_.register_action(ACTION_MOVE,
+            []() -> rules::IAction* { return new ActionMove(); });
+    playerActions_.register_action(ACTION_ATTACK,
+            []() -> rules::IAction* { return new ActionAttack(); });
+    playerActions_.register_action(ACTION_ACK,
             []() -> rules::IAction* { return new ActionAck(); });
 }
 
@@ -287,13 +298,12 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
             // Receive actions from one player
             DEBUG("recieving actions");
-						rules::Actions playerActions;	
-            msgr->recv_actions(&playerActions);
+            msgr->recv_actions(&playerActions_);
             msgr->ack();
 
             // FIXME: THIS IS NOT WORKING, WALKING DEAD CLIENT CAN COME BACK IN
             // THE PLAY IF HE DOES NOT SEND AN ACTION AFTER TIMEOUTING
-            if (playerActions.actions().empty())
+            if (playerActions_.actions().empty())
             {
                 DEBUG("actions() empty");
                 players_playing++;
@@ -301,22 +311,22 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             }
 
             // client sent no action, spectator sent ActionAck
-            if (playerActions.actions().back()->id() == ACTION_ACK)
+            if (playerActions_.actions().back()->id() == ACTION_ACK)
             {
                 DEBUG("spectator obtained");
                 spectators_count--;
             }
             else
             {
-                uint32_t player_id = playerActions.actions().back()->player_id();
+                uint32_t player_id = playerActions_.actions().back()->player_id();
 
                 turn_players[player_id] = true;
                 if (turn_players[player_id] != last_turn_players[player_id])
                 {
                     DEBUG("client resurected");
                     // client resurected
-										// WRONG
-                    playerActions.clear();
+                    // WRONG
+                    playerActions_.clear();
                 }
                 else
                 {
@@ -325,8 +335,10 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
                 }
             }
 
-						for (auto playerAction : playerActions.actions())
-								api_->actions()->add(playerAction);
+            for (auto playerAction : playerActions_.actions())
+                api_->actions()->add(playerAction);
+            
+            playerActions_.clear();
         }
         while (spectators_count > 0)
         {
