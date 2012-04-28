@@ -232,7 +232,7 @@ function:
     fct_arg:
       - [perso, perso_info, "Personnage"]
   -
-    fct_name: perso_vision_ennemis
+    fct_name: perso_vision_personnages
     fct_summary:
       Récupère la liste des zones dans le champs de vision de ``perso`` où sont
       situés un ou plusieurs personnages (amis ou ennemis).

@@ -294,9 +294,9 @@ extern "C" std::vector<position> api_perso_vision(perso_info perso)
 ///
 // Récupère la liste des zones dans le champs de vision de ``perso`` où sont situés un ou plusieurs personnages (amis ou ennemis).
 //
-extern "C" std::vector<position> api_perso_vision_ennemis(perso_info perso)
+extern "C" std::vector<position> api_perso_vision_personnages(perso_info perso)
 {
-  return api->perso_vision_ennemis(perso);
+  return api->perso_vision_personnages(perso);
 }
 
 ///

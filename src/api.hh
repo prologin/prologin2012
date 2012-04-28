@@ -96,7 +96,7 @@ public:
 ///
 // Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
 //
-   std::vector<position> perso_vision_ennemis(perso_info perso);
+   std::vector<position> perso_vision_personnages(perso_info perso);
 ///
 // Récupère la liste des zones sur lesquelles le palantír du voleur voit d'autre personnages.
 //

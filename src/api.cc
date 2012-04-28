@@ -176,7 +176,7 @@ std::vector<position> Api::perso_vision(perso_info perso)
 ///
 // Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
 //
-std::vector<position> Api::perso_vision_ennemis(perso_info perso)
+std::vector<position> Api::perso_vision_personnages(perso_info perso)
 {
     // Error, you cannot see what the other team sees
     if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
