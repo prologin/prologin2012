@@ -9,6 +9,9 @@ def unit_from_json(unit):
     kwargs['class_'] = kwargs.pop('class')
     return Unit(**kwargs)
 
+def unit_cmp(unit1, unit2):
+    return unit1.class_ == unit2.class_ and unit1.player == unit2.player
+
 class GameState(object):
 
     def __init__(self, json):
@@ -29,3 +32,9 @@ class GameState(object):
 
         for i, unit in enumerate(self.units):
             self.map_units[unit.y][unit.x].append(i)
+
+    def get_unit_position(self, unit):
+        for i, my_unit in enumerate(self.map_units[unit.y][unit.x]):
+            if unit_cmp(unit, self.units[my_unit]):
+                return i
+        return None

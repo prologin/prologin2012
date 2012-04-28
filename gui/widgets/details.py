@@ -31,8 +31,17 @@ class DetailsWidget(ScrolledWidget):
         self.map_widget = widgets['map']
 
     def update_game(self, game):
+        selected_unit = None
+        if self.selection is not None:
+            selected_area = self.game_state.map_units[self.position[1]][self.position[0]]
+            selected_unit = self.game_state.units[selected_area[self.selection]]
         self.game_state = game
-        if self.position:
+        if selected_unit is not None and selected_unit.life > 0:
+            self.update_position(
+                selected_unit.x, selected_unit.y,
+                self.game_state.get_unit_position(selected_unit)
+            )
+        elif self.position:
             self.update_position(*self.position)
 
     def update_position(self, x, y, selection=None):
@@ -58,6 +67,7 @@ class DetailsWidget(ScrolledWidget):
                     0, i * self.LINE_HEIGHT,
                     self.width, self.LINE_HEIGHT
                 ))
+                self.map_widget.update_subjective(self.game_state.units[unit])
             self._display_unit(self.game_state.units[unit], i)
 
         self.scroll(0)
@@ -152,8 +162,5 @@ class DetailsWidget(ScrolledWidget):
         units = self.game_state.map_units[self.position[1]][self.position[0]]
         if item < len(units):
             self.update_position(self.position[0], self.position[1], item)
-            self.map_widget.update_subjective(
-                self.game_state.units[units[item]]
-            )
         else:
             return False
