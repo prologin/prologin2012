@@ -13,5 +13,4 @@ Pages:
    finale
    api
    faq-candidat
-   meta
    stechec2
