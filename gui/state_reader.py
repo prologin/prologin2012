@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import json
 import threading
 import Queue as queue
 
-import json
+from api import *
 
 import game
 import sys
@@ -142,7 +143,7 @@ class StechecReader(Reader):
 
     def build_state(self):
         self.turn += 1
-        return game.GameState(dump_game_state())
+        return game.GameState(json.loads(get_dump()))
 
 
 class DumpReader(Reader):

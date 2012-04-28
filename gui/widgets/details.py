@@ -32,7 +32,7 @@ class DetailsWidget(ScrolledWidget):
     def update_game(self, game):
         self.game_state = game
         if self.position:
-            self.update_position(*position)
+            self.update_position(*self.position)
 
     def update_position(self, x, y):
         if not self.game_state:

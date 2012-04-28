@@ -17,7 +17,7 @@ parser.add_option(
 
 def load(argv):
     global options, args
-    options, args = parser.parse_args()
+    options, args = parser.parse_args(argv)
     
     options.width = utils.set_between(options.width, lower=500)
     options.height = utils.set_between(options.height, lower=400)

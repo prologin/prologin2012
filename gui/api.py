@@ -1,25 +1,26 @@
 # -*- coding: iso-8859-1 -*-
+from _api import *
 
 # Vision du Voleur
-VOLEUR_VISION = 4
+VOLEUR_VISION = 5
 
 # Déplacement du Voleur
-VOLEUR_DEPLACEMENT = 8
+VOLEUR_DEPLACEMENT = 10
 
 # Vie du Voleur
 VOLEUR_VIE = 10
 
 # Attaque du voleur
-VOLEUR_ATTAQUE = 3
+VOLEUR_ATTAQUE = 5
 
-# Portée de l'arme du Voleur
-VOLEUR_ATT_PORTEE = 1
+# Cooldown de l'attaque "Palantir" du Voleur
+VOLEUR_PALANTIR_CD = 3
 
-# Zone de dégats de l'arme du Voleur
-VOLEUR_ATT_ZONE = 1
+# Cooldown de l'attaque "Traîtrise" du Voleur
+VOLEUR_TRAITRISE_CD = 5
 
 # Vision du Barbare
-BARBARE_VISION = 5
+BARBARE_VISION = 4
 
 # Déplacement du Barbare
 BARBARE_DEPLACEMENT = 8
@@ -28,19 +29,22 @@ BARBARE_DEPLACEMENT = 8
 BARBARE_VIE = 10
 
 # Attaque du Barbare
-BARBARE_ATTAQUE = 5
+BARBARE_ATTAQUE = 3
 
-# Portée de l'arme du Barbare
-BARBARE_ATT_PORTEE = 5
+# Cooldown de l'attaque "Bastoooon" du Barbare
+BARBARE_BASTOOOON_CD = 3
 
-# Zone de dégats de l'arme du Barbare
-BARBARE_ATT_ZONE = 2
+# Portée de l'attaque "Bastoooon" du Barbare
+BARBARE_BASTOOOON_PORTEE = 3
+
+# Cooldown de l'attaque "Fus Ro Dah" du Barbare
+BARBARE_FUS_RO_DAH_CD = 5
 
 # Vision de l'Elfe
-ELFE_VISION = 5
+ELFE_VISION = 4
 
 # Déplacement de l'Elfe
-ELFE_DEPLACEMENT = 8
+ELFE_DEPLACEMENT = 6
 
 # Vie de l'Elfe
 ELFE_VIE = 10
@@ -48,11 +52,11 @@ ELFE_VIE = 10
 # Attaque de l'Elfe
 ELFE_ATTAQUE = 2
 
-# Portée de l'arme de l'Elfe
-ELFE_ATT_PORTEE = 8
+# Cooldown de l'attaque "Loto, à qui le tour ?" de l'Elfe
+ELFE_LOTO_CD = 5
 
-# Zone de dégats de l'arme de l'Elfe
-ELFE_ATT_ZONE = 1
+# Cooldown de l'attaque "I See What You Did There" de l'Elfe
+ELFE_I_SEE_CD = 5
 
 # Type de personnage
 (
