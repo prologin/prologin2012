@@ -32,6 +32,7 @@ protected:
 
 protected:
     perso_info unit_;
+    int path_length_;
     std::vector<position> path_;
     orientation direction_;
 

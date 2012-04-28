@@ -129,7 +129,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
     if (game_state_->getPhase() == PHASE_ATTAQUE)
       return CHEMIN_IMPOSSIBLE;
 
-    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
 
     rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
@@ -151,7 +151,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 //
 std::vector<position> Api::perso_penombre(perso_info perso)
 {
-    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     return game_state_->getUnit(perso)->getPenombre();
@@ -163,7 +163,7 @@ std::vector<position> Api::perso_penombre(perso_info perso)
 std::vector<position> Api::perso_vision(perso_info perso)
 {
     // Error, you cannot see what the other team sees
-    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     Unit_sptr unit = game_state_->getUnit(perso);
@@ -179,7 +179,7 @@ std::vector<position> Api::perso_vision(perso_info perso)
 std::vector<position> Api::perso_vision_personnages(perso_info perso)
 {
     // Error, you cannot see what the other team sees
-    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return std::vector<position>();
 
     Unit_sptr unit = game_state_->getUnit(perso);
@@ -219,7 +219,7 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     if (game_state_->getPhase() != PHASE_ATTAQUE)
       return ATTAQUE_INDISPONIBLE;
 
-    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return PERSONNAGE_IMPOSSIBLE;
 
     rules::IAction_sptr action(new ActionAttack(perso, attaque, pos, player_->id));
@@ -240,7 +240,7 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 //
 int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
-    if ((unsigned int)perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
+    if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
       return -1;
 
     return game_state_->getUnit(perso)->getAbilityCooldown(attaque);

@@ -207,9 +207,9 @@ TEST_F(ApiTest, perso_vision)
         }).size());
 }
 
-TEST_F(ApiTest, perso_vision_ennemis)
+TEST_F(ApiTest, perso_vision_personnages)
 {
-    EXPECT_EQ(1u, api_->perso_vision_ennemis(
+    EXPECT_EQ(1u, api_->perso_vision_personnages(
         perso_info
         {
             .equipe = 0,

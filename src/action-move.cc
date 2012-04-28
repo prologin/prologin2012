@@ -6,6 +6,7 @@
 
 ActionMove::ActionMove()
     : unit_(),
+      path_length_(-1),
       path_(),
       direction_(ORIENTATION_NORD),
       player_(-1),
@@ -17,6 +18,7 @@ ActionMove::ActionMove(perso_info unit, std::vector<position>& path,
             orientation& direction, int player)
     : rules::Action<GameState>(),
       unit_(unit),
+      path_length_(path.size()),
       path_(path),
       direction_(direction),
       player_(player),
@@ -53,7 +55,17 @@ int ActionMove::check(const GameState* st) const
 void ActionMove::handle_buffer(utils::Buffer& buf)
 {
     buf.handle(unit_);
-    buf.handle(path_);
+    if (path_length_ == -1)
+    {
+        buf.handle(path_length_);
+        path_.resize(path_length_);
+        buf.handle_array(&path_[0], path_length_);
+    }
+    else
+    {
+        buf.handle(path_length_);
+        buf.handle_array(&path_[0], path_length_);
+    }
     buf.handle(direction_);
     buf.handle(player_);
 }

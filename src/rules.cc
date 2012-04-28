@@ -118,7 +118,7 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
+        INFO("TURN %d", api_->game_state()->getCurrentTurn());
 
         phase = api_->game_state()->getPhase();
 
@@ -138,9 +138,10 @@ void Rules::client_loop(rules::ClientMessenger_sptr msgr)
         }
 
         // Send actions
+        DEBUG("sending");
         msgr->send_actions(*api_->actions());
         msgr->wait_for_ack();
-        DEBUG("ack ok");
+        DEBUG("ack");
 
         api_->actions()->clear();
 
@@ -190,7 +191,7 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
+        INFO("TURN %d", api_->game_state()->getCurrentTurn());
 
         phase = api_->game_state()->getPhase();
 
@@ -250,9 +251,6 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
         }
 
     }
-
-    DEBUG("winner = %i", winner_);
-
 }
 
 void Rules::server_loop(rules::ServerMessenger_sptr msgr)
@@ -264,9 +262,12 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
     uint32_t size = players_->players.size() + spectators_->players.size();
 
+    std::vector<bool> last_turn_players(players_->players.size(), true);
+    std::vector<bool> turn_players(players_->players.size(), false);
+
     while (!is_finished())
     {
-        DEBUG("TURN %d", api_->game_state()->getCurrentTurn());
+        INFO("TURN %d", api_->game_state()->getCurrentTurn());
 
         phase = api_->game_state()->getPhase();
 
@@ -275,24 +276,64 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         uint32_t players_playing = 0;
         uint32_t spectators_count = spectators_->players.size();
 
+        DEBUG("Expecting %d clients", size);
         for (uint32_t i = 0; i < size; ++i)
         {
             if (!msgr->poll(timeout_))
+            {
+                DEBUG("time out");
                 break;
-            // Receive actions
+            }
+
+            // Receive actions from one player
+            DEBUG("recieving actions");
             msgr->recv_actions(api_->actions());
             msgr->ack();
+
+            // FIXME: THIS IS NOT WORKING, WALKING DEAD CLIENT CAN COME BACK IN
+            // THE PLAY IF HE DOES NOT SEND AN ACTION AFTER TIMEOUTING
+            if (api_->actions()->actions().empty())
+            {
+                DEBUG("actions() empty");
+                players_playing++;
+                continue;
+            }
+
+            // client sent no action, spectator sent ActionAck
             if (api_->actions()->actions().back()->id() == ACTION_ACK)
-              spectators_count--;
+            {
+                DEBUG("spectator obtained");
+                spectators_count--;
+            }
             else
-              players_playing++;
+            {
+                uint32_t player_id = api_->actions()->actions().back()->player_id();
+
+                turn_players[player_id] = true;
+                if (turn_players[player_id] != last_turn_players[player_id])
+                {
+                    DEBUG("client resurected");
+                    // client resurected
+                    api_->actions()->clear();
+                }
+                else
+                {
+                    DEBUG("client obtained");
+                    players_playing++;
+                }
+            }
         }
         while (spectators_count > 0)
         {
-          msgr->recv_actions(api_->actions());
-          msgr->ack();
-          spectators_count--;
+            msgr->recv_actions(api_->actions());
+            msgr->ack();
+            spectators_count--;
         }
+
+        last_turn_players = turn_players;
+        for (unsigned i = 0; i < turn_players.size(); ++i)
+            turn_players[i] = false;
+
         size = players_playing + spectators_->players.size();
 
         // Apply them onto the gamestate
@@ -302,7 +343,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             actions.add(action);
         }
 
-        DEBUG("resolving %d", phase);
+        //DEBUG("resolving %d", phase);
         switch (phase)
         {
             case PHASE_PLACEMENT:
@@ -329,8 +370,6 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         DEBUG("sent");
         actions.clear();
     }
-
-    DEBUG("winner = %i", winner_);
 }
 
 void Rules::resolve_moves()
