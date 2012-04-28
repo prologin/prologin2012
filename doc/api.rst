@@ -533,7 +533,7 @@ Fonctions
   
 
 
-.. c:function:: position array perso_vision_ennemis(perso_info perso)
+.. c:function:: position array perso_vision_personnages(perso_info perso)
 
     Récupère la liste des zones dans le champs de vision de ``perso`` où sont situés un ou plusieurs personnages (amis ou ennemis).
 
@@ -624,6 +624,44 @@ Fonctions
   
 
 
+.. c:function:: position perso_position(perso_info perso)
+
+    Retourne la position du personnage ``perso``.
+
+    
+
+
+    
+
+    
+      
+    :param perso: Personnage
+      
+    
+
+
+  
+
+
+.. c:function:: perso_info perso_classe_info(perso_classe classe)
+
+    Retourne le personnage de type ``classe`` de sa propre équipe.
+
+    
+
+
+    
+
+    
+      
+    :param classe: Classe
+      
+    
+
+
+  
+
+
 .. c:function:: int mon_equipe()
 
     Retourne le numéro de votre équipe
@@ -660,6 +698,28 @@ Fonctions
 .. c:function:: int tour_actuel()
 
     Retourne le numéro du tour actuel
+
+    
+
+
+
+  
+
+
+.. c:function:: int nombre_tours_placement()
+
+    Retourne le nombre de tours de placements
+
+    
+
+
+
+  
+
+
+.. c:function:: int nombre_tours()
+
+    Retourne le nombre total de tours
 
     
 
