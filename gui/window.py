@@ -24,21 +24,38 @@ class State:
         self.loop_delay = 1000 / State.TURN_FPS
         self.display_help = False
         self.display_scores = False
+        self.disabled_widgets = set()
         self.is_closed = False
+
+    def plug(self, widgets):
+        self.help_widget = widgets['help']
+        self.scores_widget = widgets['scores']
+        self.disabled_widgets.update((self.help_widget, self.scores_widget))
 
     def switch_help(self):
         if self.display_scores:
             return
         self.display_help = not self.display_help
+        self._update_widget(self.display_help, self.help_widget)
 
     def switch_scores(self):
         if self.display_help:
             return
         self.display_scores = not self.display_scores
+        self._update_widget(self.display_scores, self.scores_widget)
 
     def switch_looping(self):
         self.looping = not self.looping
         self.ticks = 0
+
+    def _update_widhget(self, enable, widget):
+        if enable:
+            self.disabled_widgets.add(widget)
+        else:
+            try:
+                self.disabled_widgets.remove(widget)
+            except KeyError:
+                pass
 
     def check_loop(self):
         if not self.looping:
@@ -113,9 +130,11 @@ class Window(object):
             'state': self.state_widget,
             'details': self.details_widget,
             'help': self.help_widget,
+            'scores': self.scores_widget,
         }
         for widget in self.widgets.values():
             widget.plug(self.widgets)
+        self.state.plug(self.widgets)
 
     def run(self):
         try:
@@ -193,6 +212,8 @@ class Window(object):
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for widget in self.widgets.values():
+                    if widget in self.state.disabled_widgets:
+                        continue
                     if widget.handle_click(*(
                         pygame.mouse.get_pos() + pygame.mouse.get_pressed()
                     )):
