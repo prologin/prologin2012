@@ -2,6 +2,14 @@
 FAQ Casus Belli
 ===============
 
+**Deux trois conseils avant de poser une question**
+
+1. Lire le sujet
+2. Relire le sujet
+3. Lire votre code
+4. Relire votre code
+5. Contacter un orga
+
 Vision
 ======
 
