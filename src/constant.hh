@@ -16,12 +16,12 @@
 ///
 // Vision du Voleur
 //
-# define VOLEUR_VISION             4
+# define VOLEUR_VISION             5
 
 ///
 // Déplacement du Voleur
 //
-# define VOLEUR_DEPLACEMENT        8
+# define VOLEUR_DEPLACEMENT        10
 
 ///
 // Vie du Voleur
@@ -46,7 +46,7 @@
 ///
 // Vision du Barbare
 //
-# define BARBARE_VISION            5
+# define BARBARE_VISION            4
 
 ///
 // Déplacement du Barbare
@@ -81,12 +81,12 @@
 ///
 // Vision de l'Elfe
 //
-# define ELFE_VISION               5
+# define ELFE_VISION               4
 
 ///
 // Déplacement de l'Elfe
 //
-# define ELFE_DEPLACEMENT          8
+# define ELFE_DEPLACEMENT          6
 
 ///
 // Vie de l'Elfe
@@ -101,7 +101,7 @@
 ///
 // Cooldown de l'attaque "Loto, à qui le tour ?" de l'Elfe
 //
-# define ELFE_LOTO_CD              3
+# define ELFE_LOTO_CD              5
 
 ///
 // Cooldown de l'attaque "I See What You Did There" de l'Elfe
