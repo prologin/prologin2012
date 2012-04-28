@@ -179,3 +179,11 @@ En java
 -----------------
 
 On sait, quelqu'un est sur ça, désolé.
+
+En python
+=========
+
+``No module named prologin``
+----------------------------
+
+Vous devez lancer ``stechec-client`` dans le même dossiers que le champion.
