@@ -48,7 +48,7 @@ static std::ostream& dump_map(std::ostream& ss, Map& map)
         if (y != height - 1)
             ss << ", ";
     }
-    ss << "]";
+    ss << "]}";
     return ss;
 }
 
@@ -81,9 +81,15 @@ const char* dump_game_state(const GameState& st)
     ss << "{";
     ss << "\"turn\": " << st.getCurrentTurn() << ", ";
     ss << "\"turn_max\": " << st.getMap()->getMaxTurns() << ", ";
-    ss << "\"scores\": " << dump_scores(ss, st.getScores()) << ", ";
-    ss << "\"map\": " << dump_map(ss, *st.getMap()) << ", ";
-    ss << "\"units\": " << dump_units(ss, st.getUnits()) << ", ";
+    ss << "\"scores\": ";
+         dump_scores(ss, st.getScores());
+        ss << ", ";
+    ss << "\"map\": ";
+        dump_map(ss, *st.getMap());
+        ss << ", ";
+    ss << "\"units\": ";
+        dump_units(ss, st.getUnits());
+        ss << ", ";
     ss << "\"actions\": []"; // TODO
     ss << "}";
 
