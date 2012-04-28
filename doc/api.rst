@@ -424,7 +424,7 @@ Fonctions
 
 .. c:function:: int distance(position p1, position p2)
 
-    Renvoie la longueur du chemin le plus court entre deux points. Renvoie -1 en cas de positions invalides ou de chemin inexistant.
+    Renvoie le nombre de points nécessaires pour parcourir le chemin le plus court entre deux points. Renvoie -1 en cas de positions invalides ou de chemin inexistant.
 
     
 
