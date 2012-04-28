@@ -307,9 +307,9 @@ perso_info Api::perso_classe_info(perso_classe classe)
     if (classe < 0 || classe > 2)
         return { -1, PERSO_VOLEUR, -1, ORIENTATION_NORD};
 
-    auto barbare = game_state_->getUnit(unit_info {equipe_, classe});
+    auto unit = game_state_->getUnit(unit_info {equipe_, classe});
 
-    return { equipe_, PERSO_BARBARE, barbare->getCurrentLife(), barbare->getOrientation()};
+    return { equipe_, classe, unit->getCurrentLife(), unit->getOrientation()};
 }
 
 ///
