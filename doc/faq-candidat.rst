@@ -195,7 +195,7 @@ seront pas prisent en compte.
 En c++
 ======
 
-Beuh, j'ai un comportement étrange (segfault) à des endrois encore plus étranges.
+Beuh, j'ai un comportement étrange (segfault) à des endroits encore plus étranges.
 ---------------------------------------------------------------------------------
 
 Vous ne pouvez pas appeler vos classes par les noms suivants :
@@ -230,7 +230,7 @@ En java
 Ça ne compile pas
 -----------------
 
-Maintenant ça fonctionne, si vous avez toujours de problèmes venez nous voir.
+Maintenant ça fonctionne, si vous avez toujours des problèmes venez nous voir.
 
 En python
 =========
@@ -238,4 +238,4 @@ En python
 ``No module named prologin``
 ----------------------------
 
-Vous devez lancer ``stechec-client`` dans le même dossiers que le champion.
+Vous devez lancer ``stechec-client`` dans le même dossier que le champion.
