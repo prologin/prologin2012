@@ -148,3 +148,10 @@ Vous ne pouvez pas appeler vos classes par les noms suivants :
 - class Voleur
 - class VoleurAttaque
 
+En java
+=======
+
+Ça ne compile pas
+-----------------
+
+On sait, quelqu'un est sur ça, désolé.
