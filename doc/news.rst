@@ -2,6 +2,7 @@
 News
 ====
 
+- La GUI est dispponible, pour cela regardez la page correspondante sur ce wiki
 - Menu de ce soir plus bas dans la page !
 - 18h31 : java ok (cf. faq)
 - 18h11 : ``chemin`` est buggée
