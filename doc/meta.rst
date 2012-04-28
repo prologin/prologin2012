@@ -44,3 +44,8 @@ Lancer un match
   $PREFIX/bin/stechec2-server -f ./default.map -u $PREFIX/lib/libprolo2012.so -n 2
   $PREFIX/bin/stechec2-client -f ./default.map -u $PREFIX/lib/libprolo2012.so -a ./home/.../champion.so
   $PREFIX/bin/stechec2-client -f ./default.map -u $PREFIX/lib/libprolo2012.so -a ./home/.../champion.so
+
+**ATTENTION**
+
+Si vous codez dans un langage de script, vous devez lancer ``stechec2-client`` dans
+le même dossier que le fichier source.
