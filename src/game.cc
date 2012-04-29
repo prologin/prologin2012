@@ -30,6 +30,7 @@ GameState::GameState(const GameState& st)
       pendingMoves_(st.pendingMoves_),
       pendingAttacks_(st.pendingAttacks_),
       pendingBastoooon_(st.pendingBastoooon_),
+      game_phase_(st.game_phase_),
       current_turn_(st.current_turn_)
 {
 }
