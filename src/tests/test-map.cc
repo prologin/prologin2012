@@ -113,6 +113,7 @@ TEST_F(MapTest, MapGetPath)
 
   std::vector<position> path1 = map.getPath(position({0,0}), position({1,1}));
   std::vector<position> path2 = map.getPath(position({5,5}), position({1,1}));
+  std::vector<position> path3 = map.getPath(position({2,6}), position({4,1}));
 
   EXPECT_TRUE(path1.empty());
 
@@ -125,6 +126,9 @@ TEST_F(MapTest, MapGetPath)
   EXPECT_TRUE(path2[5].x == 3 && path2[5].y == 1);
   EXPECT_TRUE(path2[6].x == 2 && path2[6].y == 1);
   EXPECT_TRUE(path2[7].x == 1 && path2[7].y == 1);
+
+  EXPECT_EQ(7u, path3.size());
+  EXPECT_EQ(11, map.getDistance(position({2,6}), position({4,1})));
 }
 
 TEST_F(MapTest, MapGetSurroundings)

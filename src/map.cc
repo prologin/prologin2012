@@ -166,13 +166,15 @@ void Map::moveUnit(unit_info unit, position from, position to)
     getCell(to)->addUnit(unit);
 }
 
-void Map::initializeDistance(int from, int to)
+void Map::initializeDistance(position from, position to)
 {
-    int cost = map_[from % height_][from / height_]->getCost();
+    int cost = getCell(from)->getCost();
+    int fromId = from.y + from.x * height_;
+    int toId = to.y + to.x * height_;
 
     if (cost < 255)
-        (*paths_)[from][to] = from;
-    (*distance_)[from][to] = cost;
+        (*paths_)[fromId][toId] = fromId;
+    (*distance_)[fromId][toId] = cost;
 }
 
 // Calculate the all pairs shortest paths using Floyd-Warshall algorithm
@@ -189,15 +191,17 @@ void Map::calculateShortestPaths()
 
     for (int i = 0; i < size; ++i)
     {
-        (*distance_)[i][i] = 0;
-        if (i / height_ > 0)
-            initializeDistance(i, i - height_);
-        if (i / height_ < width_ - 1)
-            initializeDistance(i, i + height_);
-        if (i % height_ > 0)
-            initializeDistance(i, i - 1);
-        if (i % height_ < height_ - 1)
-            initializeDistance(i, i + 1);
+        std::vector<position> xy = {{-1,0}, {1,0}, {0,0}, {0,-1}, {0,1}};
+        position pos { i / height_, i % height_};
+
+        for (position dxdy : xy)
+        {
+            position p { pos.x + dxdy.x, pos.y + dxdy.y};
+
+            if (!isPositionValid(p))
+                continue;
+            initializeDistance(pos, p);
+        }
     }
 
     for (int k = 0; k < size; ++k)
@@ -214,6 +218,26 @@ void Map::calculateShortestPaths()
             }
 }
 
+bool Map::calculatePath(std::vector<position>& path, int fromId, int toId)
+{
+    int middleId = (*paths_)[toId][fromId];
+
+    if (middleId == fromId || middleId == toId)
+        return true;
+    if (middleId == -1)
+    {
+        path.clear();
+        return false;
+    }
+    if (!calculatePath(path, fromId, middleId))
+    {
+        path.clear();
+        return false;
+    }
+    path.push_back(position {middleId / height_, middleId % height_});
+    return calculatePath(path, middleId, toId);
+}
+
 // Get the path from 'from' to 'to' using the previous link table calculated by
 // the function calculateShortestPaths.
 // It would be useless to already store the vector in a table because we return
@@ -222,18 +246,14 @@ std::vector<position> Map::getPath(position from, position to)
 {
     std::vector<position> path;
 
-    int fromID = from.y + from.x * height_;
-    int toID = to.y + to.x * height_;
+    int fromId = from.y + from.x * height_;
+    int toId = to.y + to.x * height_;
 
-    while ((*paths_)[toID][fromID] != toID && (*paths_)[toID][fromID] != -1)
-    {
-        fromID = (*paths_)[toID][fromID];
-        path.push_back(position({ fromID / height_, fromID % height_ }));
-    }
-    path.push_back(to);
+    if (fromId == toId)
+        return path;
 
-    if ((*paths_)[fromID][toID] == -1)
-        path.clear();
+    if (calculatePath(path, fromId, toId))
+        path.push_back(to);
 
     return path;
 }
@@ -270,7 +290,7 @@ std::vector<position> Map::getVision(position pos, orientation direction, int ra
             int y = pos.y + i * North + j * East;
 
             if (!isPositionValid(position({x,y})) || isBlocked[j + range + 1])
-              continue;
+                continue;
 
             zone_type zoneType = map_[y][x]->getType();
             if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||
@@ -316,7 +336,7 @@ std::vector<position> Map::getSurroundings(position pos, orientation direction, 
 
     for (auto visionPosition : visionCone)
         if (!getCell(visionPosition)->getUnits().empty())
-          unitsPositions.push_back(visionPosition);
+            unitsPositions.push_back(visionPosition);
 
     return unitsPositions;
 }
@@ -335,7 +355,7 @@ std::vector<position> Map::getNormalSurroundings(position pos, orientation direc
             int y = pos.y + i * North + j * East;
 
             if (!isPositionValid(position({x,y})) || isBlocked[j + range + 1])
-              continue;
+                continue;
 
             zone_type zoneType = map_[y][x]->getType();
             if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||

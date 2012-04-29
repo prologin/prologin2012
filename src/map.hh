@@ -70,6 +70,7 @@ public:
     /*
      * @return the path from 'from' to 'to'
      */
+    bool calculatePath(std::vector<position>& path, int fromId, int toId);
     std::vector<position> getPath(position from, position to);
     /*
      * @return the cost to go from 'from' to 'to'
@@ -91,7 +92,7 @@ public:
     static orientation getOrientation(position p1, position p2);
 
 private:
-    void initializeDistance(int from, int to);
+    void initializeDistance(position from, position to);
 
 private:
     std::vector<std::vector<Cell*>> map_;
