@@ -5,8 +5,6 @@
 Prologin Serveur 2012
 =====================
 
-**Regardez le menu de ce soir dans les News !**
-
 Pages:
 
 .. toctree::
