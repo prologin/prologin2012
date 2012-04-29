@@ -10,6 +10,8 @@
 #include "cell.hh"
 #include "dumper.hh"
 
+static const char* hextable = "0123456789ABCDEF";
+
 static std::ostream& dump_scores(
     std::ostream& ss, const std::vector<int>& scores
 )
@@ -84,7 +86,10 @@ static std::ostream& dump_actions(std::ostream& ss, rules::Actions& acts)
     acts.handle_buffer(buf);
     ss << "\"";
     for (unsigned i = 0; i < buf.size(); ++i)
-        ss << "\\x" << std::hex << buf.data()[i] << std::dec;
+    {
+        char byte = buf.data()[i];
+        ss << "\\u00" << hextable[byte >> 4] << hextable[byte & 0xf];
+    }
     ss << "\"";
     return ss;
 }
