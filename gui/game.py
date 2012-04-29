@@ -53,19 +53,18 @@ def unit_cmp(unit1, unit2):
 
 def actions_from_buffer(buf):
 
-    def consume(struct):
-        global buf
-        length = struct.size()
+    def consume(buf, struct):
+        length = struct.size
         chunk, buf = buf[:length], buf[length:]
-        return struct.unpack(chunk)
+        return buf, struct.unpack(chunk)
 
     actions = []
     while buf:
-        id, = consume(action_id)
+        buf, (id, ) = consume(buf, action_id)
         if id == ACTION_MOVE:
-            equipe, classe, vie, direction, path_length = consume(action_move_first)
+            buf, (equipe, classe, vie, direction, path_length) = consume(buf, action_move_first)
             path = [consume(action_move_path_element) for i in range(path_length)]
-            direction, player = consume(action_move_last)
+            buf, (direction, player) = consume(action_move_last)
             actions.append(
                 u'Éq%s : Dépl. %s %s' % (
                     equipe, CLASSES[classe],
@@ -73,14 +72,14 @@ def actions_from_buffer(buf):
                 )
             )
         elif id == ACTION_ATTACK:
-            equipe, classe, vie, direction, atq_type, pos = consume(action_attack)
+            buf, (equipe, classe, vie, direction, atq_type, pos) = consume(buf, action_attack)
             actions.append(
                 u'Éq%s : %s attaque %s en (%s, %s)' % (
                     equipe, CLASSES[classe], ATTACKS[atq_type], pos[0], pos[1]
                 )
             )
         elif id == ACTION_ACK:
-            consume(action_ack)
+            buf, _ = consume(buf, action_ack)
         else:
             actions.append(u'ATTENTION : action invalide !')
     return actions
