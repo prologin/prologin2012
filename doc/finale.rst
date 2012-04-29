@@ -46,6 +46,7 @@ Il a une arme de corps à corps et donc une portée de 1.
 *Attaque de base*
   :description: Petit couteau
   :dégats: 5 points de vie
+  :teamkill: Oui
 
 *Palantír*
   :description: Le Voleur peut poser un palantír qui lui donne une vision à
@@ -60,6 +61,7 @@ Il a une arme de corps à corps et donc une portée de 1.
     sur la même case que lui.
   :cooldown: 5 tours
   :dégats: >9000
+  :teamkill: Non
 
 Barbare
 -------
@@ -77,12 +79,14 @@ Il a une arme de dégât de zone qu'il peut utiliser dans son cône de vision.
 *Attaque de base*
   :description: Gros marteau
   :dégats: 3 points de vie sur toutes les cases touchées
+  :teamkill: Oui
 
 *Bastoooon*
   :description: Le Barbare s'énerve puis effectue son attaque normale.
   :dégats: 11 - *vie restante du Barbare*
   :cooldown: 3 tours
   :portée: 3
+  :teamkill: Oui
 
 *Fus ro dah!*
   :description: Le barbare repousse tous les personnages de son champs de
@@ -103,12 +107,14 @@ Il peut tirer sur toutes les cases visibles par le membres de son équipe. C'est
 *Attaque de base*
   :description: Arc long
   :dégats: 2 points de vie
+  :teamkill: Oui
 
 *Loto, à qui le tour*
   :description: Arc très long. L'Elfe peut tirer sur n'importe quelle case de
     la carte.
   :dégats: 4 points de vie
   :cooldown: 5 tours
+  :teamkill: Oui
 
 *I see what you did there.*
   :description: L'Elfe peut réveler une zone carrée (comme si il
