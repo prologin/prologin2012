@@ -338,6 +338,8 @@ void FusRoDah::apply(GameState* st, unit_info attacker, position target)
         for (auto unitInfo : map->getCell(unitsPosition)->getUnits())
         {
             if (unitInfo == attacker) continue;
+            DEBUG("FusRoDah displacement x = %d y = %d for unit :");
+            unitInfo.debug();
             st->getUnit(unitInfo)->setDisplacement(displacement);
             st->getUnit(unitInfo)->setPosition(newPosition);
             map->moveUnit(unitInfo, unitsPosition, newPosition);

@@ -46,6 +46,7 @@ Il a une arme de corps à corps et donc une portée de 1.
 *Attaque de base*
   :description: Petit couteau
   :dégats: 5 points de vie
+  :portée: 1
   :teamkill: Oui
 
 *Palantír*
