@@ -107,7 +107,7 @@ class MapWidget(BaseWidget):
         if self.game_state.map[unit.y][unit.x] == ZONE_TOUR:
             for x in range(unit.x - distance, unit.x + distance + 1):
                 for y in range(unit.y - distance, unit.y + distance + 1):
-                    if not utils.is_in_rect(x, y, width, heiht):
+                    if not utils.is_in_rect(x, y, width, height):
                         continue
                     cell = self.game_state.map[y][x]
                     if cell != ZONE_MUR and cell != ZONE_FORET:
