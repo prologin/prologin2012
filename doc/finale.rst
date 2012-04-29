@@ -52,8 +52,7 @@ Il a une arme de corps à corps et donc une portée de 1.
     distance. Elle reste sur le terrain jusqu'à ce que le Voleur pose un autre
     palantír. Le champs de vision est le même que celui qu'aurait un Voleur sur
     un tour.
-    Il peut le poser sur n'importe quelle case (même hors de son champ de
-    vision)
+    Il peut le poser sur n'importe quelle case de son champ de vision.
   :cooldown: 3 tours
 
 *Traîtrise*
