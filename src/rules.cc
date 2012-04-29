@@ -502,12 +502,13 @@ void Rules::resolve_points()
         // mixed teamkill and offensive kill
         // no points given
 
-        // reset life & cooldowns
-        unit->respawn();
-
         // Move unit to spawn position
         st->getMap()->moveUnit(unit->getUnitInfo(), unit->getPosition(),
                 unit->getSpawn());
+
+        // reset life & cooldowns
+        unit->respawn();
+
     }
 }
 
