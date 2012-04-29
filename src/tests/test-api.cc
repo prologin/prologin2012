@@ -114,23 +114,32 @@ TEST_F(ApiTest, chemin)
 
 TEST_F(ApiTest, perso_deplace)
 {
-    api_->perso_deplace(
+    erreur err;
+    err = api_->perso_deplace(
         perso_info {0, PERSO_ELFE, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
         api_->chemin(map_->getStartingPos(), position {5, 2}),
         ORIENTATION_SUD
     );
 
-    api_->perso_deplace(
+    EXPECT_EQ(OK, err);
+
+    err = api_->perso_deplace(
         perso_info {0, PERSO_VOLEUR, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
         api_->chemin(map_->getStartingPos(), position {4, 5}),
         ORIENTATION_EST
     );
+
+    EXPECT_EQ(OK, err);
 
     for (auto& move : api_->actions()->actions())
         api_->game_state_set(move->apply(api_->game_state()));
 
     gamestate_ = api_->game_state();
     rules_->resolve_moves();
+
+    EXPECT_EQ(4u, api_->carte_zone_perso(position {5, 4}).size());
+    EXPECT_EQ(1u, api_->carte_zone_perso(position {5, 2}).size());
+    EXPECT_EQ(1u, api_->carte_zone_perso(position {4, 5}).size());
 
     Unit_sptr elfe = gamestate_->getUnit(unit_info {0, PERSO_ELFE});
     position test_elfe_pos = elfe->getPosition();
@@ -156,6 +165,11 @@ TEST_F(ApiTest, perso_deplace_chemin_impossible)
     );
 
     EXPECT_EQ(CHEMIN_IMPOSSIBLE, err);
+
+    rules_->resolve_moves();
+
+    // no duplicate
+    EXPECT_EQ(6u, api_->carte_zone_perso(position {5, 4}).size());
 }
 
 TEST_F(ApiTest, perso_deplace_bad_phase)
@@ -169,15 +183,39 @@ TEST_F(ApiTest, perso_deplace_bad_phase)
     );
 
     EXPECT_EQ(CHEMIN_IMPOSSIBLE, err);
+
+    rules_->resolve_moves();
+
+    // no duplicate
+    EXPECT_EQ(6u, api_->carte_zone_perso(position {5, 4}).size());
+
+}
+
+TEST_F(ApiTest, perso_deplace_meme_case)
+{
+    erreur err = api_->perso_deplace(
+        perso_info {0, PERSO_ELFE, 10 /* dummy */, ORIENTATION_NORD /* dummy */},
+        api_->chemin(map_->getStartingPos(), position {5, 4}),
+        ORIENTATION_SUD
+    );
+
+    EXPECT_EQ(OK, err);
+
+    rules_->resolve_moves();
+
+    // no duplicate
+    EXPECT_EQ(6u, api_->carte_zone_perso(position {5, 4}).size());
 }
 
 TEST_F(ApiTest, perso_penombre)
 {
-    api_->perso_deplace(
+    erreur err = api_->perso_deplace(
         perso_info {0, PERSO_ELFE, 10, ORIENTATION_NORD},
         api_->chemin(map_->getStartingPos(), position {5, 2}),
         ORIENTATION_SUD
     );
+
+    EXPECT_EQ(OK, err);
 
     for (auto& move : api_->actions()->actions())
         api_->game_state_set(move->apply(api_->game_state()));
