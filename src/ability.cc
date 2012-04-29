@@ -157,7 +157,11 @@ void Traitrise::apply(GameState* st, unit_info attacker, position target)
         // same unit or same team, skip
         if (attacked_unit == attacker
                 || attacked_unit.player_id == attacker.player_id)
+        {
+            DEBUG("dropping");
+            attacked_unit.debug();
             continue;
+        }
 
         // 255 dmg should be enough to kill him
         st->getUnit(attacked_unit)->attacked(255, attacker);
@@ -307,30 +311,30 @@ void FusRoDah::apply(GameState* st, unit_info attacker, position target)
     position attackerPosition = attackerUnit->getPosition();
     orientation direction = attackerUnit->getOrientation();
     int vision = attackerUnit->getVision();
-    int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
+    int South = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
     int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
 
     auto unitsPositions = map->getSurroundings(attackerPosition, direction, vision);
     for (auto unitsPosition : unitsPositions)
     {
         int maxDistance = vision - abs((unitsPosition.x - attackerPosition.x) * East)
-            + abs((unitsPosition.y - attackerPosition.y) * North) + 1;
+            + abs((unitsPosition.y - attackerPosition.y) * South) + 1;
 
         // We calculate how much we can push the units on the cell
         position newPosition = unitsPosition;
         for (int i = 0; i < maxDistance; ++i)
         {
-            newPosition = { newPosition.x + East, newPosition.y + North };
+            newPosition = { newPosition.x + East, newPosition.y + South };
             if (map->isPositionValid(newPosition) &&
                     map->getCell(newPosition)->getType() != ZONE_MUR)
                 continue;
-            newPosition = { newPosition.x - East, newPosition.y - North };
+            newPosition = { newPosition.x - East, newPosition.y - South };
             break;
         }
 
         // We move the units
-        position displacement = { unitsPosition.x - newPosition.x,
-                                  unitsPosition.y - newPosition.y};
+        position displacement = { (newPosition.x - unitsPosition.x) * East,
+                                  (newPosition.y - unitsPosition.y) * South};
         for (auto unitInfo : map->getCell(unitsPosition)->getUnits())
         {
             if (unitInfo == attacker) continue;

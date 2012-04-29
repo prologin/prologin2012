@@ -309,8 +309,6 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             msgr->recv_actions(&playerActions_);
             msgr->ack();
 
-            // FIXME: THIS IS NOT WORKING, WALKING DEAD CLIENT CAN COME BACK IN
-            // THE PLAY IF HE DOES NOT SEND AN ACTION AFTER TIMEOUTING
             if (playerActions_.actions().empty())
             {
                 DEBUG("actions() empty");
@@ -478,6 +476,8 @@ void Rules::resolve_points()
         if (!unit->isDead())
             continue;
 
+        DEBUG("UNIT DEAD: player %d class %d", unit->getPlayer(), unit->getClasse());
+
         // Unit is dead
         unsigned int teamkill = 0;
         for (unit_info attacker : unit->getAttackers())
@@ -486,16 +486,26 @@ void Rules::resolve_points()
 
         // Only teamkill
         if (teamkill == unit->getAttackers().size())
+        {
+            DEBUG("teamkill");
             players_->players[unit->getPlayer()]->score -= 2;
+        }
         // no teamkill, every team get a point
         else if (teamkill == 0)
         {
             std::set<int> attackers_team;
             for (unit_info attacker : unit->getAttackers())
+            {
+                DEBUG("Attacker");
+                attacker.debug();
                 attackers_team.insert(attacker.player_id);
+            }
 
             for (int team : attackers_team)
+            {
                 players_->players[team]->score += 1;
+                DEBUG("team: %d, score %d", team, players_->players[team]->score);
+            }
             players_->players[unit->getPlayer()]->score -= 1;
         }
         // else

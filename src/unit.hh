@@ -6,6 +6,8 @@
 # include <cstdint>
 # include <memory>
 
+# include <utils/log.hh>
+
 # include "constant.hh"
 # include "safety.hh"
 
@@ -21,6 +23,11 @@ typedef struct unit_info
 {
     int player_id;
     perso_classe classe;
+
+    void debug()
+    {
+        DEBUG("player_id: %d, classe: %d", player_id, classe);
+    }
 
 } unit_info;
 
