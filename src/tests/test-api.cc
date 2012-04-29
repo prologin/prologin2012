@@ -369,3 +369,18 @@ TEST_F(ApiTest, tour_actuel)
     EXPECT_TRUE(api_->game_state()->isFinished());
 
 }
+
+TEST_F(ApiTest, perso_deplace_vide)
+{
+    std::vector<position> path;
+    api_->perso_deplace(api_->perso_classe_info(PERSO_VOLEUR), path, ORIENTATION_OUEST);
+
+    for (auto& move : api_->actions()->actions())
+        api_->game_state_set(move->apply(api_->game_state()));
+
+    gamestate_ = api_->game_state();
+
+    rules_->resolve_moves();
+
+    EXPECT_EQ(api_->perso_classe_info(PERSO_VOLEUR).direction, ORIENTATION_OUEST);
+}

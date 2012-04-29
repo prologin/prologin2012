@@ -87,4 +87,7 @@ void ActionMove::apply_on(GameState* gameState) const
             pendingMoves.push_back(std::vector<std::pair<position,
                 const ActionMove*>>(1, std::make_pair(path_[i], this)));
     }
+
+    if (path_.empty())
+        applyDirection(gameState);
 }
