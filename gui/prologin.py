@@ -31,10 +31,10 @@ def jouer_placement():
     state_reader.put_state()
 
 def jouer_deplacement():
-    pass
+    state_reader.put_state()
 
 def jouer_attaque():
-    pass
+    state_reader.put_state()
 
 def partie_fin():
     state_reader.do_end()
