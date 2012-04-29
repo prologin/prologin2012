@@ -496,15 +496,15 @@ void Rules::resolve_points()
             std::set<int> attackers_team;
             for (unit_info attacker : unit->getAttackers())
             {
-                DEBUG("Attacker");
                 attacker.debug();
                 attackers_team.insert(attacker.player_id);
             }
 
             for (int team : attackers_team)
             {
+                DEBUG("team: %d, score %d+1 from kill of team %d unit %d", team, players_->players[team]->score,
+                        unit->getPlayer(), unit->getClasse());
                 players_->players[team]->score += 1;
-                DEBUG("team: %d, score %d", team, players_->players[team]->score);
             }
             players_->players[unit->getPlayer()]->score -= 1;
         }
