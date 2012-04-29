@@ -174,7 +174,6 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
     if ((err = static_cast<erreur>(move->check(game_state_))) != OK)
         return err;
 
-    game_state_ = dynamic_cast<GameState*>(move->apply(game_state_));
     actions_.add(move);
 
     return OK;
@@ -271,7 +270,6 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
         return err;
 
-    game_state_ = dynamic_cast<GameState*>(action->apply(game_state_));
     actions_.add(action);
 
     return OK;
