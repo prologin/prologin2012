@@ -2,6 +2,7 @@
 News
 ====
 
+- Duplication des unités fixed, si ça vous arrive encore prévenez nous.
 - Si vous voulez il y a des scripts dans le sgoinfre fait par d'autres candidats
   qui permettent entre autre de lancer la GUI (regardez
   cynddl-run-stechec-v3-guiiiii.sh)
