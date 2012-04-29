@@ -131,8 +131,9 @@ int Api::distance(position p1, position p2)
         return -1;
 
     int distance = map->getDistance(p1, p2);
+    int last = map->getCell(p2)->getCost();
 
-    return (distance < 255) ? distance : -1;
+    return (distance < 255) ? distance - last : -1;
 }
 
 ///
