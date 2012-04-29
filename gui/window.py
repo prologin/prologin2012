@@ -48,7 +48,7 @@ class State:
         self.looping = not self.looping
         self.ticks = 0
 
-    def _update_widhget(self, enable, widget):
+    def _update_widget(self, enable, widget):
         if enable:
             self.disabled_widgets.add(widget)
         else:
