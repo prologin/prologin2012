@@ -2,7 +2,10 @@
 News
 ====
 
-- La GUI est dispponible, pour cela regardez la page correspondante sur ce wiki
+- Si vous voulez il y a des scripts dans le sgoinfre fait par d'autres candidats
+  qui permettent entre autre de lancer la GUI (regardez
+  cynddl-run-stechec-v3-guiiiii.sh)
+- La GUI est disponible, pour cela regardez la page correspondante sur ce wiki
 - Menu de ce soir plus bas dans la page !
 - 18h31 : java ok (cf. faq)
 - 18h11 : ``chemin`` est buggée
