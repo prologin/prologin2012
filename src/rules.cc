@@ -447,7 +447,7 @@ void Rules::resolve_attacks()
     auto& pendingBastoooon = api_->game_state()->getPendingBastoooon();
     std::map<int, int> markedUnits;
 
-    DEBUG("acttacks: %d", pendingAttacks.size());
+    DEBUG("attacks: %d", pendingAttacks.size());
     for (auto& attack : pendingAttacks)
     {
         if (attack->getType() != ATTAQUE_FUS_RO_DAH)
