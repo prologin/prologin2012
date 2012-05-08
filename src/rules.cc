@@ -52,20 +52,6 @@ Rules::Rules(const rules::Options& opt)
         champion_jouer_attaque = champion_->get<f_champion_jouer_attaque>("jouer_attaque");
         champion_partie_fin = champion_->get<f_champion_partie_fin>("partie_fin");
 
-        // Caml corner case
-        try
-        {
-            typedef void (*caml_init)(char**);
-            caml_init caml_startup = champion_->get<caml_init>("caml_startup");
-
-            // XXX: ugly
-            const char* argv[2] = {"./ocaml", nullptr};
-            caml_startup(const_cast<char**>(argv));
-        }
-        catch (utils::DLLError& e)
-        {
-        }
-
         if (opt.player->type == rules::SPECTATOR)
             champion_partie_init();
         else
