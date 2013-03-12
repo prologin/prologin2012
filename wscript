@@ -23,9 +23,10 @@ def build(bld):
             src/dumper.cc
             src/interface.cc
         ''',
-        target = 'prolo2012',
+        target = 'prologin2012',
         use = ['net', 'rules', 'utils'],
-        defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
+        defines = ['MODULE_COLOR=ANSI_COL_PURPLE',
+            'MODULE_NAME="prologin2012"'],
         lib = ['dl'],
     )
 
@@ -34,12 +35,13 @@ def build(bld):
             features = 'gtest',
             source = 'src/tests/test-%s.cc' % test,
             target = 'prologin2012-test-%s' % test,
-            use = ['prolo2012', 'utils'],
+            use = ['prologin2012', 'utils'],
             includes = ['.'],
-            defines = ['MODULE_COLOR=ANSI_COL_PURPLE', 'MODULE_NAME="prolo2012"'],
+            defines = ['MODULE_COLOR=ANSI_COL_PURPLE',
+                'MODULE_NAME="prologin2012"'],
         )
 
     bld.install_files('${PREFIX}/share/stechec2/prologin2012', [
-        'prolo2012.yml',
+        'prologin2012.yml',
     ])
 

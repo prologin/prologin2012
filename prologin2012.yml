@@ -1,5 +1,5 @@
 conf:
-  package_name: prolo2012
+  package_name: prologin2012
   client_rule_lib: TODO
   server_rule_lib: TODO
   player_lib: champion

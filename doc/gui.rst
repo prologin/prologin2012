@@ -17,25 +17,25 @@ de conf. Mais comme quelques exemples valent mieux qu'une longue explication :
 ::
 
     [stechec2.server]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     nb_clients = 2
     map = /home/sgoinfre/maps/simple.map
     log = 3
 
     [stechec2.client.1]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     champion = ./champion.so
     map = /home/sgoinfre/maps/simple.map
     log = 3
 
     [stechec2.client.2]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     champion = ./champion.so
     map = /home/sgoinfre/maps/simple.map
     log = 3
 
     [stechec2.client.gui]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     champion = ./gui.so
     map = /home/sgoinfre/maps/simple.map
     log = 3

@@ -16,19 +16,19 @@ Prenons un exemple (qui devrait par ailleurs satisfaire vos besoin) :
 ::
 
     [stechec2.server]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     nb_clients = 2
     map = /home/sgoinfre/maps/simple.map
     log = 3
 
     [stechec2.client.1]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     champion = ./champion.so
     map = /home/sgoinfre/maps/simple.map
     log = 3
 
     [stechec2.client.2]
-    rules = /usr/lib/libprolo2012.so
+    rules = /usr/lib/libprologin2012.so
     champion = ./champion.so
     map = /home/sgoinfre/maps/simple.map
     log = 3
