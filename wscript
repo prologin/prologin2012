@@ -45,3 +45,16 @@ def build(bld):
         'prologin2012.yml',
     ])
 
+    bld.install_files('${PREFIX}/share/stechec2/prologin2012/www/css', [
+        'www/css/main.css',
+    ])
+    bld.install_files('${PREFIX}/share/stechec2/prologin2012/www/img', [
+        'www/img/back.png',
+        'www/img/head.png',
+        'www/img/medieval-abstract-ribbons-vector-547986.jpg',
+        'www/img/medieval-ribbons-8b1a18.jpg',
+    ])
+    bld.install_files('${PREFIX}/share/stechec2/prologin2012/www/font', [
+        'www/font/exocet-heavy.ttf',
+    ])
+
