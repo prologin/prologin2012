@@ -24,7 +24,7 @@ def build(bld):
             src/interface.cc
         ''',
         target = 'prologin2012',
-        use = ['stechec2-net', 'stechec2-rules', 'stechec2-utils'],
+        use = ['stechec2'],
         defines = ['MODULE_COLOR=ANSI_COL_PURPLE',
             'MODULE_NAME="prologin2012"'],
         lib = ['dl'],
