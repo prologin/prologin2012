@@ -112,7 +112,7 @@ int Map::load(std::istream& s)
             if (type_chars.find(line[x]) == type_chars.end())
                 FATAL("Invalid cell at y=%d x=%d", y, x);
 
-            cell_line[x] = new Cell(y, x, type_chars[line[x]]);
+            cell_line[x] = new Cell(type_chars[line[x]]);
         }
     }
 

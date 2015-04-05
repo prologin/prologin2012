@@ -10,7 +10,7 @@
 class Cell
 {
 public:
-    Cell(int y, int x, zone_type type);
+    Cell(zone_type type);
 
     // return the cost in movement points to walk on this cell
     int getCost() const;
@@ -24,9 +24,6 @@ public:
     bool isUnitOnCell(unit_info unit) const;
 
 private:
-    int x_;
-    int y_;
-
     zone_type type_;
 
     UnitVect units_;
