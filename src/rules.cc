@@ -114,7 +114,7 @@ Rules::~Rules()
     delete api_;
 }
 
-void Rules::client_loop(rules::ClientMessenger_sptr msgr)
+void Rules::player_loop(rules::ClientMessenger_sptr msgr)
 {
     CHECK(champion_ != nullptr);
 
