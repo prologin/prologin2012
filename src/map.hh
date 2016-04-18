@@ -31,7 +31,7 @@ class Map
 public:
     Map();
 
-    //Map(const Map& copy_from);
+    Map(const Map& copy_from);
 
     ~Map();
 
