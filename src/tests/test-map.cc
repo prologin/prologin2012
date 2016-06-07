@@ -77,6 +77,7 @@ TEST_F(MapTest, MapCopy)
     for (int y = 0; y < map_copy->getHeight(); ++y)
         for (int x = 0; x < map_copy->getWidth(); ++x)
             map_copy->getCell(position {x, y})->getUnits();
+    delete map_copy;
 }
 
 TEST_F(MapTest, MapPositionValid)

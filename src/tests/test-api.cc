@@ -55,6 +55,7 @@ protected:
 
     virtual void TearDown()
     {
+         delete gamestate_;
          delete rules_;
     }
 
