@@ -11,6 +11,12 @@
  * Unit
  */
 
+Unit::~Unit()
+{
+    for (Ability* ability : abilities_)
+        delete ability;
+}
+
 unit_info Unit::getUnitInfo() const
 {
     return unit_info { .player_id = player_id_, .classe = classe_};

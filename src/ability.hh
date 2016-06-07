@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <list>
+# include <vector>
 
 # include "constant.hh"
 
@@ -27,6 +28,9 @@ public:
     Ability(int cost)
         : cooldown_(0),
           cost_(cost)
+    {}
+
+    virtual ~Ability()
     {}
 
     /* check:

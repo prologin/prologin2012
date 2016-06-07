@@ -76,6 +76,8 @@ public:
         : Unit(player_id, move_points, VOLEUR_VISION, VOLEUR_VIE, PERSO_VOLEUR)
     {}
 
+    virtual ~Unit();
+
     unit_info getUnitInfo() const;
 
     int getPlayer() const;
