@@ -1,15 +1,15 @@
 #ifndef UNIT_HH_
-# define UNIT_HH_
+#define UNIT_HH_
 
-# include <vector>
-# include <list>
-# include <cstdint>
-# include <memory>
+#include <cstdint>
+#include <list>
+#include <memory>
+#include <vector>
 
-# include <utils/log.hh>
+#include <utils/log.hh>
 
-# include "constant.hh"
-# include "safety.hh"
+#include "constant.hh"
+#include "safety.hh"
 
 class Map;
 
@@ -24,10 +24,7 @@ typedef struct unit_info
     int player_id;
     perso_classe classe;
 
-    void debug()
-    {
-        DEBUG("player_id: %d, classe: %d", player_id, classe);
-    }
+    void debug() { DEBUG("player_id: %d, classe: %d", player_id, classe); }
 
 } unit_info;
 
@@ -53,22 +50,22 @@ class Unit
 {
 public:
     Unit(int player_id, int move_points, int vision, int life,
-            perso_classe classe)
-        : abilities_(),
-          player_id_(player_id),
-          classe_(classe),
-          vision_(vision),
-          life_max_(life),
-          life_current_(life),
-          life_saved_(-1),
-          spawn_(position {0, 0}),
-          current_position_(position {0, 0}),
-          move_points_(move_points),
-          attackers_(),
-          displacement_({0, 0}),
-          FusRoDahed_(false),
-          orientation_(ORIENTATION_NORD),
-          penombre_()
+         perso_classe classe)
+        : abilities_()
+        , player_id_(player_id)
+        , classe_(classe)
+        , vision_(vision)
+        , life_max_(life)
+        , life_current_(life)
+        , life_saved_(-1)
+        , spawn_(position{0, 0})
+        , current_position_(position{0, 0})
+        , move_points_(move_points)
+        , attackers_()
+        , displacement_({0, 0})
+        , FusRoDahed_(false)
+        , orientation_(ORIENTATION_NORD)
+        , penombre_()
     {}
 
     // For test purposes only, create a Voleur
@@ -166,7 +163,6 @@ private:
 
 typedef std::shared_ptr<Unit> Unit_sptr;
 typedef std::vector<Unit_sptr> Units;
-
 
 /*******************************************************************************
  * Voleur

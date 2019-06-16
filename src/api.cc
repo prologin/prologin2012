@@ -10,8 +10,8 @@
 ** Copyright (C) 2012 Prologin
 */
 
-#include <stdlib.h>
 #include <algorithm>
+#include <stdlib.h>
 
 #include <rules/game-state.hh>
 #include <rules/player.hh>
@@ -19,22 +19,20 @@
 #include "api.hh"
 #include "constant.hh"
 
+#include "cell.hh"
 #include "game.hh"
 #include "map.hh"
-#include "cell.hh"
 
-#include "action-move.hh"
 #include "action-attack.hh"
+#include "action-move.hh"
 
 // global used in interface.cc
 Api* api;
 
-Api::Api(GameState* game_state, rules::Player_sptr player,int equipe)
-    : game_state_(game_state),
-      player_(player),
-      equipe_(equipe)
+Api::Api(GameState* game_state, rules::Player_sptr player, int equipe)
+    : game_state_(game_state), player_(player), equipe_(equipe)
 {
-  api = this;
+    api = this;
 }
 
 ///
@@ -43,7 +41,7 @@ Api::Api(GameState* game_state, rules::Player_sptr player,int equipe)
 position Api::carte_taille()
 {
     Map* map = game_state_->getMap();
-    return position {map->getWidth(), map->getHeight()};
+    return position{map->getWidth(), map->getHeight()};
 }
 
 ///
@@ -77,8 +75,7 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
     if (!map->isPositionValid(pos))
         return std::vector<perso_info>();
     for (Unit_sptr unit : game_state_->getUnits())
-        if (unit->getPlayer() == equipe_ &&
-                unit->isPositionInVision(map, pos))
+        if (unit->getPlayer() == equipe_ && unit->isPositionInVision(map, pos))
             ok = true;
 
     if (game_state_->isPalantirActivated(equipe_))
@@ -109,12 +106,12 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
     {
         Unit_sptr unit = game_state_->getUnit(unitInfo);
 
-        persos.push_back(perso_info {
-                .equipe = unit->getPlayer(),
-                .classe = unit->getClasse(),
-                .vie = unit->getCurrentLife(),
-                .direction = unit->getOrientation(),
-                });
+        persos.push_back(perso_info{
+            .equipe = unit->getPlayer(),
+            .classe = unit->getClasse(),
+            .vie = unit->getCurrentLife(),
+            .direction = unit->getOrientation(),
+        });
     }
 
     return persos;
@@ -149,25 +146,30 @@ std::vector<position> Api::chemin(position p1, position p2)
 }
 
 ///
-// Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous forme d'une suite de ``position``, orientant le personnage sur la zone d'arrivée dans la direction ``orientation``.
+// Déplace le personnage ``perso`` en suivant un le chemin ``chemin`` donné sous
+// forme d'une suite de ``position``, orientant le personnage sur la zone
+// d'arrivée dans la direction ``orientation``.
 //
-erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orientation direction)
+erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin,
+                          orientation direction)
 {
     if (game_state_->getPhase() == PHASE_ATTAQUE)
-      return CHEMIN_IMPOSSIBLE;
+        return CHEMIN_IMPOSSIBLE;
 
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
-      return PERSONNAGE_IMPOSSIBLE;
+        return PERSONNAGE_IMPOSSIBLE;
 
     for (auto action : actions_.actions())
     {
-        perso_info persoInfo = dynamic_cast<const ActionMove*>(action.get())->getPersoInfo();
-        if (persoInfo.equipe == perso.equipe && persoInfo.classe == perso.classe)
+        perso_info persoInfo =
+            dynamic_cast<const ActionMove*>(action.get())->getPersoInfo();
+        if (persoInfo.equipe == perso.equipe &&
+            persoInfo.classe == perso.classe)
             return PERSONNAGE_IMPOSSIBLE;
     }
 
-    rules::IAction_sptr move(new ActionMove(perso, chemin, direction,
-                player_->id));
+    rules::IAction_sptr move(
+        new ActionMove(perso, chemin, direction, player_->id));
 
     erreur err;
 
@@ -180,7 +182,8 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin, orient
 }
 
 ///
-// Récupère la liste des zones sur lesquelles un personnage est passé au tour précédent.
+// Récupère la liste des zones sur lesquelles un personnage est passé au tour
+// précédent.
 //
 std::vector<position> Api::perso_penombre(perso_info perso)
 {
@@ -202,12 +205,13 @@ std::vector<position> Api::perso_vision(perso_info perso)
     Unit_sptr unit = game_state_->getUnit(perso);
     position unit_pos = unit->getPosition();
 
-    return game_state_->getMap()->getVision(unit_pos,
-            unit->getOrientation(), unit->getVision());
+    return game_state_->getMap()->getVision(unit_pos, unit->getOrientation(),
+                                            unit->getVision());
 }
 
 ///
-// Récupère la liste des zones sur lesquelles ``perso`` voit d'autre personnages.
+// Récupère la liste des zones sur lesquelles ``perso`` voit d'autre
+// personnages.
 //
 std::vector<position> Api::perso_vision_personnages(perso_info perso)
 {
@@ -218,52 +222,59 @@ std::vector<position> Api::perso_vision_personnages(perso_info perso)
     Unit_sptr unit = game_state_->getUnit(perso);
     position unit_pos = unit->getPosition();
 
-    return game_state_->getMap()->getSurroundings(unit_pos,
-            unit->getOrientation(), unit->getVision());
+    return game_state_->getMap()->getSurroundings(
+        unit_pos, unit->getOrientation(), unit->getVision());
 }
 
 ///
-// Récupère la liste des zones sur lesquelles le palantír du voleur voit d'autre personnages.
+// Récupère la liste des zones sur lesquelles le palantír du voleur voit d'autre
+// personnages.
 //
 std::vector<position> Api::palantir_vision()
 {
     if (!game_state_->isPalantirActivated(mon_equipe()))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareSurroundings(game_state_->getPalantir(mon_equipe()), VOLEUR_VISION);
+    return game_state_->getMap()->getSquareSurroundings(
+        game_state_->getPalantir(mon_equipe()), VOLEUR_VISION);
 }
 
 ///
-// Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque "I See What You Did There".
+// Récupère la liste des zones sur lesquelles l'elfe peut voir via son attaque
+// "I See What You Did There".
 //
 std::vector<position> Api::elfe_vision()
 {
     if (!game_state_->isElfeVisionActivated(mon_equipe()))
         return std::vector<position>();
 
-    return game_state_->getMap()->getSquareSurroundings(game_state_->getElfeVision(mon_equipe()), ELFE_VISION);
+    return game_state_->getMap()->getSquareSurroundings(
+        game_state_->getElfeVision(mon_equipe()), ELFE_VISION);
 }
 
 ///
-// Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la zone ``pos``.
+// Effectue l'attaque ``attaque`` avec le personnage ``perso`` sur la zone
+// ``pos``.
 //
 erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 {
     if (game_state_->getPhase() != PHASE_ATTAQUE)
-      return ATTAQUE_INDISPONIBLE;
+        return ATTAQUE_INDISPONIBLE;
 
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
-      return PERSONNAGE_IMPOSSIBLE;
+        return PERSONNAGE_IMPOSSIBLE;
 
     for (auto action : actions_.actions())
     {
-        perso_info persoInfo = dynamic_cast<const ActionAttack*>(action.get())->getPersoInfo();
-        if (persoInfo.equipe == perso.equipe && persoInfo.classe == perso.classe)
+        perso_info persoInfo =
+            dynamic_cast<const ActionAttack*>(action.get())->getPersoInfo();
+        if (persoInfo.equipe == perso.equipe &&
+            persoInfo.classe == perso.classe)
             return PERSONNAGE_IMPOSSIBLE;
     }
 
-
-    rules::IAction_sptr action(new ActionAttack(perso, attaque, pos, player_->id));
+    rules::IAction_sptr action(
+        new ActionAttack(perso, attaque, pos, player_->id));
 
     erreur err;
 
@@ -276,12 +287,13 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
 }
 
 ///
-// Retourne le temps de recharge restant pour l'attaque ``attaque`` du personnage ``perso``.
+// Retourne le temps de recharge restant pour l'attaque ``attaque`` du
+// personnage ``perso``.
 //
 int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 {
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
-      return -1;
+        return -1;
 
     return game_state_->getUnit(perso)->getAbilityCooldown(attaque);
 }
@@ -292,7 +304,7 @@ int Api::perso_attaque_recharge(perso_info perso, attaque_type attaque)
 position Api::perso_position(perso_info perso)
 {
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
-      return {-1, -1};
+        return {-1, -1};
 
     return game_state_->getUnit(perso)->getPosition();
 }
@@ -303,11 +315,11 @@ position Api::perso_position(perso_info perso)
 perso_info Api::perso_classe_info(perso_classe classe)
 {
     if (classe < 0 || classe > 2)
-        return { -1, PERSO_VOLEUR, -1, ORIENTATION_NORD};
+        return {-1, PERSO_VOLEUR, -1, ORIENTATION_NORD};
 
-    auto unit = game_state_->getUnit(unit_info {equipe_, classe});
+    auto unit = game_state_->getUnit(unit_info{equipe_, classe});
 
-    return { equipe_, classe, unit->getCurrentLife(), unit->getOrientation()};
+    return {equipe_, classe, unit->getCurrentLife(), unit->getOrientation()};
 }
 
 ///

@@ -1,28 +1,27 @@
 #include "action-attack.hh"
 #include "ability.hh"
 
+#include "cell.hh"
 #include "constant.hh"
 #include "map.hh"
-#include "cell.hh"
 #include "unit.hh"
 
 ActionAttack::ActionAttack()
-    : unit_(),
-      atk_id_(ATTAQUE_NORMALE),
-      target_({0, 0}),
-      player_(-1),
-      id_(ACTION_ATTACK)
-{
-}
+    : unit_()
+    , atk_id_(ATTAQUE_NORMALE)
+    , target_({0, 0})
+    , player_(-1)
+    , id_(ACTION_ATTACK)
+{}
 
-ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target, int player)
-    : unit_(unit),
-      atk_id_(atk),
-      target_(target),
-      player_(player),
-      id_(ACTION_ATTACK)
-{
-}
+ActionAttack::ActionAttack(perso_info unit, attaque_type atk, position target,
+                           int player)
+    : unit_(unit)
+    , atk_id_(atk)
+    , target_(target)
+    , player_(player)
+    , id_(ACTION_ATTACK)
+{}
 
 int ActionAttack::check(const GameState* gameState) const
 {
@@ -34,8 +33,8 @@ int ActionAttack::check(const GameState* gameState) const
     if (!ability)
         return ATTAQUE_INDISPONIBLE;
 
-    unit_info info = { unit_.equipe, unit_.classe };
-    position target = { target_.x, target_.y };
+    unit_info info = {unit_.equipe, unit_.classe};
+    position target = {target_.x, target_.y};
 
     return ability->check(*gameState, info, target);
 }
@@ -53,30 +52,30 @@ attaque_type ActionAttack::getType() const
     return atk_id_;
 }
 
-void ActionAttack::markFusRoDah(GameState* gameState, std::map<int, int>& markedUnits) const
+void ActionAttack::markFusRoDah(GameState* gameState,
+                                std::map<int, int>& markedUnits) const
 {
     Map* map = gameState->getMap();
     auto attacker = gameState->getUnit(unit_);
     auto unitsPositions = map->getNormalSurroundings(attacker->getPosition(),
-            attacker->getOrientation(), attacker->getVision());
+                                                     attacker->getOrientation(),
+                                                     attacker->getVision());
 
     for (auto unitsPosition : unitsPositions)
     {
         for (auto victimInfo : map->getCell(unitsPosition)->getUnits())
         {
             auto victimUnit = gameState->getUnit(victimInfo);
-            int victimId= victimInfo.player_id * 10 + victimInfo.classe;
+            int victimId = victimInfo.player_id * 10 + victimInfo.classe;
             int attackerId = unit_.equipe * 10 + unit_.classe;
-            unit_info attackerInfo = { unit_.equipe, unit_.classe };
+            unit_info attackerInfo = {unit_.equipe, unit_.classe};
 
             auto searchVictim = markedUnits.find(victimId);
             if (searchVictim != markedUnits.end())
             {
-                unit_info otherInfo =
-                {
+                unit_info otherInfo = {
                     searchVictim->second / 10,
-                    (perso_classe)(searchVictim->second % 10)
-                };
+                    (perso_classe)(searchVictim->second % 10)};
                 victimUnit->attacked(255, attackerInfo);
                 victimUnit->attacked(255, otherInfo);
                 victimUnit->setFusRoDahed();
@@ -87,29 +86,28 @@ void ActionAttack::markFusRoDah(GameState* gameState, std::map<int, int>& marked
     }
 }
 
-void ActionAttack::applyAttack(GameState *gameState) const
+void ActionAttack::applyAttack(GameState* gameState) const
 {
     auto unit = gameState->getUnit(unit_);
     Ability* attack = unit->getAbility(atk_id_);
 
-    unit_info info = { unit_.equipe, unit_.classe };
+    unit_info info = {unit_.equipe, unit_.classe};
     position displacement = gameState->getUnit(info)->getDisplacement();
-    position target = { target_.x + displacement.x, target_.y + displacement.y };
+    position target = {target_.x + displacement.x, target_.y + displacement.y};
 
-    if (!(atk_id_ != ATTAQUE_FUS_RO_DAH && unit->isFusRoDahed())
-            && attack->check(*gameState, info, target) == OK)
+    if (!(atk_id_ != ATTAQUE_FUS_RO_DAH && unit->isFusRoDahed()) &&
+        attack->check(*gameState, info, target) == OK)
         attack->apply(gameState, info, target);
 
-    gameState->getUnit(info)->setDisplacement(position {0, 0});
+    gameState->getUnit(info)->setDisplacement(position{0, 0});
 }
 
-void ActionAttack::applyBastoooon(GameState *gameState) const
+void ActionAttack::applyBastoooon(GameState* gameState) const
 {
     gameState->getUnit(unit_)->swapLives();
     applyAttack(gameState);
     gameState->getUnit(unit_)->swapLives();
 }
-
 
 void ActionAttack::apply_on(GameState* gameState) const
 {
@@ -122,5 +120,5 @@ void ActionAttack::apply_on(GameState* gameState) const
     else if (atk_id_ == ATTAQUE_BASTOOOON)
         pendingBastoooon.push_back(this);
     else
-      pendingAttacks.push_back(this);
+        pendingAttacks.push_back(this);
 }

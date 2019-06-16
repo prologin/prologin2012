@@ -2,10 +2,10 @@
 
 #include <utils/log.hh>
 
-#include "map.hh"
-#include "unit.hh"
 #include "ability.hh"
 #include "constant.hh"
+#include "map.hh"
+#include "unit.hh"
 
 /*******************************************************************************
  * Unit
@@ -19,7 +19,7 @@ Unit::~Unit()
 
 unit_info Unit::getUnitInfo() const
 {
-    return unit_info { .player_id = player_id_, .classe = classe_};
+    return unit_info{.player_id = player_id_, .classe = classe_};
 }
 
 int Unit::getPlayer() const
@@ -118,7 +118,7 @@ bool Unit::isPositionInVision(Map* map, position target) const
 {
     auto cone = map->getVision(current_position_, orientation_, vision_);
     if (std::find(cone.begin(), cone.end(), target) != cone.end())
-      return true;
+        return true;
     return false;
 }
 
@@ -169,9 +169,9 @@ bool Unit::isDead()
 
 Ability* Unit::getAbility(attaque_type id)
 {
-  CHECK((size_t)id < abilities_.size());
+    CHECK((size_t)id < abilities_.size());
 
-  return abilities_[id];
+    return abilities_[id];
 }
 
 int Unit::getAbilityCooldown(attaque_type id) const
@@ -194,17 +194,17 @@ int Unit::pickAbilityCooldown(int ability_id) const
 
 void Unit::resetPenombre()
 {
-  penombre_.clear();
+    penombre_.clear();
 }
 
 void Unit::addPenombre(std::vector<position> newPenombre)
 {
-  penombre_.insert(penombre_.end(), newPenombre.begin(), newPenombre.end());
+    penombre_.insert(penombre_.end(), newPenombre.begin(), newPenombre.end());
 }
 
 std::vector<position> Unit::getPenombre() const
 {
-  return penombre_;
+    return penombre_;
 }
 
 /******************************************************************************
@@ -213,7 +213,7 @@ std::vector<position> Unit::getPenombre() const
 
 Voleur::Voleur(int player_id)
     : Unit(player_id, VOLEUR_DEPLACEMENT, VOLEUR_VISION, VOLEUR_VIE,
-            PERSO_VOLEUR)
+           PERSO_VOLEUR)
 {
     abilities_.push_back(new VoleurAttaque());
     abilities_.push_back(new Palantir());
@@ -222,7 +222,7 @@ Voleur::Voleur(int player_id)
 
 Ability* Voleur::getAbility(attaque_type id)
 {
-     switch (id)
+    switch (id)
     {
     case ATTAQUE_NORMALE:
         return abilities_[0];
@@ -253,14 +253,13 @@ int Voleur::getAbilityCooldown(attaque_type id) const
     }
 }
 
-
 /******************************************************************************
  * Barbare
  **/
 
 Barbare::Barbare(int player_id)
     : Unit(player_id, BARBARE_DEPLACEMENT, BARBARE_VISION, BARBARE_VIE,
-            PERSO_BARBARE)
+           PERSO_BARBARE)
 {
     abilities_.push_back(new BarbareAttaque());
     abilities_.push_back(new Bastoooon());
@@ -269,7 +268,7 @@ Barbare::Barbare(int player_id)
 
 Ability* Barbare::getAbility(attaque_type id)
 {
-     switch (id)
+    switch (id)
     {
     case ATTAQUE_NORMALE:
         return abilities_[0];
@@ -300,7 +299,6 @@ int Barbare::getAbilityCooldown(attaque_type id) const
     }
 }
 
-
 /******************************************************************************
  * Elfe
  **/
@@ -315,7 +313,7 @@ Elfe::Elfe(int player_id)
 
 Ability* Elfe::getAbility(attaque_type id)
 {
-     switch (id)
+    switch (id)
     {
     case ATTAQUE_NORMALE:
         return abilities_[0];

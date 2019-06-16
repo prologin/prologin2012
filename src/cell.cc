@@ -4,24 +4,16 @@
 
 #include <utils/log.hh>
 
+#include "cell.hh"
 #include "constant.hh"
 #include "unit.hh"
-#include "cell.hh"
 
 static std::map<zone_type, int> ZONE_COST = {
-    { ZONE_MUR, 255 },
-    { ZONE_ROUTE, 1 },
-    { ZONE_HERBE, 2 },
-    { ZONE_MARAIS, 4 },
-    { ZONE_FORET, 2 },
-    { ZONE_TOUR, 2 },
+    {ZONE_MUR, 255},  {ZONE_ROUTE, 1}, {ZONE_HERBE, 2},
+    {ZONE_MARAIS, 4}, {ZONE_FORET, 2}, {ZONE_TOUR, 2},
 };
 
-Cell::Cell(zone_type type)
-    : type_(type),
-      cost_(ZONE_COST[type])
-{
-}
+Cell::Cell(zone_type type) : type_(type), cost_(ZONE_COST[type]) {}
 
 // Return the cost of walking on this cell
 int Cell::getCost() const

@@ -1,11 +1,11 @@
 #ifndef ABILITY_HH_
-# define ABILITY_HH_
+#define ABILITY_HH_
 
-# include <memory>
-# include <list>
-# include <vector>
+#include <list>
+#include <memory>
+#include <vector>
 
-# include "constant.hh"
+#include "constant.hh"
 
 struct unit_info;
 
@@ -25,20 +25,16 @@ class Map;
 class Ability
 {
 public:
-    Ability(int cost)
-        : cooldown_(0),
-          cost_(cost)
-    {}
+    Ability(int cost) : cooldown_(0), cost_(cost) {}
 
-    virtual ~Ability()
-    {}
+    virtual ~Ability() {}
 
     /* check:
      *  - cooldown > 0
      *  - target is on the map
      */
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
 
     /* apply:
      *  - add decrease life points
@@ -59,15 +55,13 @@ private:
  * VoleurAttaque
  */
 
-class VoleurAttaque: public Ability
+class VoleurAttaque : public Ability
 {
 public:
-    VoleurAttaque()
-        : Ability(0)
-    {}
+    VoleurAttaque() : Ability(0) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -78,12 +72,10 @@ public:
 class Palantir : public Ability
 {
 public:
-    Palantir()
-        : Ability(VOLEUR_PALANTIR_CD)
-    {}
+    Palantir() : Ability(VOLEUR_PALANTIR_CD) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -94,12 +86,10 @@ public:
 class Traitrise : public Ability
 {
 public:
-    Traitrise()
-        : Ability(VOLEUR_TRAITRISE_CD)
-    {}
+    Traitrise() : Ability(VOLEUR_TRAITRISE_CD) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     // kill unit
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
@@ -108,15 +98,13 @@ public:
  * Barbare - BarbareAttaque
  */
 
-class BarbareAttaque: public Ability
+class BarbareAttaque : public Ability
 {
 public:
-    BarbareAttaque()
-        : Ability(0)
-    {}
+    BarbareAttaque() : Ability(0) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -127,12 +115,10 @@ public:
 class Bastoooon : public Ability
 {
 public:
-    Bastoooon()
-        : Ability(BARBARE_BASTOOOON_CD)
-    {}
+    Bastoooon() : Ability(BARBARE_BASTOOOON_CD) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -140,15 +126,13 @@ public:
  * Barbare - FusRoDah
  */
 
-class FusRoDah: public Ability
+class FusRoDah : public Ability
 {
 public:
-    FusRoDah()
-        : Ability(BARBARE_FUS_RO_DAH_CD)
-    {}
+    FusRoDah() : Ability(BARBARE_FUS_RO_DAH_CD) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -159,12 +143,10 @@ public:
 class ElfeAttaque : public Ability
 {
 public:
-    ElfeAttaque()
-        : Ability(0)
-    {}
+    ElfeAttaque() : Ability(0) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -172,15 +154,13 @@ public:
  * Elfe - ISee
  */
 
-class ISee: public Ability
+class ISee : public Ability
 {
 public:
-    ISee()
-        : Ability(ELFE_I_SEE_CD)
-    {}
+    ISee() : Ability(ELFE_I_SEE_CD) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 
@@ -188,15 +168,13 @@ public:
  * Elfe - Loto
  */
 
-class Loto: public Ability
+class Loto : public Ability
 {
 public:
-    Loto()
-        : Ability(ELFE_LOTO_CD)
-    {}
+    Loto() : Ability(ELFE_LOTO_CD) {}
 
     virtual erreur check(const GameState& st, unit_info attacker,
-        position target) const;
+                         position target) const;
     virtual void apply(GameState* st, unit_info attacker, position target);
 };
 

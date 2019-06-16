@@ -1,12 +1,12 @@
-#include <vector>
-#include <cstdlib>
 #include <algorithm>
+#include <cstdlib>
+#include <vector>
 
 #include "ability.hh"
 
-#include "map.hh"
 #include "cell.hh"
 #include "game.hh"
+#include "map.hh"
 #include "unit.hh"
 
 /*******************************************************************************
@@ -47,7 +47,7 @@ void Ability::resetCooldown()
  */
 
 erreur VoleurAttaque::check(const GameState& st, unit_info attacker,
-        position target) const
+                            position target) const
 {
     erreur err;
     if ((err = Ability::check(st, attacker, target)) != OK)
@@ -73,7 +73,7 @@ erreur VoleurAttaque::check(const GameState& st, unit_info attacker,
 void VoleurAttaque::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=normale target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);
@@ -94,7 +94,7 @@ void VoleurAttaque::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur Palantir::check(const GameState& st, unit_info attacker,
-        position target) const
+                       position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -102,7 +102,7 @@ erreur Palantir::check(const GameState& st, unit_info attacker,
         return err;
 
     if (!st.getUnit(attacker)->isPositionInVision(st.getMap(), target))
-      return POSITION_IMPOSSIBLE;
+        return POSITION_IMPOSSIBLE;
 
     return OK;
 }
@@ -110,7 +110,7 @@ erreur Palantir::check(const GameState& st, unit_info attacker,
 void Palantir::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=palantir target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);
@@ -128,7 +128,7 @@ void Palantir::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur Traitrise::check(const GameState& st, unit_info attacker,
-        position target) const
+                        position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -146,7 +146,7 @@ erreur Traitrise::check(const GameState& st, unit_info attacker,
 void Traitrise::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=traitrise target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);
@@ -155,8 +155,8 @@ void Traitrise::apply(GameState* st, unit_info attacker, position target)
     for (unit_info attacked_unit : attacked_units)
     {
         // same unit or same team, skip
-        if (attacked_unit == attacker
-                || attacked_unit.player_id == attacker.player_id)
+        if (attacked_unit == attacker ||
+            attacked_unit.player_id == attacker.player_id)
         {
             DEBUG("dropping");
             attacked_unit.debug();
@@ -177,7 +177,7 @@ void Traitrise::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur BarbareAttaque::check(const GameState& st, unit_info attacker,
-        position target) const
+                             position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -194,7 +194,7 @@ erreur BarbareAttaque::check(const GameState& st, unit_info attacker,
 void BarbareAttaque::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=normale target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     Map* map = st->getMap();
 
@@ -205,12 +205,12 @@ void BarbareAttaque::apply(GameState* st, unit_info attacker, position target)
     std::vector<position> cross = {{-1, 0}, {1, 0}, {0, 0}, {0, 1}, {0, -1}};
     for (auto dxdy : cross)
     {
-        new_target = position {target.x + dxdy.x, target.y + dxdy.y};
+        new_target = position{target.x + dxdy.x, target.y + dxdy.y};
 
         if (map->isPositionValid(new_target))
         {
             UnitVect attacked_units = st->getMap()->getUnitsOn(new_target);
-            for (unit_info attacked_unit: attacked_units)
+            for (unit_info attacked_unit : attacked_units)
                 st->getUnit(attacked_unit)->attacked(BARBARE_ATTAQUE, attacker);
         }
     }
@@ -225,7 +225,7 @@ void BarbareAttaque::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur Bastoooon::check(const GameState& st, unit_info attacker,
-        position target) const
+                        position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -251,7 +251,7 @@ erreur Bastoooon::check(const GameState& st, unit_info attacker,
 void Bastoooon::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=bastoooon target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     Map* map = st->getMap();
 
@@ -265,14 +265,15 @@ void Bastoooon::apply(GameState* st, unit_info attacker, position target)
     std::vector<position> cross = {{-1, 0}, {1, 0}, {0, 0}, {0, 1}, {0, -1}};
     for (auto dxdy : cross)
     {
-        new_target = position {target.x + dxdy.x, target.y + dxdy.y};
+        new_target = position{target.x + dxdy.x, target.y + dxdy.y};
 
         if (map->isPositionValid(new_target))
         {
             UnitVect attacked_units = st->getMap()->getUnitsOn(new_target);
-            for (unit_info attacked_unit: attacked_units)
+            for (unit_info attacked_unit : attacked_units)
             {
-                if (attacked_unit == attacker) continue;
+                if (attacked_unit == attacker)
+                    continue;
                 st->getUnit(attacked_unit)->attacked(damages, attacker);
             }
         }
@@ -288,7 +289,7 @@ void Bastoooon::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur FusRoDah::check(const GameState& st, unit_info attacker,
-        position target) const
+                       position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -301,7 +302,7 @@ erreur FusRoDah::check(const GameState& st, unit_info attacker,
 void FusRoDah::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=fusrodah target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);
@@ -311,35 +312,40 @@ void FusRoDah::apply(GameState* st, unit_info attacker, position target)
     position attackerPosition = attackerUnit->getPosition();
     orientation direction = attackerUnit->getOrientation();
     int vision = attackerUnit->getVision();
-    int South = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
-    int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
+    int South =
+        (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
+    int East =
+        (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
 
-    auto unitsPositions = map->getSurroundings(attackerPosition, direction, vision);
+    auto unitsPositions =
+        map->getSurroundings(attackerPosition, direction, vision);
     for (auto unitsPosition : unitsPositions)
     {
-        int maxDistance = vision - abs((unitsPosition.x - attackerPosition.x) * East)
-            + abs((unitsPosition.y - attackerPosition.y) * South) + 1;
+        int maxDistance =
+            vision - abs((unitsPosition.x - attackerPosition.x) * East) +
+            abs((unitsPosition.y - attackerPosition.y) * South) + 1;
 
         // We calculate how much we can push the units on the cell
         position newPosition = unitsPosition;
         for (int i = 0; i < maxDistance; ++i)
         {
-            newPosition = { newPosition.x + East, newPosition.y + South };
+            newPosition = {newPosition.x + East, newPosition.y + South};
             if (map->isPositionValid(newPosition) &&
-                    map->getCell(newPosition)->getType() != ZONE_MUR)
+                map->getCell(newPosition)->getType() != ZONE_MUR)
                 continue;
-            newPosition = { newPosition.x - East, newPosition.y - South };
+            newPosition = {newPosition.x - East, newPosition.y - South};
             break;
         }
 
         // We move the units
-        position displacement = { newPosition.x - unitsPosition.x,
-                                  newPosition.y - unitsPosition.y};
+        position displacement = {newPosition.x - unitsPosition.x,
+                                 newPosition.y - unitsPosition.y};
         for (auto unitInfo : map->getCell(unitsPosition)->getUnits())
         {
-            if (unitInfo == attacker) continue;
+            if (unitInfo == attacker)
+                continue;
             DEBUG("FusRoDah displacement x = %d y = %d for unit :",
-                displacement.x, displacement.y);
+                  displacement.x, displacement.y);
             unitInfo.debug();
             st->getUnit(unitInfo)->setDisplacement(displacement);
             st->getUnit(unitInfo)->setPosition(newPosition);
@@ -357,7 +363,7 @@ void FusRoDah::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
-        position target) const
+                          position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -367,8 +373,8 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
     Map* map = st.getMap();
 
     for (Unit_sptr unit : st.getUnits())
-        if (unit->getPlayer() == attacker.player_id && 
-                unit->isPositionInVision(map, target))
+        if (unit->getPlayer() == attacker.player_id &&
+            unit->isPositionInVision(map, target))
             return OK;
 
     if (st.isPalantirActivated(attacker.player_id))
@@ -395,7 +401,7 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
 void ElfeAttaque::apply(GameState* st, unit_info attacker, position target)
 {
     INFO("player_id=%d unit=%d attack=normale target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+         attacker.player_id, attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);
@@ -420,7 +426,7 @@ void ElfeAttaque::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur ISee::check(const GameState& st, unit_info attacker,
-        position target) const
+                   position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -432,8 +438,8 @@ erreur ISee::check(const GameState& st, unit_info attacker,
 
 void ISee::apply(GameState* st, unit_info attacker, position target)
 {
-    INFO("player_id=%d unit=%d attack=isee target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+    INFO("player_id=%d unit=%d attack=isee target=(%d, %d)", attacker.player_id,
+         attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);
@@ -450,7 +456,7 @@ void ISee::apply(GameState* st, unit_info attacker, position target)
  */
 
 erreur Loto::check(const GameState& st, unit_info attacker,
-        position target) const
+                   position target) const
 {
     erreur err;
     // check cooldown & valid position
@@ -462,8 +468,8 @@ erreur Loto::check(const GameState& st, unit_info attacker,
 
 void Loto::apply(GameState* st, unit_info attacker, position target)
 {
-    INFO("player_id=%d unit=%d attack=loto target=(%d, %d)",
-            attacker.player_id, attacker.classe, target.x, target.y);
+    INFO("player_id=%d unit=%d attack=loto target=(%d, %d)", attacker.player_id,
+         attacker.classe, target.x, target.y);
 
     // apply cooldown
     Ability::apply(st, attacker, target);

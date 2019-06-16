@@ -1,20 +1,19 @@
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
 #include <sstream>
 
 #include <rules/action.hh>
 #include <rules/actions.hh>
 #include <utils/buffer.hh>
 
-#include "map.hh"
 #include "cell.hh"
 #include "dumper.hh"
+#include "map.hh"
 
 static const char* hextable = "0123456789ABCDEF";
 
-static std::ostream& dump_scores(
-    std::ostream& ss, const std::vector<int>& scores
-)
+static std::ostream& dump_scores(std::ostream& ss,
+                                 const std::vector<int>& scores)
 {
     ss << "[";
     for (unsigned i = 0; i < scores.size(); ++i)
@@ -58,7 +57,7 @@ static std::ostream& dump_map(std::ostream& ss, Map& map)
     return ss;
 }
 
-static std::ostream& dump_units(std::ostream& ss, const Units &units)
+static std::ostream& dump_units(std::ostream& ss, const Units& units)
 {
     ss << "[";
     for (unsigned i = 0; i < units.size(); ++i)
@@ -102,16 +101,16 @@ const char* dump_game_state(const GameState& st, rules::Actions& acts)
     ss << "\"turn\": " << st.getCurrentTurn() << ", ";
     ss << "\"turn_max\": " << st.getMap()->getMaxTurns() << ", ";
     ss << "\"scores\": ";
-         dump_scores(ss, st.getScores());
-        ss << ", ";
+    dump_scores(ss, st.getScores());
+    ss << ", ";
     ss << "\"map\": ";
-        dump_map(ss, *st.getMap());
-        ss << ", ";
+    dump_map(ss, *st.getMap());
+    ss << ", ";
     ss << "\"units\": ";
-        dump_units(ss, st.getUnits());
-        ss << ", ";
+    dump_units(ss, st.getUnits());
+    ss << ", ";
     ss << "\"actions\": ";
-        dump_actions(ss, acts);
+    dump_actions(ss, acts);
     ss << "}";
 
     char* result = new char[ss.str().size() + 1];

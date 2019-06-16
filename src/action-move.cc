@@ -1,30 +1,28 @@
 #include "action-move.hh"
 
+#include "cell.hh"
 #include "constant.hh"
 #include "map.hh"
-#include "cell.hh"
 
 ActionMove::ActionMove()
-    : unit_(),
-      path_length_(-1),
-      path_(),
-      direction_(ORIENTATION_NORD),
-      player_(-1),
-      id_(ACTION_MOVE)
-{
-}
+    : unit_()
+    , path_length_(-1)
+    , path_()
+    , direction_(ORIENTATION_NORD)
+    , player_(-1)
+    , id_(ACTION_MOVE)
+{}
 
 ActionMove::ActionMove(perso_info unit, std::vector<position>& path,
-            orientation& direction, int player)
-    : rules::Action<GameState>(),
-      unit_(unit),
-      path_length_(path.size()),
-      path_(path),
-      direction_(direction),
-      player_(player),
-      id_(ACTION_MOVE)
-{
-}
+                       orientation& direction, int player)
+    : rules::Action<GameState>()
+    , unit_(unit)
+    , path_length_(path.size())
+    , path_(path)
+    , direction_(direction)
+    , player_(player)
+    , id_(ACTION_MOVE)
+{}
 
 int ActionMove::check(const GameState* st) const
 {
@@ -38,8 +36,9 @@ int ActionMove::check(const GameState* st) const
 
     for (auto pos : path_)
     {
-        if (abs(current_unit_position.x - pos.x)
-                + abs(current_unit_position.y - pos.y) != 1)
+        if (abs(current_unit_position.x - pos.x) +
+                abs(current_unit_position.y - pos.y) !=
+            1)
             return CHEMIN_IMPOSSIBLE;
 
         move_points -= st->getMap()->getCell(current_unit_position)->getCost();
@@ -84,8 +83,9 @@ void ActionMove::apply_on(GameState* gameState) const
         if (i < pendingMoves.size())
             pendingMoves[i].push_back(std::make_pair(path_[i], this));
         else
-            pendingMoves.push_back(std::vector<std::pair<position,
-                const ActionMove*>>(1, std::make_pair(path_[i], this)));
+            pendingMoves.push_back(
+                std::vector<std::pair<position, const ActionMove*>>(
+                    1, std::make_pair(path_[i], this)));
     }
 
     if (path_.empty())

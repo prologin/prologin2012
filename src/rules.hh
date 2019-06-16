@@ -1,14 +1,14 @@
 #ifndef RULES_HH_
-# define RULES_HH_
+#define RULES_HH_
 
-# include <utils/dll.hh>
-# include <utils/sandbox.hh>
-# include <rules/options.hh>
-# include <rules/client-messenger.hh>
-# include <rules/server-messenger.hh>
-# include <rules/player.hh>
+#include <rules/client-messenger.hh>
+#include <rules/options.hh>
+#include <rules/player.hh>
+#include <rules/server-messenger.hh>
+#include <utils/dll.hh>
+#include <utils/sandbox.hh>
 
-# include "api.hh"
+#include "api.hh"
 
 typedef void (*f_champion_partie_init)();
 typedef void (*f_champion_jouer_placement)();

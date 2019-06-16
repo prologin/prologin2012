@@ -3,37 +3,36 @@
 #include <rules/player.hh>
 #include <utils/log.hh>
 
+#include "ability.hh"
+#include "cell.hh"
 #include "game.hh"
 #include "map.hh"
 #include "unit.hh"
-#include "ability.hh"
-#include "cell.hh"
 
 GameState::GameState(Map* map, rules::Players_sptr players)
-    : rules::GameState(),
-      map_(map),
-      players_(players),
-      pendingMoves_(),
-      game_phase_(PHASE_PLACEMENT),
-      current_turn_(0)
+    : rules::GameState()
+    , map_(map)
+    , players_(players)
+    , pendingMoves_()
+    , game_phase_(PHASE_PLACEMENT)
+    , current_turn_(0)
 {
-    game_phase_ = (map->getPlacementTurns() > 0) ? PHASE_PLACEMENT
-                                                 : PHASE_DEPLACEMENT;
+    game_phase_ =
+        (map->getPlacementTurns() > 0) ? PHASE_PLACEMENT : PHASE_DEPLACEMENT;
 }
 
 GameState::GameState(const GameState& st)
-    : rules::GameState(st),
-      map_(new Map(*st.map_)),
-      players_(st.players_),
-      units_(st.units_),
-      remote_vision_(st.remote_vision_),
-      pendingMoves_(st.pendingMoves_),
-      pendingAttacks_(st.pendingAttacks_),
-      pendingBastoooon_(st.pendingBastoooon_),
-      game_phase_(st.game_phase_),
-      current_turn_(st.current_turn_)
-{
-}
+    : rules::GameState(st)
+    , map_(new Map(*st.map_))
+    , players_(st.players_)
+    , units_(st.units_)
+    , remote_vision_(st.remote_vision_)
+    , pendingMoves_(st.pendingMoves_)
+    , pendingAttacks_(st.pendingAttacks_)
+    , pendingBastoooon_(st.pendingBastoooon_)
+    , game_phase_(st.game_phase_)
+    , current_turn_(st.current_turn_)
+{}
 
 rules::GameState* GameState::copy() const
 {
@@ -60,23 +59,18 @@ void GameState::init()
 
         // create palantir
         DEBUG("REMOTE VISION");
-        remote_vision_.push_back(remote_vision
-                {
-                    .palantir_activated = false,
-                    .palantir_location = {0, 0},
-                    .elfe_vision_activated = false,
-                    .elfe_vision_location = {0, 0}
-                });
+        remote_vision_.push_back(remote_vision{.palantir_activated = false,
+                                               .palantir_location = {0, 0},
+                                               .elfe_vision_activated = false,
+                                               .elfe_vision_location = {0, 0}});
     }
 
     position starting_pos = map_->getStartingPos();
     Cell* starting_cell = map_->getCell(starting_pos);
     for (auto it = units_.begin(); it != units_.end(); ++it)
     {
-        starting_cell->addUnit(unit_info {
-                .player_id = (*it)->getPlayer(),
-                .classe = (*it)->getClasse()
-                });
+        starting_cell->addUnit(unit_info{.player_id = (*it)->getPlayer(),
+                                         .classe = (*it)->getClasse()});
         (*it)->setPosition(starting_pos);
         (*it)->setSpawn(starting_pos);
     }
@@ -168,11 +162,8 @@ Unit_sptr GameState::getUnit(unit_info perso) const
 
 Unit_sptr GameState::getUnit(perso_info perso) const
 {
-    return getUnit(unit_info
-            {
-                .player_id = perso.equipe,
-                .classe = perso.classe
-            });
+    return getUnit(
+        unit_info{.player_id = perso.equipe, .classe = perso.classe});
 }
 
 /*
@@ -187,7 +178,8 @@ size_t GameState::getPlayerCount() const
 std::vector<int> GameState::getScores() const
 {
     std::vector<int> scores;
-    for (auto it = players_->players.begin(); it != players_->players.end(); ++it)
+    for (auto it = players_->players.begin(); it != players_->players.end();
+         ++it)
     {
         scores.push_back((*it)->score);
     }
@@ -204,7 +196,7 @@ void GameState::incrementTurn()
 {
     current_turn_ += 1;
     for (auto unit : units_)
-      unit->decrementAbilitiesCooldown();
+        unit->decrementAbilitiesCooldown();
 }
 
 void GameState::setPhase(game_phase phase)
@@ -222,7 +214,8 @@ bool GameState::isFinished()
     return current_turn_ == map_->getMaxTurns();
 }
 
-std::vector<std::vector<std::pair<position, const ActionMove*>>>& GameState::getPendingMoves()
+std::vector<std::vector<std::pair<position, const ActionMove*>>>&
+GameState::getPendingMoves()
 {
     return pendingMoves_;
 }
@@ -234,5 +227,5 @@ std::list<const ActionAttack*>& GameState::getPendingAttacks()
 
 std::list<const ActionAttack*>& GameState::getPendingBastoooon()
 {
-  return pendingBastoooon_;
+    return pendingBastoooon_;
 }

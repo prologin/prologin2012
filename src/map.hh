@@ -1,16 +1,16 @@
 #ifndef MAP_HH_
-# define MAP_HH_
+#define MAP_HH_
 
-# include <istream>
-# include <utility>
-# include <vector>
-# include <cstdint>
-# include <memory>
+#include <cstdint>
+#include <istream>
+#include <memory>
+#include <utility>
+#include <vector>
 
-# include <utils/log.hh>
+#include <utils/log.hh>
 
-# include "constant.hh"
-# include "unit.hh"
+#include "constant.hh"
+#include "unit.hh"
 
 class Cell;
 
@@ -80,13 +80,16 @@ public:
     /*
      * @return the positions visible from pos
      */
-    std::vector<position> getVision(position pos, orientation direction, int range);
+    std::vector<position> getVision(position pos, orientation direction,
+                                    int range);
     std::vector<position> getSquareVision(position pos, int range);
     /*
      * @return the positions where units could be seen
      */
-    std::vector<position> getSurroundings(position pos, orientation direction, int range);
-    std::vector<position> getNormalSurroundings(position pos, orientation direction, int range);
+    std::vector<position> getSurroundings(position pos, orientation direction,
+                                          int range);
+    std::vector<position>
+    getNormalSurroundings(position pos, orientation direction, int range);
     std::vector<position> getSquareSurroundings(position pos, int range);
 
     static orientation getOrientation(position p1, position p2);

@@ -11,8 +11,8 @@
 */
 
 #include <cstdlib>
-#include <rules/options.hh>
 #include <rules/client-messenger.hh>
+#include <rules/options.hh>
 #include <rules/server-messenger.hh>
 #include <utils/log.hh>
 
@@ -24,7 +24,7 @@ extern "C" {
 
 void rules_init(const rules::Options& opt)
 {
-    utils::Logger::get().level() = (utils::Logger::DisplayLevel) opt.verbose;
+    utils::Logger::get().level() = (utils::Logger::DisplayLevel)opt.verbose;
 
     rules_ = new Rules(opt);
 }

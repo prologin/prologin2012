@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../unit.hh"
 #include "../cell.hh"
+#include "../unit.hh"
 
 TEST(CellBasic, CellUnitManagement)
 {
@@ -24,4 +24,3 @@ TEST(CellBasic, CellUnitManagement)
     ASSERT_EQ(0, c.removeUnit(ui0)) << "Removing an unit in this cell did not "
                                     << "decrease population";
 }
-

@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include "../constant.hh"
 #include "../game.hh"
 #include "../map.hh"
-#include "../constant.hh"
 #include "../unit.hh"
 
 class GameTest : public ::testing::Test
@@ -30,16 +30,11 @@ protected:
         map_->load(f);
 
         players = rules::Players_sptr(
-            new rules::Players
-            {
-                std::vector<rules::Player_sptr>
-                {
-                    rules::Player_sptr(new rules::Player(0, 0)),
-                    rules::Player_sptr(new rules::Player(1, 0)),
-                    rules::Player_sptr(new rules::Player(2, 0)),
-                }
-            }
-        );
+            new rules::Players{std::vector<rules::Player_sptr>{
+                rules::Player_sptr(new rules::Player(0, 0)),
+                rules::Player_sptr(new rules::Player(1, 0)),
+                rules::Player_sptr(new rules::Player(2, 0)),
+            }});
     }
 
     std::stringstream f;
@@ -64,7 +59,8 @@ TEST_F(GameTest, GameCreate)
     // starting position is set
     for (size_t i = 0; i < gs.getPlayerCount(); ++i)
     {
-        position unit_pos = gs.getUnit(unit_info {(int)i, PERSO_VOLEUR})->getPosition();
+        position unit_pos =
+            gs.getUnit(unit_info{(int)i, PERSO_VOLEUR})->getPosition();
         EXPECT_EQ(starting_pos, unit_pos);
     }
 }

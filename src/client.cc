@@ -12,16 +12,10 @@
 
 extern "C" {
 
-void client_init()
-{
-}
+void client_init() {}
 
-void client_turn()
-{
-}
+void client_turn() {}
 
-void client_result()
-{
-}
+void client_result() {}
 
 } // extern "C"

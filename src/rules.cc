@@ -4,22 +4,20 @@
 
 #include "rules.hh"
 
-#include <utils/log.hh>
-#include <utils/buffer.hh>
 #include <rules/player.hh>
+#include <utils/buffer.hh>
+#include <utils/log.hh>
 
 #include "constant.hh"
 #include "game.hh"
 #include "map.hh"
 
-#include "action-move.hh"
-#include "action-attack.hh"
 #include "action-ack.hh"
+#include "action-attack.hh"
+#include "action-move.hh"
 
 Rules::Rules(const rules::Options& opt)
-    : opt_(opt),
-      champion_(nullptr),
-      sandbox_(opt.time)
+    : opt_(opt), champion_(nullptr), sandbox_(opt.time)
 {
     // Load map from file
     std::ifstream ifs(opt.map_file);
@@ -46,11 +44,16 @@ Rules::Rules(const rules::Options& opt)
     {
         champion_ = new utils::DLL(opt.champion_lib);
 
-        champion_partie_init = champion_->get<f_champion_partie_init>("partie_init");
-        champion_jouer_placement = champion_->get<f_champion_jouer_placement>("jouer_placement");
-        champion_jouer_deplacement = champion_->get<f_champion_jouer_deplacement>("jouer_deplacement");
-        champion_jouer_attaque = champion_->get<f_champion_jouer_attaque>("jouer_attaque");
-        champion_partie_fin = champion_->get<f_champion_partie_fin>("partie_fin");
+        champion_partie_init =
+            champion_->get<f_champion_partie_init>("partie_init");
+        champion_jouer_placement =
+            champion_->get<f_champion_jouer_placement>("jouer_placement");
+        champion_jouer_deplacement =
+            champion_->get<f_champion_jouer_deplacement>("jouer_deplacement");
+        champion_jouer_attaque =
+            champion_->get<f_champion_jouer_attaque>("jouer_attaque");
+        champion_partie_fin =
+            champion_->get<f_champion_partie_fin>("partie_fin");
 
         if (opt.player->type == rules::SPECTATOR)
             champion_partie_init();
@@ -63,40 +66,37 @@ Rules::Rules(const rules::Options& opt)
     timeout_ = opt.time;
 
     // Register Actions
-    api_->actions()->register_action(ACTION_MOVE,
-            []() -> rules::IAction* { return new ActionMove(); });
-    api_->actions()->register_action(ACTION_ATTACK,
-            []() -> rules::IAction* { return new ActionAttack(); });
-    api_->actions()->register_action(ACTION_ACK,
-            []() -> rules::IAction* { return new ActionAck(); });
-    playerActions_.register_action(ACTION_MOVE,
-            []() -> rules::IAction* { return new ActionMove(); });
-    playerActions_.register_action(ACTION_ATTACK,
-            []() -> rules::IAction* { return new ActionAttack(); });
-    playerActions_.register_action(ACTION_ACK,
-            []() -> rules::IAction* { return new ActionAck(); });
+    api_->actions()->register_action(
+        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+    api_->actions()->register_action(
+        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+    api_->actions()->register_action(
+        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
+    playerActions_.register_action(
+        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+    playerActions_.register_action(
+        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+    playerActions_.register_action(
+        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
 }
 
 // a bit ugly, but used to test
 Rules::Rules(rules::Players_sptr players, Api* api)
-    : champion_(nullptr),
-      api_(api),
-      players_(players),
-      sandbox_()
+    : champion_(nullptr), api_(api), players_(players), sandbox_()
 {
     // Register Actions
-    api_->actions()->register_action(ACTION_MOVE,
-            []() -> rules::IAction* { return new ActionMove(); });
-    api_->actions()->register_action(ACTION_ATTACK,
-            []() -> rules::IAction* { return new ActionAttack(); });
-    api_->actions()->register_action(ACTION_ACK,
-            []() -> rules::IAction* { return new ActionAck(); });
-    playerActions_.register_action(ACTION_MOVE,
-            []() -> rules::IAction* { return new ActionMove(); });
-    playerActions_.register_action(ACTION_ATTACK,
-            []() -> rules::IAction* { return new ActionAttack(); });
-    playerActions_.register_action(ACTION_ACK,
-            []() -> rules::IAction* { return new ActionAck(); });
+    api_->actions()->register_action(
+        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+    api_->actions()->register_action(
+        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+    api_->actions()->register_action(
+        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
+    playerActions_.register_action(
+        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+    playerActions_.register_action(
+        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+    playerActions_.register_action(
+        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
 }
 
 Rules::~Rules()
@@ -254,7 +254,6 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
             resolve_end_of_attaque_phase();
             break;
         }
-
     }
 }
 
@@ -361,25 +360,25 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             actions.add(action);
         }
 
-        //DEBUG("resolving %d", phase);
+        // DEBUG("resolving %d", phase);
         switch (phase)
         {
-            case PHASE_PLACEMENT:
-                resolve_moves();
-                resolve_end_of_placement_turn();
-                break;
-            case PHASE_DEPLACEMENT:
-                resolve_moves();
-                resolve_end_of_deplacement_phase();
-                break;
-            case PHASE_ATTAQUE:
-                for (uint32_t i = 0; i < players_->players.size(); ++i)
-                    api_->game_state()->deactivateElfeVision(i);
+        case PHASE_PLACEMENT:
+            resolve_moves();
+            resolve_end_of_placement_turn();
+            break;
+        case PHASE_DEPLACEMENT:
+            resolve_moves();
+            resolve_end_of_deplacement_phase();
+            break;
+        case PHASE_ATTAQUE:
+            for (uint32_t i = 0; i < players_->players.size(); ++i)
+                api_->game_state()->deactivateElfeVision(i);
 
-                resolve_attacks();
-                resolve_points();
-                resolve_end_of_attaque_phase();
-                break;
+            resolve_attacks();
+            resolve_points();
+            resolve_end_of_attaque_phase();
+            break;
         }
 
         // Send actions
@@ -405,18 +404,18 @@ void Rules::resolve_moves()
     {
         for (auto& move : moves)
         {
-            Unit_sptr unit = api_->game_state()->getUnit(move.second->getPersoInfo());
-            api_->game_state()->getMap()->moveUnit(unit->getUnitInfo(),
-                    unit->getPosition(), move.first);
+            Unit_sptr unit =
+                api_->game_state()->getUnit(move.second->getPersoInfo());
+            api_->game_state()->getMap()->moveUnit(
+                unit->getUnitInfo(), unit->getPosition(), move.first);
             unit->setPosition(move.first);
-            unit->setOrientation(Map::getOrientation(move.first,
-                        unit->getPosition()));
+            unit->setOrientation(
+                Map::getOrientation(move.first, unit->getPosition()));
         }
         for (auto unit : api_->game_state()->getUnits())
-            unit->addPenombre(
-                    api_->game_state()->getMap()->getSurroundings(
-                        unit->getPosition(),
-                        unit->getOrientation(), unit->getVision()));
+            unit->addPenombre(api_->game_state()->getMap()->getSurroundings(
+                unit->getPosition(), unit->getOrientation(),
+                unit->getVision()));
     }
     // It's kind of ugly but we're running out of time
     for (auto& move : pendingMoves[0])
@@ -462,7 +461,8 @@ void Rules::resolve_points()
         if (!unit->isDead())
             continue;
 
-        DEBUG("UNIT DEAD: player %d class %d", unit->getPlayer(), unit->getClasse());
+        DEBUG("UNIT DEAD: player %d class %d", unit->getPlayer(),
+              unit->getClasse());
 
         // Unit is dead
         unsigned int teamkill = 0;
@@ -488,8 +488,9 @@ void Rules::resolve_points()
 
             for (int team : attackers_team)
             {
-                DEBUG("team: %d, score %d+1 from kill of team %d unit %d", team, players_->players[team]->score,
-                        unit->getPlayer(), unit->getClasse());
+                DEBUG("team: %d, score %d+1 from kill of team %d unit %d", team,
+                      players_->players[team]->score, unit->getPlayer(),
+                      unit->getClasse());
                 players_->players[team]->score += 1;
             }
             players_->players[unit->getPlayer()]->score -= 1;
@@ -500,11 +501,10 @@ void Rules::resolve_points()
 
         // Move unit to spawn position
         st->getMap()->moveUnit(unit->getUnitInfo(), unit->getPosition(),
-                unit->getSpawn());
+                               unit->getSpawn());
 
         // reset life & cooldowns
         unit->respawn();
-
     }
 }
 

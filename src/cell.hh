@@ -1,11 +1,11 @@
 #ifndef CELL_HH_
-# define CELL_HH_
+#define CELL_HH_
 
-# include <vector>
-# include <cstdint>
+#include <cstdint>
+#include <vector>
 
-# include "constant.hh"
-# include "unit.hh"
+#include "constant.hh"
+#include "unit.hh"
 
 class Cell
 {

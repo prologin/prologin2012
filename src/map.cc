@@ -1,35 +1,34 @@
-#include <istream>
-#include <vector>
-#include <string>
 #include <cstdint>
+#include <istream>
 #include <map>
+#include <string>
+#include <vector>
 
 #include <utils/log.hh>
 
-#include "map.hh"
 #include "cell.hh"
-#include "unit.hh"
 #include "constant.hh"
+#include "map.hh"
+#include "unit.hh"
 
 Map::Map()
-    : map_(),
-      height_(0),
-      width_(0),
-      start_position_({0, 0}),
-      placement_turns_(0),
-      max_turns_()
-{
-}
+    : map_()
+    , height_(0)
+    , width_(0)
+    , start_position_({0, 0})
+    , placement_turns_(0)
+    , max_turns_()
+{}
 
 Map::Map(const Map& copy_from)
-    : map_(),
-      paths_(copy_from.paths_),
-      distance_(copy_from.distance_),
-      height_(copy_from.height_),
-      width_(copy_from.width_),
-      start_position_(copy_from.start_position_),
-      placement_turns_(copy_from.placement_turns_),
-      max_turns_(copy_from.max_turns_)
+    : map_()
+    , paths_(copy_from.paths_)
+    , distance_(copy_from.distance_)
+    , height_(copy_from.height_)
+    , width_(copy_from.width_)
+    , start_position_(copy_from.start_position_)
+    , placement_turns_(copy_from.placement_turns_)
+    , max_turns_(copy_from.max_turns_)
 {
     map_.resize(height_);
 
@@ -76,7 +75,7 @@ int Map::load(std::istream& s)
 
     s >> start_x >> start_y;
     INFO("map: start: x=%d y=%d", start_x, start_y);
-    start_position_ = position {start_x, start_y};
+    start_position_ = position{start_x, start_y};
 
     s >> placement_turns_;
     INFO("map: placement_turns=%d", placement_turns_);
@@ -91,8 +90,9 @@ int Map::load(std::istream& s)
         s >> line;
 
         if (line.length() != (size_t)width_)
-            FATAL("map: line %d is too short or too long (is %d long, should be %d)",
-                    y + 4, line.length(), width_);
+            FATAL("map: line %d is too short or too long (is %d long, should "
+                  "be %d)",
+                  y + 4, line.length(), width_);
 
         std::vector<Cell*>& cell_line = map_[y];
         cell_line.resize(width_);
@@ -100,12 +100,8 @@ int Map::load(std::istream& s)
         for (int x = 0; x < width_; ++x)
         {
             static std::map<char, zone_type> type_chars = {
-                { '#', ZONE_MUR },
-                { '_', ZONE_ROUTE },
-                { '.', ZONE_HERBE },
-                { '~', ZONE_MARAIS },
-                { 'F', ZONE_FORET },
-                { 'T', ZONE_TOUR },
+                {'#', ZONE_MUR},    {'_', ZONE_ROUTE}, {'.', ZONE_HERBE},
+                {'~', ZONE_MARAIS}, {'F', ZONE_FORET}, {'T', ZONE_TOUR},
             };
 
             if (type_chars.find(line[x]) == type_chars.end())
@@ -185,17 +181,19 @@ void Map::initializeDistance(position from, position to)
 void Map::calculateShortestPaths()
 {
     int size = height_ * width_;
-    distance_.reset(new std::vector<std::vector<int>>(size, std::vector<int>(size, 255)));
-    paths_.reset(new std::vector<std::vector<int>>(size, std::vector<int>(size, -1)));
+    distance_.reset(
+        new std::vector<std::vector<int>>(size, std::vector<int>(size, 255)));
+    paths_.reset(
+        new std::vector<std::vector<int>>(size, std::vector<int>(size, -1)));
 
     for (int i = 0; i < size; ++i)
     {
-        std::vector<position> xy = {{-1,0}, {1,0}, {0,0}, {0,-1}, {0,1}};
-        position pos { i / height_, i % height_};
+        std::vector<position> xy = {{-1, 0}, {1, 0}, {0, 0}, {0, -1}, {0, 1}};
+        position pos{i / height_, i % height_};
 
         for (position dxdy : xy)
         {
-            position p { pos.x + dxdy.x, pos.y + dxdy.y};
+            position p{pos.x + dxdy.x, pos.y + dxdy.y};
 
             if (!isPositionValid(p))
                 continue;
@@ -233,7 +231,7 @@ bool Map::calculatePath(std::vector<position>& path, int fromId, int toId)
         path.clear();
         return false;
     }
-    path.push_back(position {middleId / height_, middleId % height_});
+    path.push_back(position{middleId / height_, middleId % height_});
     return calculatePath(path, middleId, toId);
 }
 
@@ -272,15 +270,18 @@ static inline bool near(int x, int y, position p)
 // x and y inverts their role depending on the orientation.
 // When isBlocked[j] is true, something prevents us to look in this column.
 // When near is true, we are near our position and can see through the forest.
-std::vector<position> Map::getVision(position pos, orientation direction, int range)
+std::vector<position> Map::getVision(position pos, orientation direction,
+                                     int range)
 {
     if (getCell(pos)->getType() == ZONE_TOUR)
         return getSquareVision(pos, range);
 
     std::vector<position> visionCone;
     std::vector<bool> isBlocked(2 * range + 3, false);
-    int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
-    int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
+    int North =
+        (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
+    int East =
+        (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
 
     for (int i = 0; i <= range; ++i)
         for (int j = -(i + 1); j <= (i + 1); ++j)
@@ -288,12 +289,12 @@ std::vector<position> Map::getVision(position pos, orientation direction, int ra
             int x = pos.x + i * East + j * North;
             int y = pos.y + i * North + j * East;
 
-            if (!isPositionValid(position({x,y})) || isBlocked[j + range + 1])
+            if (!isPositionValid(position({x, y})) || isBlocked[j + range + 1])
                 continue;
 
             zone_type zoneType = map_[y][x]->getType();
             if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||
-                    ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
+                ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
                 isBlocked[j + range + 1] = true;
             else if (zoneType != ZONE_MUR)
                 visionCone.push_back(position({x, y}));
@@ -311,7 +312,8 @@ std::vector<position> Map::getSquareVision(position pos, int range)
             int x = pos.x + i;
             int y = pos.y + j;
 
-            if (!isPositionValid(position({x, y}))) continue;
+            if (!isPositionValid(position({x, y})))
+                continue;
             zone_type zoneType = map_[y][x]->getType();
 
             if (zoneType != ZONE_MUR && zoneType != ZONE_FORET)
@@ -325,7 +327,8 @@ std::vector<position> Map::getSquareVision(position pos, int range)
  * @return: a list of units visible from position ``pos``, orientation
  * ``direction`` and range ``range``
  */
-std::vector<position> Map::getSurroundings(position pos, orientation direction, int range)
+std::vector<position> Map::getSurroundings(position pos, orientation direction,
+                                           int range)
 {
     if (getCell(pos)->getType() == ZONE_TOUR)
         return getSquareSurroundings(pos, range);
@@ -340,12 +343,15 @@ std::vector<position> Map::getSurroundings(position pos, orientation direction, 
     return unitsPositions;
 }
 
-std::vector<position> Map::getNormalSurroundings(position pos, orientation direction, int range)
+std::vector<position>
+Map::getNormalSurroundings(position pos, orientation direction, int range)
 {
     std::vector<position> visionCone;
     std::vector<bool> isBlocked(2 * range + 3, false);
-    int North = (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
-    int East = (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
+    int North =
+        (direction == ORIENTATION_SUD) - (direction == ORIENTATION_NORD);
+    int East =
+        (direction == ORIENTATION_EST) - (direction == ORIENTATION_OUEST);
 
     for (int i = 0; i <= range; ++i)
         for (int j = -(i + 1); j <= (i + 1); ++j)
@@ -353,12 +359,12 @@ std::vector<position> Map::getNormalSurroundings(position pos, orientation direc
             int x = pos.x + i * East + j * North;
             int y = pos.y + i * North + j * East;
 
-            if (!isPositionValid(position({x,y})) || isBlocked[j + range + 1])
+            if (!isPositionValid(position({x, y})) || isBlocked[j + range + 1])
                 continue;
 
             zone_type zoneType = map_[y][x]->getType();
             if ((!near(x, y, pos) && zoneType == ZONE_FORET) ||
-                    ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
+                ((!near(x, y, pos) || i == 1) && zoneType == ZONE_MUR))
                 isBlocked[j + range + 1] = true;
             else if (zoneType != ZONE_MUR && !map_[y][x]->getUnits().empty())
                 visionCone.push_back(position({x, y}));
@@ -378,11 +384,12 @@ std::vector<position> Map::getSquareSurroundings(position pos, int range)
             int x = pos.x + i;
             int y = pos.y + j;
 
-            if (!isPositionValid(position({x, y}))) continue;
+            if (!isPositionValid(position({x, y})))
+                continue;
             zone_type zoneType = map_[y][x]->getType();
 
-            if (zoneType != ZONE_MUR && zoneType != ZONE_FORET
-                    && !map_[y][x]->getUnits().empty())
+            if (zoneType != ZONE_MUR && zoneType != ZONE_FORET &&
+                !map_[y][x]->getUnits().empty())
                 unitsPositions.push_back(position({x, y}));
         }
 

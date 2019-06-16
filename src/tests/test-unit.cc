@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "../unit.hh"
-#include "../map.hh"
 #include "../constant.hh"
+#include "../map.hh"
+#include "../unit.hh"
 
 TEST(Unit, UnitCreate)
 {

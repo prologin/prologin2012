@@ -1,22 +1,24 @@
 #ifndef GAME_HH_
-# define GAME_HH_
+#define GAME_HH_
 
-# include <vector>
-# include <list>
+#include <list>
+#include <vector>
 
-# include <rules/game-state.hh>
-# include <rules/player.hh>
+#include <rules/game-state.hh>
+#include <rules/player.hh>
 
-# include "unit.hh"
-# include "ability.hh"
+#include "ability.hh"
+#include "unit.hh"
 
-enum game_phase {
+enum game_phase
+{
     PHASE_PLACEMENT,
     PHASE_DEPLACEMENT,
     PHASE_ATTAQUE,
 };
 
-enum action_id {
+enum action_id
+{
     ACTION_MOVE = 0,
     ACTION_ATTACK = 1,
     ACTION_ACK = 2
@@ -77,7 +79,8 @@ public:
      */
     bool isFinished();
 
-    std::vector<std::vector<std::pair<position, const ActionMove*>>>& getPendingMoves();
+    std::vector<std::vector<std::pair<position, const ActionMove*>>>&
+    getPendingMoves();
     std::list<const ActionAttack*>& getPendingBastoooon();
     std::list<const ActionAttack*>& getPendingAttacks();
 
@@ -88,7 +91,8 @@ private:
     Units units_;
     std::vector<remote_vision> remote_vision_;
 
-    std::vector<std::vector<std::pair<position, const ActionMove*>>> pendingMoves_;
+    std::vector<std::vector<std::pair<position, const ActionMove*>>>
+        pendingMoves_;
     std::list<const ActionAttack*> pendingAttacks_;
     std::list<const ActionAttack*> pendingBastoooon_;
 

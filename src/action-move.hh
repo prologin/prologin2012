@@ -1,29 +1,26 @@
 #ifndef ACTION_MOVE_HH_
-# define ACTION_MOVE_HH_
+#define ACTION_MOVE_HH_
 
-# include <rules/action.hh>
+#include <rules/action.hh>
 
-# include "constant.hh"
-# include "game.hh"
-# include "unit.hh"
+#include "constant.hh"
+#include "game.hh"
+#include "unit.hh"
 
 class ActionMove : public rules::Action<GameState>
 {
 public:
     ActionMove(perso_info unit, std::vector<position>& path,
-            orientation& direction, int player);
+               orientation& direction, int player);
 
     ActionMove();
 
     virtual int check(const GameState* st) const;
     virtual void handle_buffer(utils::Buffer& buf);
 
-    uint32_t player_id() const
-        { return player_; }
-    uint32_t id() const
-        { return id_; }
-    perso_info getPersoInfo() const
-        { return unit_; }
+    uint32_t player_id() const { return player_; }
+    uint32_t id() const { return id_; }
+    perso_info getPersoInfo() const { return unit_; }
 
     void applyDirection(GameState* st) const;
 

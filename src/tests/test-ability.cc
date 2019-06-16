@@ -2,8 +2,8 @@
 
 #include "../ability.hh"
 #include "../constant.hh"
-#include "../map.hh"
 #include "../game.hh"
+#include "../map.hh"
 
 class AbilityTest : public ::testing::Test
 {
@@ -30,25 +30,17 @@ protected:
         map_->load(f);
 
         rules::Players_sptr players(
-            new rules::Players
-            {
-                std::vector<rules::Player_sptr>
-                {
-                    rules::Player_sptr(new rules::Player(0, 0)),
-                    rules::Player_sptr(new rules::Player(1, 0)),
-                }
-            }
-        );
+            new rules::Players{std::vector<rules::Player_sptr>{
+                rules::Player_sptr(new rules::Player(0, 0)),
+                rules::Player_sptr(new rules::Player(1, 0)),
+            }});
 
         gamestate_ = new GameState(map_, players);
 
         gamestate_->init();
     }
 
-    virtual void TearDown()
-    {
-         delete gamestate_;
-    }
+    virtual void TearDown() { delete gamestate_; }
 
     std::stringstream f;
 
@@ -68,10 +60,9 @@ TEST_F(AbilityTest, AbilityCreate)
 TEST_F(AbilityTest, AbilityCooldown)
 {
     Ability a = Ability(1);
-    a.apply(gamestate_, unit_info {0, PERSO_VOLEUR}, position {0, 0});
+    a.apply(gamestate_, unit_info{0, PERSO_VOLEUR}, position{0, 0});
 
     EXPECT_EQ(1, a.getCooldown());
-
 }
 
 /*******************************************************************************
@@ -80,32 +71,32 @@ TEST_F(AbilityTest, AbilityCooldown)
 
 TEST_F(AbilityTest, VoleurAttaqueheck)
 {
-    unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
+    unit_info attacker_unit = unit_info{0, PERSO_VOLEUR};
     Unit_sptr attacker = gamestate_->getUnit(attacker_unit);
 
     VoleurAttaque attack = VoleurAttaque();
-    position target = position {5, 4};
+    position target = position{5, 4};
     // check
     EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, target));
-    EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, position {5, 3}));
+    EXPECT_EQ(OK, attack.check(*gamestate_, attacker_unit, position{5, 3}));
 
     // target is behind
     EXPECT_EQ(POSITION_IMPOSSIBLE,
-        attack.check(*gamestate_, attacker_unit, position {5, 5}));
+              attack.check(*gamestate_, attacker_unit, position{5, 5}));
     // target is not in range
     EXPECT_EQ(POSITION_IMPOSSIBLE,
-            attack.check(*gamestate_, attacker_unit, position {1, 2}));
+              attack.check(*gamestate_, attacker_unit, position{1, 2}));
     EXPECT_EQ(POSITION_IMPOSSIBLE,
-            attack.check(*gamestate_, attacker_unit, position {0, 3}));
+              attack.check(*gamestate_, attacker_unit, position{0, 3}));
 }
 
 TEST_F(AbilityTest, VoleurAttaqueApply)
 {
-    unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
+    unit_info attacker_unit = unit_info{0, PERSO_VOLEUR};
     Unit_sptr attacker = gamestate_->getUnit(attacker_unit);
 
     VoleurAttaque attack = VoleurAttaque();
-    position target = position {5, 4};
+    position target = position{5, 4};
 
     ASSERT_EQ(OK, attack.check(*gamestate_, attacker_unit, target));
     attack.apply(gamestate_, attacker_unit, target);
@@ -120,7 +111,7 @@ TEST_F(AbilityTest, VoleurAttaqueApply)
             EXPECT_EQ(VOLEUR_VIE, attacker->getCurrentLife());
         else
             EXPECT_EQ(VOLEUR_VIE - VOLEUR_ATTAQUE,
-                    gamestate_->getUnit(*it)->getCurrentLife());
+                      gamestate_->getUnit(*it)->getCurrentLife());
     }
 }
 
@@ -128,13 +119,11 @@ TEST_F(AbilityTest, VoleurAttaqueApply)
  * Test Palantir
  */
 
-TEST_F(AbilityTest, PalantirCheck)
-{
-}
+TEST_F(AbilityTest, PalantirCheck) {}
 
 TEST_F(AbilityTest, PalantirApply)
 {
-    unit_info attacker_unit = unit_info {0, PERSO_VOLEUR};
+    unit_info attacker_unit = unit_info{0, PERSO_VOLEUR};
     position target = {5, 4};
 
     Palantir attack = Palantir();
