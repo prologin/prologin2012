@@ -24,11 +24,11 @@ ActionMove::ActionMove(perso_info unit, std::vector<position>& path,
     , id_(ACTION_MOVE)
 {}
 
-int ActionMove::check(const GameState* st) const
+int ActionMove::check(const GameState& st) const
 {
     DEBUG("ActionMove::check");
 
-    Unit_sptr unit = st->getUnit(unit_);
+    Unit_sptr unit = st.getUnit(unit_);
 
     int move_points = unit->getMovementPoints();
 
@@ -41,7 +41,7 @@ int ActionMove::check(const GameState* st) const
             1)
             return CHEMIN_IMPOSSIBLE;
 
-        move_points -= st->getMap()->getCell(current_unit_position)->getCost();
+        move_points -= st.getMap()->getCell(current_unit_position)->getCost();
         current_unit_position = pos;
 
         if (move_points < 0)

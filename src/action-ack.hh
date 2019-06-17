@@ -15,8 +15,8 @@ public:
 
     ActionAck();
 
-    virtual int check(const GameState*) const { return 0; }
-    virtual void handle_buffer(utils::Buffer&);
+    int check(const GameState&) const { return 0; }
+    void handle_buffer(utils::Buffer&);
 
     uint32_t player_id() const { return player_; }
     uint32_t id() const { return id_; }

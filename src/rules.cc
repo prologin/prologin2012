@@ -25,8 +25,7 @@ Rules::Rules(const rules::Options& opt)
     Map* map = new Map();
     map->load(ifs);
 
-    GameState* game_state = new GameState(map, opt.players);
-
+    auto game_state = std::make_unique<GameState>(map, opt.players);
     game_state->init();
 
     int equipe = 0;
@@ -37,12 +36,12 @@ Rules::Rules(const rules::Options& opt)
                 break;
     }
 
-    api_ = new Api(game_state, opt.player, equipe);
+    api_ = std::make_unique<Api>(std::move(game_state), opt.player, equipe);
 
     // Get the champion library if we are a client
     if (!opt.champion_lib.empty())
     {
-        champion_ = new utils::DLL(opt.champion_lib);
+        champion_ = std::make_unique<utils::DLL>(opt.champion_lib);
 
         champion_partie_init =
             champion_->get<f_champion_partie_init>("partie_init");
@@ -81,8 +80,8 @@ Rules::Rules(const rules::Options& opt)
 }
 
 // a bit ugly, but used to test
-Rules::Rules(rules::Players_sptr players, Api* api)
-    : champion_(nullptr), api_(api), players_(players), sandbox_()
+Rules::Rules(rules::Players_sptr players, std::unique_ptr<Api> api)
+    : champion_(nullptr), api_(std::move(api)), players_(players), sandbox_()
 {
     // Register Actions
     api_->actions()->register_action(
@@ -107,11 +106,7 @@ Rules::~Rules()
             champion_partie_fin();
         else
             sandbox_.execute(champion_partie_fin);
-
-        delete champion_;
     }
-
-    delete api_;
 }
 
 void Rules::player_loop(rules::ClientMessenger_sptr msgr)
@@ -122,9 +117,9 @@ void Rules::player_loop(rules::ClientMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        INFO("TURN %d", api_->game_state()->getCurrentTurn());
+        INFO("TURN %d", api_->game_state().getCurrentTurn());
 
-        phase = api_->game_state()->getPhase();
+        phase = api_->game_state().getPhase();
 
         api_->actions()->clear();
 
@@ -158,7 +153,7 @@ void Rules::player_loop(rules::ClientMessenger_sptr msgr)
         for (auto action : api_->actions()->actions())
         {
             DEBUG("Applying action");
-            api_->game_state_set(action->apply(api_->game_state()));
+            api_->game_state_apply(action);
         }
 
         DEBUG("resolving %d", phase);
@@ -174,7 +169,7 @@ void Rules::player_loop(rules::ClientMessenger_sptr msgr)
             break;
         case PHASE_ATTAQUE:
             for (uint32_t i = 0; i < players_->players.size(); ++i)
-                api_->game_state()->deactivateElfeVision(i);
+                api_->game_state().deactivateElfeVision(i);
 
             resolve_attacks();
             resolve_points();
@@ -196,9 +191,9 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        INFO("TURN %d", api_->game_state()->getCurrentTurn());
+        INFO("TURN %d", api_->game_state().getCurrentTurn());
 
-        phase = api_->game_state()->getPhase();
+        phase = api_->game_state().getPhase();
 
         api_->actions()->clear();
 
@@ -232,7 +227,7 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
         // Apply them onto the gamestate
         for (auto& action : api_->actions()->actions())
         {
-            api_->game_state_set(action->apply(api_->game_state()));
+            api_->game_state_apply(action);
         }
 
         switch (phase)
@@ -247,7 +242,7 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
             break;
         case PHASE_ATTAQUE:
             for (uint32_t i = 0; i < players_->players.size(); ++i)
-                api_->game_state()->deactivateElfeVision(i);
+                api_->game_state().deactivateElfeVision(i);
 
             resolve_attacks();
             resolve_points();
@@ -271,9 +266,9 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 
     while (!is_finished())
     {
-        INFO("TURN %d", api_->game_state()->getCurrentTurn());
+        INFO("TURN %d", api_->game_state().getCurrentTurn());
 
-        phase = api_->game_state()->getPhase();
+        phase = api_->game_state().getPhase();
 
         api_->actions()->clear();
 
@@ -356,7 +351,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         // Apply them onto the gamestate
         for (auto action : api_->actions()->actions())
         {
-            api_->game_state_set(action->apply(api_->game_state()));
+            api_->game_state_save();
+            api_->game_state_apply(action);
             actions.add(action);
         }
 
@@ -373,7 +369,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             break;
         case PHASE_ATTAQUE:
             for (uint32_t i = 0; i < players_->players.size(); ++i)
-                api_->game_state()->deactivateElfeVision(i);
+                api_->game_state().deactivateElfeVision(i);
 
             resolve_attacks();
             resolve_points();
@@ -392,9 +388,9 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
 void Rules::resolve_moves()
 {
     DEBUG("resolve_moves");
-    auto& pendingMoves = api_->game_state()->getPendingMoves();
+    auto& pendingMoves = api_->game_state().getPendingMoves();
 
-    for (auto unit : api_->game_state()->getUnits())
+    for (auto unit : api_->game_state().getUnits())
         unit->resetPenombre();
 
     if (pendingMoves.size() == 0)
@@ -405,21 +401,21 @@ void Rules::resolve_moves()
         for (auto& move : moves)
         {
             Unit_sptr unit =
-                api_->game_state()->getUnit(move.second->getPersoInfo());
-            api_->game_state()->getMap()->moveUnit(
+                api_->game_state().getUnit(move.second->getPersoInfo());
+            api_->game_state().getMap()->moveUnit(
                 unit->getUnitInfo(), unit->getPosition(), move.first);
             unit->setPosition(move.first);
             unit->setOrientation(
                 Map::getOrientation(move.first, unit->getPosition()));
         }
-        for (auto unit : api_->game_state()->getUnits())
-            unit->addPenombre(api_->game_state()->getMap()->getSurroundings(
+        for (auto unit : api_->game_state().getUnits())
+            unit->addPenombre(api_->game_state().getMap()->getSurroundings(
                 unit->getPosition(), unit->getOrientation(),
                 unit->getVision()));
     }
     // It's kind of ugly but we're running out of time
     for (auto& move : pendingMoves[0])
-        move.second->applyDirection(api_->game_state());
+        move.second->applyDirection(&api_->game_state());
     for (auto& moves : pendingMoves)
         moves.clear();
     pendingMoves.clear();
@@ -428,8 +424,8 @@ void Rules::resolve_moves()
 void Rules::resolve_attacks()
 {
     DEBUG("resolve_attacks");
-    auto& pendingAttacks = api_->game_state()->getPendingAttacks();
-    auto& pendingBastoooon = api_->game_state()->getPendingBastoooon();
+    auto& pendingAttacks = api_->game_state().getPendingAttacks();
+    auto& pendingBastoooon = api_->game_state().getPendingBastoooon();
     std::map<int, int> markedUnits;
 
     DEBUG("attacks: %d", pendingAttacks.size());
@@ -438,14 +434,14 @@ void Rules::resolve_attacks()
         if (attack->getType() != ATTAQUE_FUS_RO_DAH)
             break;
         DEBUG("FusRoDah");
-        attack->markFusRoDah(api_->game_state(), markedUnits);
+        attack->markFusRoDah(&api_->game_state(), markedUnits);
     }
     for (auto& attack : pendingAttacks)
-        attack->applyAttack(api_->game_state());
+        attack->applyAttack(&api_->game_state());
     for (auto& attack : pendingBastoooon)
-        api_->game_state()->getUnit(attack->getPersoInfo())->saveLife();
+        api_->game_state().getUnit(attack->getPersoInfo())->saveLife();
     for (auto& attack : pendingBastoooon)
-        attack->applyBastoooon(api_->game_state());
+        attack->applyBastoooon(&api_->game_state());
 
     pendingAttacks.clear();
     pendingBastoooon.clear();
@@ -454,9 +450,9 @@ void Rules::resolve_attacks()
 void Rules::resolve_points()
 {
     DEBUG("resolve_points");
-    GameState* st = api_->game_state();
+    GameState& st = api_->game_state();
 
-    for (auto unit : st->getUnits())
+    for (auto unit : st.getUnits())
     {
         if (!unit->isDead())
             continue;
@@ -500,8 +496,8 @@ void Rules::resolve_points()
         // no points given
 
         // Move unit to spawn position
-        st->getMap()->moveUnit(unit->getUnitInfo(), unit->getPosition(),
-                               unit->getSpawn());
+        st.getMap()->moveUnit(unit->getUnitInfo(), unit->getPosition(),
+                              unit->getSpawn());
 
         // reset life & cooldowns
         unit->respawn();
@@ -510,48 +506,48 @@ void Rules::resolve_points()
 
 void Rules::resolve_end_of_placement_turn()
 {
-    GameState* st = api_->game_state();
-    Map* map = st->getMap();
+    GameState& st = api_->game_state();
+    Map* map = st.getMap();
 
-    INFO("end of placement turn %d", st->getCurrentTurn());
+    INFO("end of placement turn %d", st.getCurrentTurn());
 
-    st->incrementTurn();
+    st.incrementTurn();
 
-    if (st->getCurrentTurn() == map->getPlacementTurns())
+    if (st.getCurrentTurn() == map->getPlacementTurns())
     {
         INFO("end of placement phase");
-        st->setPhase(PHASE_DEPLACEMENT);
+        st.setPhase(PHASE_DEPLACEMENT);
 
         // End of placement phase
         // Save spawns
-        for (auto unit : st->getUnits())
+        for (auto unit : st.getUnits())
             unit->setSpawn(unit->getPosition());
     }
 }
 
 void Rules::resolve_end_of_deplacement_phase()
 {
-    GameState* st = api_->game_state();
+    GameState& st = api_->game_state();
 
-    INFO("end of move phase %d", st->getCurrentTurn());
+    INFO("end of move phase %d", st.getCurrentTurn());
 
-    st->setPhase(PHASE_ATTAQUE);
+    st.setPhase(PHASE_ATTAQUE);
 }
 
 void Rules::resolve_end_of_attaque_phase()
 {
-    GameState* st = api_->game_state();
+    GameState& st = api_->game_state();
 
-    INFO("end of attack phase %d", st->getCurrentTurn());
+    INFO("end of attack phase %d", st.getCurrentTurn());
 
-    st->incrementTurn();
-    st->setPhase(PHASE_DEPLACEMENT);
+    st.incrementTurn();
+    st.setPhase(PHASE_DEPLACEMENT);
 
-    for (Unit_sptr unit : st->getUnits())
+    for (Unit_sptr unit : st.getUnits())
         unit->resetAttackers();
 }
 
 bool Rules::is_finished()
 {
-    return api_->game_state()->isFinished();
+    return api_->game_state().isFinished();
 }
