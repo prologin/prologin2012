@@ -34,7 +34,7 @@ GameState::GameState(const GameState& st)
     , current_turn_(st.current_turn_)
 {}
 
-rules::GameState* GameState::copy() const
+GameState* GameState::copy() const
 {
     // NOT USED IN PROLOGIN2012
     // TEST

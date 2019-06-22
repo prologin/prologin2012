@@ -16,21 +16,21 @@
 #include <rules/game-state.hh>
 #include <rules/player.hh>
 
-#include "api.hh"
-#include "constant.hh"
-
-#include "cell.hh"
-#include "game.hh"
-#include "map.hh"
-
 #include "action-attack.hh"
 #include "action-move.hh"
+#include "api.hh"
+#include "cell.hh"
+#include "constant.hh"
+#include "game.hh"
+#include "map.hh"
 
 // global used in interface.cc
 Api* api;
 
-Api::Api(GameState* game_state, rules::Player_sptr player, int equipe)
-    : game_state_(game_state), player_(player), equipe_(equipe)
+Api::Api(std::unique_ptr<GameState> game_state, rules::Player_sptr player,
+         int equipe)
+    : rules::Api<GameState, erreur>(std::move(game_state), player)
+    , equipe_(equipe)
 {
     api = this;
 }
@@ -171,9 +171,8 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin,
     rules::IAction_sptr move(
         new ActionMove(perso, chemin, direction, player_->id));
 
-    erreur err;
-
-    if ((err = static_cast<erreur>(move->check(game_state_))) != OK)
+    erreur err = api->game_state_check(move);
+    if (err != OK)
         return err;
 
     actions_.add(move);
@@ -276,9 +275,8 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     rules::IAction_sptr action(
         new ActionAttack(perso, attaque, pos, player_->id));
 
-    erreur err;
-
-    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
+    erreur err = api->game_state_check(action);
+    if (err != OK)
         return err;
 
     actions_.add(action);

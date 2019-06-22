@@ -20,7 +20,7 @@ class Rules
 {
 public:
     explicit Rules(const rules::Options& opt);
-    Rules(rules::Players_sptr players, Api* api);
+    Rules(rules::Players_sptr players, std::unique_ptr<Api> api);
 
     virtual ~Rules();
 
@@ -35,6 +35,10 @@ public:
     void resolve_end_of_deplacement_phase();
     void resolve_end_of_attaque_phase();
 
+    // For testing
+    Api& api() { return *api_; }
+    GameState& game_state() { return api_->game_state(); }
+
 protected:
     bool is_finished();
 
@@ -47,8 +51,8 @@ protected:
 
 private:
     rules::Options opt_;
-    utils::DLL* champion_;
-    Api* api_;
+    std::unique_ptr<utils::DLL> champion_;
+    std::unique_ptr<Api> api_;
     rules::Players_sptr players_;
     rules::Players_sptr spectators_;
 

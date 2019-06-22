@@ -16,6 +16,7 @@
 #include <vector>
 
 #include <rules/actions.hh>
+#include <rules/api.hh>
 #include <rules/game-state.hh>
 #include <rules/player.hh>
 
@@ -28,29 +29,14 @@ class Game;
 /*!
 ** Method of this call are called by the candidat, throught 'interface.cc'
 */
-class Api
+class Api final : public ::rules::Api<GameState, erreur>
 {
 public:
-    Api(GameState* game_state, rules::Player_sptr player, int equipe);
-    virtual ~Api() {}
-
-    const rules::Player_sptr player() const { return player_; }
-    void player_set(rules::Player_sptr player) { player_ = player; }
-
-    rules::Actions* actions() { return &actions_; }
-
-    const GameState* game_state() const { return game_state_; }
-    GameState* game_state() { return game_state_; }
-    void game_state_set(rules::GameState* gs)
-    {
-        game_state_ = dynamic_cast<GameState*>(gs);
-    }
+    Api(std::unique_ptr<GameState> game_state, rules::Player_sptr player,
+        int equipe);
 
 private:
-    GameState* game_state_;
-    rules::Player_sptr player_;
     int equipe_;
-    rules::Actions actions_;
 
 public:
     ///

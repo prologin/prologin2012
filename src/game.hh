@@ -42,10 +42,7 @@ class GameState : public rules::GameState
 {
 public:
     GameState(Map* map, rules::Players_sptr players);
-
-    GameState(const GameState& st);
-
-    virtual rules::GameState* copy() const;
+    GameState* copy() const;
 
     ~GameState();
 
@@ -85,6 +82,8 @@ public:
     std::list<const ActionAttack*>& getPendingAttacks();
 
 private:
+    GameState(const GameState& st);
+
     // The map
     Map* map_;
     rules::Players_sptr players_;
