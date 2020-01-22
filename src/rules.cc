@@ -66,17 +66,17 @@ Rules::Rules(const rules::Options& opt)
 
     // Register Actions
     api_->actions()->register_action(
-        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+        ACTION_MOVE, []() { return std::make_unique<ActionMove>(); });
     api_->actions()->register_action(
-        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+        ACTION_ATTACK, []() { return std::make_unique<ActionAttack>(); });
     api_->actions()->register_action(
-        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
+        ACTION_ACK, []() { return std::make_unique<ActionAck>(); });
     playerActions_.register_action(
-        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+        ACTION_MOVE, []() { return std::make_unique<ActionMove>(); });
     playerActions_.register_action(
-        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+        ACTION_ATTACK, []() { return std::make_unique<ActionAttack>(); });
     playerActions_.register_action(
-        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
+        ACTION_ACK, []() { return std::make_unique<ActionAck>(); });
 }
 
 // a bit ugly, but used to test
@@ -85,17 +85,17 @@ Rules::Rules(rules::Players_sptr players, std::unique_ptr<Api> api)
 {
     // Register Actions
     api_->actions()->register_action(
-        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+        ACTION_MOVE, []() { return std::make_unique<ActionMove>(); });
     api_->actions()->register_action(
-        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+        ACTION_ATTACK, []() { return std::make_unique<ActionAttack>(); });
     api_->actions()->register_action(
-        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
+        ACTION_ACK, []() { return std::make_unique<ActionAck>(); });
     playerActions_.register_action(
-        ACTION_MOVE, []() -> rules::IAction* { return new ActionMove(); });
+        ACTION_MOVE, []() { return std::make_unique<ActionMove>(); });
     playerActions_.register_action(
-        ACTION_ATTACK, []() -> rules::IAction* { return new ActionAttack(); });
+        ACTION_ATTACK, []() { return std::make_unique<ActionAttack>(); });
     playerActions_.register_action(
-        ACTION_ACK, []() -> rules::IAction* { return new ActionAck(); });
+        ACTION_ACK, []() { return std::make_unique<ActionAck>(); });
 }
 
 Rules::~Rules()
@@ -145,15 +145,15 @@ void Rules::player_loop(rules::ClientMessenger_sptr msgr)
         api_->actions()->clear();
 
         // Receive actions
-        DEBUG("pull %d actions", api_->actions()->actions().size());
+        DEBUG("pull %d actions", api_->actions()->all().size());
         msgr->pull_actions(api_->actions());
-        DEBUG("pulled %d actions", api_->actions()->actions().size());
+        DEBUG("pulled %d actions", api_->actions()->all().size());
 
         // Apply them onto the gamestate
-        for (auto action : api_->actions()->actions())
+        for (const auto& action : api_->actions()->all())
         {
             DEBUG("Applying action");
-            api_->game_state_apply(action);
+            api_->game_state_apply(*action);
         }
 
         DEBUG("resolving %d", phase);
@@ -212,8 +212,7 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
         }
 
         api_->actions()->clear();
-        rules::IAction_sptr ack(new ActionAck(api_->player()->id));
-        api_->actions()->add(ack);
+        api_->actions()->add(std::make_unique<ActionAck>(api_->player()->id));
 
         // Send actions
         msgr->send_actions(*api_->actions());
@@ -225,9 +224,9 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
         msgr->pull_actions(api_->actions());
 
         // Apply them onto the gamestate
-        for (auto& action : api_->actions()->actions())
+        for (const auto& action : api_->actions()->all())
         {
-            api_->game_state_apply(action);
+            api_->game_state_apply(*action);
         }
 
         switch (phase)
@@ -289,7 +288,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             msgr->recv_actions(&playerActions_);
             msgr->ack();
 
-            if (playerActions_.actions().empty())
+            if (playerActions_.all().empty())
             {
                 DEBUG("actions() empty");
                 uint32_t player_id = msgr->last_client_id();
@@ -306,7 +305,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             }
 
             // client sent no action, spectator sent ActionAck
-            if (playerActions_.actions().back()->id() == ACTION_ACK)
+            if (playerActions_.all().back()->id() == ACTION_ACK)
             {
                 DEBUG("spectator obtained");
                 spectators_count--;
@@ -330,8 +329,8 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
                 }
             }
 
-            for (auto playerAction : playerActions_.actions())
-                api_->actions()->add(playerAction);
+            for (auto& playerAction : playerActions_.all())
+                api_->actions()->add(std::move(playerAction));
 
             playerActions_.clear();
         }
@@ -349,11 +348,11 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         size = players_playing + spectators_->players.size();
 
         // Apply them onto the gamestate
-        for (auto action : api_->actions()->actions())
+        for (auto& action : api_->actions()->all())
         {
             api_->game_state_save();
-            api_->game_state_apply(action);
-            actions.add(action);
+            api_->game_state_apply(*action);
+            actions.add(std::move(action));
         }
 
         // DEBUG("resolving %d", phase);

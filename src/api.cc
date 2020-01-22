@@ -159,7 +159,7 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin,
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return PERSONNAGE_IMPOSSIBLE;
 
-    for (auto action : actions_.actions())
+    for (const auto& action : actions_.all())
     {
         perso_info persoInfo =
             dynamic_cast<const ActionMove*>(action.get())->getPersoInfo();
@@ -168,14 +168,14 @@ erreur Api::perso_deplace(perso_info perso, std::vector<position> chemin,
             return PERSONNAGE_IMPOSSIBLE;
     }
 
-    rules::IAction_sptr move(
-        new ActionMove(perso, chemin, direction, player_->id));
+    auto move =
+        std::make_unique<ActionMove>(perso, chemin, direction, player_->id);
 
-    erreur err = api->game_state_check(move);
+    erreur err = api->game_state_check(*move);
     if (err != OK)
         return err;
 
-    actions_.add(move);
+    actions_.add(std::move(move));
 
     return OK;
 }
@@ -263,7 +263,7 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
     if (perso.equipe != mon_equipe() || perso.classe < 0 || perso.classe > 2)
         return PERSONNAGE_IMPOSSIBLE;
 
-    for (auto action : actions_.actions())
+    for (const auto& action : actions_.all())
     {
         perso_info persoInfo =
             dynamic_cast<const ActionAttack*>(action.get())->getPersoInfo();
@@ -272,14 +272,14 @@ erreur Api::perso_attaque(perso_info perso, attaque_type attaque, position pos)
             return PERSONNAGE_IMPOSSIBLE;
     }
 
-    rules::IAction_sptr action(
-        new ActionAttack(perso, attaque, pos, player_->id));
+    auto action =
+        std::make_unique<ActionAttack>(perso, attaque, pos, player_->id);
 
-    erreur err = api->game_state_check(action);
+    erreur err = api->game_state_check(*action);
     if (err != OK)
         return err;
 
-    actions_.add(action);
+    actions_.add(std::move(action));
 
     return OK;
 }

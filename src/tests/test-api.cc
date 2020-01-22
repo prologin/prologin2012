@@ -119,8 +119,8 @@ TEST_F(ApiTest, perso_deplace)
 
     EXPECT_EQ(OK, err);
 
-    for (auto& move : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(move);
+    for (const auto& move : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*move);
 
     rules_->resolve_moves();
 
@@ -199,8 +199,8 @@ TEST_F(ApiTest, perso_penombre)
 
     EXPECT_EQ(OK, err);
 
-    for (auto& move : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(move);
+    for (const auto& move : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*move);
 
     rules_->resolve_moves();
 
@@ -246,8 +246,8 @@ TEST_F(ApiTest, palantir_vision)
                                    .vie = 10,
                                    .direction = ORIENTATION_NORD};
     rules_->api().perso_attaque(voleur, ATTAQUE_PALANTIR, position{5, 4});
-    for (auto& attack : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(attack);
+    for (const auto& attack : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*attack);
 
     rules_->resolve_attacks();
     rules_->game_state().setPhase(PHASE_PLACEMENT);
@@ -267,8 +267,8 @@ TEST_F(ApiTest, elfe_vision)
                                  .vie = 10,
                                  .direction = ORIENTATION_NORD};
     rules_->api().perso_attaque(elfe, ATTAQUE_I_SEE, position{5, 4});
-    for (auto& attack : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(attack);
+    for (const auto& attack : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*attack);
 
     rules_->resolve_attacks();
     rules_->game_state().setPhase(PHASE_PLACEMENT);
@@ -287,8 +287,8 @@ TEST_F(ApiTest, perso_attaque_recharge)
 
     rules_->game_state().setPhase(PHASE_ATTAQUE);
     rules_->api().perso_attaque(elfe, ATTAQUE_I_SEE, position{5, 4});
-    for (auto& attack : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(attack);
+    for (const auto& attack : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*attack);
 
     rules_->resolve_attacks();
     rules_->game_state().setPhase(PHASE_PLACEMENT);
@@ -325,8 +325,8 @@ TEST_F(ApiTest, scores)
                                    .vie = 10,
                                    .direction = ORIENTATION_NORD};
     rules_->api().perso_attaque(voleur, ATTAQUE_TRAITRISE, position{5, 4});
-    for (auto& attack : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(attack);
+    for (const auto& attack : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*attack);
 
     rules_->resolve_attacks();
     rules_->resolve_points();
@@ -369,8 +369,8 @@ TEST_F(ApiTest, perso_deplace_vide)
     rules_->api().perso_deplace(rules_->api().perso_classe_info(PERSO_VOLEUR),
                                 path, ORIENTATION_OUEST);
 
-    for (auto& move : rules_->api().actions()->actions())
-        rules_->api().game_state_apply(move);
+    for (const auto& move : rules_->api().actions()->all())
+        rules_->api().game_state_apply(*move);
 
     rules_->resolve_moves();
 
