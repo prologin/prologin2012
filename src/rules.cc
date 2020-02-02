@@ -31,8 +31,8 @@ Rules::Rules(const rules::Options& opt)
     int equipe = 0;
     if (opt.player.get() != nullptr)
     {
-        for (; (unsigned)equipe < opt.players->players.size(); ++equipe)
-            if (opt.players->players[equipe]->id == opt.player->id)
+        for (; (unsigned)equipe < opt.players.size(); ++equipe)
+            if (opt.players[equipe]->id == opt.player->id)
                 break;
     }
 
@@ -80,7 +80,7 @@ Rules::Rules(const rules::Options& opt)
 }
 
 // a bit ugly, but used to test
-Rules::Rules(rules::Players_sptr players, std::unique_ptr<Api> api)
+Rules::Rules(const rules::Players& players, std::unique_ptr<Api> api)
     : champion_(nullptr), api_(std::move(api)), players_(players), sandbox_()
 {
     // Register Actions
@@ -145,9 +145,9 @@ void Rules::player_loop(rules::ClientMessenger_sptr msgr)
         api_->actions()->clear();
 
         // Receive actions
-        DEBUG("pull %d actions", api_->actions()->all().size());
+        DEBUG("pull %d actions", api_->actions()->size());
         msgr->pull_actions(api_->actions());
-        DEBUG("pulled %d actions", api_->actions()->all().size());
+        DEBUG("pulled %d actions", api_->actions()->size());
 
         // Apply them onto the gamestate
         for (const auto& action : api_->actions()->all())
@@ -168,7 +168,7 @@ void Rules::player_loop(rules::ClientMessenger_sptr msgr)
             resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
-            for (uint32_t i = 0; i < players_->players.size(); ++i)
+            for (uint32_t i = 0; i < players_.size(); ++i)
                 api_->game_state().deactivateElfeVision(i);
 
             resolve_attacks();
@@ -240,7 +240,7 @@ void Rules::spectator_loop(rules::ClientMessenger_sptr msgr)
             resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
-            for (uint32_t i = 0; i < players_->players.size(); ++i)
+            for (uint32_t i = 0; i < players_.size(); ++i)
                 api_->game_state().deactivateElfeVision(i);
 
             resolve_attacks();
@@ -258,10 +258,10 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
     rules::Actions actions;
     game_phase phase;
 
-    uint32_t size = players_->players.size() + spectators_->players.size();
+    uint32_t size = players_.size() + spectators_.size();
 
-    std::vector<bool> last_turn_players(players_->players.size(), true);
-    std::vector<bool> turn_players(players_->players.size(), false);
+    std::vector<bool> last_turn_players(players_.size(), true);
+    std::vector<bool> turn_players(players_.size(), false);
 
     while (!is_finished())
     {
@@ -272,7 +272,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         api_->actions()->clear();
 
         uint32_t players_playing = 0;
-        uint32_t spectators_count = spectators_->players.size();
+        uint32_t spectators_count = spectators_.size();
 
         DEBUG("Expecting %d clients", size);
         for (uint32_t i = 0; i < size; ++i)
@@ -345,7 +345,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
         for (unsigned i = 0; i < turn_players.size(); ++i)
             turn_players[i] = false;
 
-        size = players_playing + spectators_->players.size();
+        size = players_playing + spectators_.size();
 
         // Apply them onto the gamestate
         for (auto& action : api_->actions()->all())
@@ -367,7 +367,7 @@ void Rules::server_loop(rules::ServerMessenger_sptr msgr)
             resolve_end_of_deplacement_phase();
             break;
         case PHASE_ATTAQUE:
-            for (uint32_t i = 0; i < players_->players.size(); ++i)
+            for (uint32_t i = 0; i < players_.size(); ++i)
                 api_->game_state().deactivateElfeVision(i);
 
             resolve_attacks();
@@ -469,7 +469,7 @@ void Rules::resolve_points()
         if (teamkill == unit->getAttackers().size())
         {
             DEBUG("teamkill");
-            players_->players[unit->getPlayer()]->score -= 2;
+            players_[unit->getPlayer()]->score -= 2;
         }
         // no teamkill, every team get a point
         else if (teamkill == 0)
@@ -484,11 +484,11 @@ void Rules::resolve_points()
             for (int team : attackers_team)
             {
                 DEBUG("team: %d, score %d+1 from kill of team %d unit %d", team,
-                      players_->players[team]->score, unit->getPlayer(),
+                      players_[team]->score, unit->getPlayer(),
                       unit->getClasse());
-                players_->players[team]->score += 1;
+                players_[team]->score += 1;
             }
-            players_->players[unit->getPlayer()]->score -= 1;
+            players_[unit->getPlayer()]->score -= 1;
         }
         // else
         // mixed teamkill and offensive kill

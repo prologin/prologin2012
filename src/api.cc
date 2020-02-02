@@ -27,8 +27,8 @@
 // global used in interface.cc
 Api* api;
 
-Api::Api(std::unique_ptr<GameState> game_state, rules::Player_sptr player,
-         int equipe)
+Api::Api(std::unique_ptr<GameState> game_state,
+         std::shared_ptr<rules::Player> player, int equipe)
     : rules::Api<GameState, erreur>(std::move(game_state), player)
     , equipe_(equipe)
 {

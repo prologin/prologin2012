@@ -1,5 +1,5 @@
-#include "ability.hh"
 #include "action-attack.hh"
+#include "ability.hh"
 
 #include "cell.hh"
 #include "constant.hh"

@@ -29,18 +29,15 @@ protected:
         map_ = new Map();
         map_->load(f);
 
-        players = rules::Players_sptr(
-            new rules::Players{std::vector<rules::Player_sptr>{
-                rules::Player_sptr(new rules::Player(0, 0)),
-                rules::Player_sptr(new rules::Player(1, 0)),
-                rules::Player_sptr(new rules::Player(2, 0)),
-            }});
+        players.add(std::make_shared<rules::Player>(0, rules::PLAYER));
+        players.add(std::make_shared<rules::Player>(1, rules::PLAYER));
+        players.add(std::make_shared<rules::Player>(2, rules::PLAYER));
     }
 
     std::stringstream f;
 
     Map* map_;
-    rules::Players_sptr players;
+    rules::Players players;
 };
 
 TEST_F(GameTest, GameCreate)
@@ -48,9 +45,9 @@ TEST_F(GameTest, GameCreate)
     GameState gs = GameState(map_, players);
     gs.init();
 
-    EXPECT_EQ((uint32_t)0, players->players[0]->id);
-    EXPECT_EQ((uint32_t)1, players->players[1]->id);
-    EXPECT_EQ((uint32_t)2, players->players[2]->id);
+    EXPECT_EQ((uint32_t)0, players[0]->id);
+    EXPECT_EQ((uint32_t)1, players[1]->id);
+    EXPECT_EQ((uint32_t)2, players[2]->id);
 
     EXPECT_EQ((size_t)3, gs.getPlayerCount());
     EXPECT_EQ(map_, gs.getMap());

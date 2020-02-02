@@ -41,7 +41,7 @@ class ActionMove;
 class GameState : public rules::GameState
 {
 public:
-    GameState(Map* map, rules::Players_sptr players);
+    GameState(Map* map, const rules::Players& players);
     GameState* copy() const;
 
     ~GameState();
@@ -86,7 +86,7 @@ private:
 
     // The map
     Map* map_;
-    rules::Players_sptr players_;
+    rules::Players players_;
     Units units_;
     std::vector<remote_vision> remote_vision_;
 

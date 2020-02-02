@@ -9,7 +9,7 @@
 #include "map.hh"
 #include "unit.hh"
 
-GameState::GameState(Map* map, rules::Players_sptr players)
+GameState::GameState(Map* map, const rules::Players& players)
     : rules::GameState()
     , map_(map)
     , players_(players)
@@ -172,17 +172,15 @@ Unit_sptr GameState::getUnit(perso_info perso) const
 
 size_t GameState::getPlayerCount() const
 {
-    return players_->players.size();
+    return players_.size();
 }
 
 std::vector<int> GameState::getScores() const
 {
     std::vector<int> scores;
-    for (auto it = players_->players.begin(); it != players_->players.end();
-         ++it)
-    {
-        scores.push_back((*it)->score);
-    }
+
+    for (const auto& player : players_)
+        scores.push_back(player->score);
 
     return scores;
 }

@@ -33,17 +33,14 @@ protected:
         map_ = new Map();
         map_->load(f);
 
-        rules::Players_sptr players(
-            new rules::Players{std::vector<rules::Player_sptr>{
-                rules::Player_sptr(new rules::Player(0, 0)),
-                rules::Player_sptr(new rules::Player(1, 0)),
-            }});
+        rules::Players players;
+        players.add(std::make_shared<rules::Player>(0, rules::PLAYER));
+        players.add(std::make_shared<rules::Player>(1, rules::PLAYER));
 
         auto gamestate = std::make_unique<GameState>(map_, players);
         gamestate->init();
 
-        auto api_ =
-            std::make_unique<Api>(std::move(gamestate), players->players[0], 0);
+        auto api_ = std::make_unique<Api>(std::move(gamestate), players[0], 0);
 
         rules_ = std::make_unique<Rules>(players, std::move(api_));
     }

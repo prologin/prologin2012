@@ -20,7 +20,7 @@ class Rules
 {
 public:
     explicit Rules(const rules::Options& opt);
-    Rules(rules::Players_sptr players, std::unique_ptr<Api> api);
+    Rules(const rules::Players& players, std::unique_ptr<Api> api);
 
     virtual ~Rules();
 
@@ -53,8 +53,8 @@ private:
     rules::Options opt_;
     std::unique_ptr<utils::DLL> champion_;
     std::unique_ptr<Api> api_;
-    rules::Players_sptr players_;
-    rules::Players_sptr spectators_;
+    rules::Players players_;
+    rules::Players spectators_;
 
     // tmp playerAction holder
     rules::Actions playerActions_;
