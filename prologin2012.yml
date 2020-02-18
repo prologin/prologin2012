@@ -1,9 +1,4 @@
-conf:
-  package_name: prologin2012
-  client_rule_lib: TODO
-  server_rule_lib: TODO
-  player_lib: champion
-  player_filename: prologin
+name: prologin2012
 
 constant:
 # Constantes pour les personnages
