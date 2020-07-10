@@ -373,8 +373,5 @@ int Api::nombre_tours()
 //
 const char* Api::get_dump()
 {
-    if (player_->type == rules::SPECTATOR)
-        return dump_game_state(*game_state_, actions_);
-    else
-        return nullptr;
+    return dump_game_state(*game_state_, actions_);
 }
