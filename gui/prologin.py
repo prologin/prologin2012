@@ -9,7 +9,6 @@ except:
     pass
 
 import pygame
-pygame.init()
 
 from api import *
 
@@ -20,11 +19,14 @@ from window import Window
 
 settings.load([])
 state_reader = StechecReader()
-window = Window(state_reader)
-gfx_thread = threading.Thread(target=window.run)
 
+def run_pygame():
+    pygame.init()
+    window = Window(state_reader)
+    window.run()
 
 def partie_init():
+    gfx_thread = threading.Thread(target=run_pygame)
     gfx_thread.start()
 
 def jouer_placement():

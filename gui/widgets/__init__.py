@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from actions import ActionsWidget
-from details import DetailsWidget
-from help import HelpWidget
-from minimap import MinimapWidget
-from map import MapWidget
-from scores import ScoresWidget
-from state import StateWidget
+from widgets.actions import ActionsWidget
+from widgets.details import DetailsWidget
+from widgets.help import HelpWidget
+from widgets.minimap import MinimapWidget
+from widgets.map import MapWidget
+from widgets.scores import ScoresWidget
+from widgets.state import StateWidget

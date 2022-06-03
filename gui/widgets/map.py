@@ -27,8 +27,8 @@ class MapWidget(BaseWidget):
         self.minimap = widgets['minimap']
 
     def handle_view_click(self, x, y, but1, but2, but3):
-        x = x / data.WIDTH + self.position[0]
-        y = (y - data.OVERLAY) / (data.HEIGHT - data.OVERLAY) + self.position[1]
+        x = x // data.WIDTH + self.position[0]
+        y = (y - data.OVERLAY) // (data.HEIGHT - data.OVERLAY) + self.position[1]
         if but1:
             self.details_widget.update_position(x, y)
             self.update_subjective()
