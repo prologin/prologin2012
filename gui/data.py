@@ -60,6 +60,6 @@ def load_images():
         img = pygame.image.load(path).convert_alpha()
         pix[name] = img
         if name in classes:
-            pix_cls[getattr(api, 'PERSO_%s' % name.upper())] = img
+            pix_cls[getattr(api.perso_classe, 'PERSO_%s' % name.upper())] = img
         elif name in cases:
-            pix_cells[getattr(api, 'ZONE_%s' % name.upper())] = img
+            pix_cells[getattr(api.zone_type, 'ZONE_%s' % name.upper())] = img

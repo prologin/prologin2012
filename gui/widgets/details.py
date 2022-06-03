@@ -21,10 +21,10 @@ class DetailsWidget(ScrolledWidget):
         self.selection = None
 
         self.directions = {
-            ORIENTATION_NORD: utils.make_bordered_text(u'↑', self.font),
-            ORIENTATION_EST: utils.make_bordered_text(u'→', self.font),
-            ORIENTATION_SUD: utils.make_bordered_text(u'↓', self.font),
-            ORIENTATION_OUEST: utils.make_bordered_text(u'←', self.font),
+            orientation.ORIENTATION_NORD: utils.make_bordered_text(u'↑', self.font),
+            orientation.ORIENTATION_EST: utils.make_bordered_text(u'→', self.font),
+            orientation.ORIENTATION_SUD: utils.make_bordered_text(u'↓', self.font),
+            orientation.ORIENTATION_OUEST: utils.make_bordered_text(u'←', self.font),
         }
 
     def plug(self, widgets):
@@ -82,12 +82,12 @@ class DetailsWidget(ScrolledWidget):
     def _display_cell(self, cell):
         text = self.font.render(
             {
-                ZONE_HERBE: u'Herbe',
-                ZONE_ROUTE: u'Route',
-                ZONE_FORET: u'Forêt',
-                ZONE_MARAIS: u'Marais',
-                ZONE_MUR: u'Mur',
-                ZONE_TOUR: u'Tour',
+                zone_type.ZONE_HERBE: u'Herbe',
+                zone_type.ZONE_ROUTE: u'Route',
+                zone_type.ZONE_FORET: u'Forêt',
+                zone_type.ZONE_MARAIS: u'Marais',
+                zone_type.ZONE_MUR: u'Mur',
+                zone_type.ZONE_TOUR: u'Tour',
             }[cell],
             True, utils.WHITE
         )
@@ -122,9 +122,9 @@ class DetailsWidget(ScrolledWidget):
         text_top_shift = top_shift + 3 + 4 + 3
         text = self.font.render(
             {
-                PERSO_VOLEUR: u'Voleur',
-                PERSO_BARBARE: u'Barbare',
-                PERSO_ELFE: u'Elfe',
+                perso_classe.PERSO_VOLEUR: u'Voleur',
+                perso_classe.PERSO_BARBARE: u'Barbare',
+                perso_classe.PERSO_ELFE: u'Elfe',
             }[unit.class_],
             True, utils.GREY
         )

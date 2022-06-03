@@ -1,36 +1,52 @@
-diff -Nru tmp/python/interface.cc tmp2/python/interface.cc
---- tmp/python/interface.cc	2012-04-27 16:22:48.366121813 +0200
-+++ tmp2/python/interface.cc	2012-04-27 16:24:00.327838854 +0200
-@@ -655,11 +655,19 @@
+diff --git a/gui/api.py b/gui/api.py
+index 7df2b84..b3aa249 100644
+--- a/gui/api.py
++++ b/gui/api.py
+@@ -3,7 +3,11 @@
+ from enum import IntEnum
+ from typing import NamedTuple, List, Tuple  # noqa: F401
+ 
+-from _api import *
++try:
++    from _api import *
++except ImportError:
++    # If launched with the replay
++    pass
+ 
+ 
+ # Vision du Voleur
+diff --git a/gui/interface.cc b/gui/interface.cc
+index d525522..27a856c 100644
+--- a/gui/interface.cc
++++ b/gui/interface.cc
+@@ -179,6 +179,8 @@ void api_afficher_position(position v);
+ 
+ /// Affiche le contenu d'une valeur de type perso_info
+ void api_afficher_perso_info(perso_info v);
++
++const char* api_get_dump();
  }
  
+ template <typename PythonType, typename CxxType>
+@@ -1004,6 +1006,13 @@ static PyObject* p_afficher_perso_info(PyObject* /* self */, PyObject* args)
+     }
+ }
  
 +static PyObject* p_get_dump(PyObject* self, PyObject* args)
 +{
 +    const char* dump = api_get_dump();
-+    PyObject* py_dump = PyString_FromString(dump);
++    PyObject* py_dump = PyUnicode_FromString(dump);
 +    return py_dump;
 +}
 +
-+
- /*
- ** Api functions to register.
- */
+ // API function to register.
  static PyMethodDef api_callback[] = {
--  {"carte_taille", p_carte_taille, METH_VARARGS, "carte_taille"},  {"carte_starting_position", p_carte_starting_position, METH_VARARGS, "carte_starting_position"},  {"carte_zone_type", p_carte_zone_type, METH_VARARGS, "carte_zone_type"},  {"carte_zone_perso", p_carte_zone_perso, METH_VARARGS, "carte_zone_perso"},  {"distance", p_distance, METH_VARARGS, "distance"},  {"chemin", p_chemin, METH_VARARGS, "chemin"},  {"perso_deplace", p_perso_deplace, METH_VARARGS, "perso_deplace"},  {"perso_penombre", p_perso_penombre, METH_VARARGS, "perso_penombre"},  {"perso_vision", p_perso_vision, METH_VARARGS, "perso_vision"},  {"perso_vision_ennemis", p_perso_vision_ennemis, METH_VARARGS, "perso_vision_ennemis"},  {"palantir_vision", p_palantir_vision, METH_VARARGS, "palantir_vision"},  {"elfe_vision", p_elfe_vision, METH_VARARGS, "elfe_vision"},  {"perso_attaque", p_perso_attaque, METH_VARARGS, "perso_attaque"},  {"perso_attaque_recharge", p_perso_attaque_recharge, METH_VARARGS, "perso_attaque_recharge"},  {"mon_equipe", p_mon_equipe, METH_VARARGS, "mon_equipe"},  {"scores", p_scores, METH_VARARGS, "scores"},  {"nombre_equipes", p_nombre_equipes, METH_VARARGS, "nombre_equipes"},  {"tour_actuel", p_tour_actuel, METH_VARARGS, "tour_actuel"},  {"afficher_perso_classe", p_afficher_perso_classe, METH_VARARGS, "afficher_perso_classe"},  {"afficher_zone_type", p_afficher_zone_type, METH_VARARGS, "afficher_zone_type"},  {"afficher_attaque_type", p_afficher_attaque_type, METH_VARARGS, "afficher_attaque_type"},  {"afficher_orientation", p_afficher_orientation, METH_VARARGS, "afficher_orientation"},  {"afficher_erreur", p_afficher_erreur, METH_VARARGS, "afficher_erreur"},  {"afficher_position", p_afficher_position, METH_VARARGS, "afficher_position"},  {"afficher_perso_info", p_afficher_perso_info, METH_VARARGS, "afficher_perso_info"},  {NULL, NULL, 0, NULL}
-+  {"carte_taille", p_carte_taille, METH_VARARGS, "carte_taille"},  {"carte_starting_position", p_carte_starting_position, METH_VARARGS, "carte_starting_position"},  {"carte_zone_type", p_carte_zone_type, METH_VARARGS, "carte_zone_type"},  {"carte_zone_perso", p_carte_zone_perso, METH_VARARGS, "carte_zone_perso"},  {"distance", p_distance, METH_VARARGS, "distance"},  {"chemin", p_chemin, METH_VARARGS, "chemin"},  {"perso_deplace", p_perso_deplace, METH_VARARGS, "perso_deplace"},  {"perso_penombre", p_perso_penombre, METH_VARARGS, "perso_penombre"},  {"perso_vision", p_perso_vision, METH_VARARGS, "perso_vision"},  {"perso_vision_ennemis", p_perso_vision_ennemis, METH_VARARGS, "perso_vision_ennemis"},  {"palantir_vision", p_palantir_vision, METH_VARARGS, "palantir_vision"},  {"elfe_vision", p_elfe_vision, METH_VARARGS, "elfe_vision"},  {"perso_attaque", p_perso_attaque, METH_VARARGS, "perso_attaque"},  {"perso_attaque_recharge", p_perso_attaque_recharge, METH_VARARGS, "perso_attaque_recharge"},  {"mon_equipe", p_mon_equipe, METH_VARARGS, "mon_equipe"},  {"scores", p_scores, METH_VARARGS, "scores"},  {"nombre_equipes", p_nombre_equipes, METH_VARARGS, "nombre_equipes"},  {"tour_actuel", p_tour_actuel, METH_VARARGS, "tour_actuel"},  {"afficher_perso_classe", p_afficher_perso_classe, METH_VARARGS, "afficher_perso_classe"},  {"afficher_zone_type", p_afficher_zone_type, METH_VARARGS, "afficher_zone_type"},  {"afficher_attaque_type", p_afficher_attaque_type, METH_VARARGS, "afficher_attaque_type"},  {"afficher_orientation", p_afficher_orientation, METH_VARARGS, "afficher_orientation"},  {"afficher_erreur", p_afficher_erreur, METH_VARARGS, "afficher_erreur"},  {"afficher_position", p_afficher_position, METH_VARARGS, "afficher_position"},  {"afficher_perso_info", p_afficher_perso_info, METH_VARARGS, "afficher_perso_info"}, {"get_dump", p_get_dump, METH_VARARGS, "get_dump"},  {NULL, NULL, 0, NULL}
+     {"carte_taille", p_carte_taille, METH_VARARGS, "carte_taille"},
+@@ -1035,6 +1044,7 @@ static PyMethodDef api_callback[] = {
+     {"afficher_erreur", p_afficher_erreur, METH_VARARGS, "afficher_erreur"},
+     {"afficher_position", p_afficher_position, METH_VARARGS, "afficher_position"},
+     {"afficher_perso_info", p_afficher_perso_info, METH_VARARGS, "afficher_perso_info"},
++    {"get_dump", p_get_dump, METH_VARARGS, "get_dump"},
+     {nullptr, nullptr, 0, nullptr}
  };
  
- static void _initapi()
-diff -Nru tmp/python/interface.hh tmp2/python/interface.hh
---- tmp/python/interface.hh	2012-04-27 16:22:48.362788400 +0200
-+++ tmp2/python/interface.hh	2012-04-27 16:23:34.143880747 +0200
-@@ -220,6 +220,8 @@
- //
- void api_afficher_perso_info(perso_info v);
- 
-+const char* api_get_dump();
-+
- }
- 
- #endif // !INTERFACE_HH_

@@ -100,27 +100,27 @@ class MapWidget(BaseWidget):
         width = self.game_state.map_width
         height = self.game_state.map_height
         distance = {
-            PERSO_VOLEUR: VOLEUR_VISION,
-            PERSO_BARBARE: BARBARE_VISION,
-            PERSO_ELFE: ELFE_VISION,
+            perso_classe.PERSO_VOLEUR: VOLEUR_VISION,
+            perso_classe.PERSO_BARBARE: BARBARE_VISION,
+            perso_classe.PERSO_ELFE: ELFE_VISION,
         }[unit.class_]
-        if self.game_state.map[unit.y][unit.x] == ZONE_TOUR:
+        if self.game_state.map[unit.y][unit.x] == zone_type.ZONE_TOUR:
             for x in range(unit.x - distance, unit.x + distance + 1):
                 for y in range(unit.y - distance, unit.y + distance + 1):
                     if not utils.is_in_rect(x, y, width, height):
                         continue
                     cell = self.game_state.map[y][x]
-                    if cell != ZONE_MUR and cell != ZONE_FORET:
+                    if cell != zone_type.ZONE_MUR and cell != zone_type.ZONE_FORET:
                         self._remove_fog(x, y)
         else:
             is_blocked = [False] * (2 * distance + 3)
             dy = (
-                -1 if unit.direction == ORIENTATION_NORD else
-                (1 if unit.direction == ORIENTATION_SUD else 0)
+                -1 if unit.direction == orientation.ORIENTATION_NORD else
+                (1 if unit.direction == orientation.ORIENTATION_SUD else 0)
             )
             dx = (
-                -1 if unit.direction == ORIENTATION_OUEST else
-                (1 if unit.direction == ORIENTATION_EST else 0)
+                -1 if unit.direction == orientation.ORIENTATION_OUEST else
+                (1 if unit.direction == orientation.ORIENTATION_EST else 0)
             )
             for i in range(distance + 1):
                 for j in range(-i - 1, i + 2):
@@ -134,14 +134,14 @@ class MapWidget(BaseWidget):
                     cell = self.game_state.map[y][x]
                     not_near = not utils.is_near(x, y, unit.x, unit.y)
                     if (
-                        (not_near and cell == ZONE_FORET) or
+                        (not_near and cell == zone_type.ZONE_FORET) or
                         (
                             (not_near or i == 1) and
-                            cell == ZONE_MUR
+                            cell == zone_type.ZONE_MUR
                         )
                     ):
                         is_blocked[j + distance] = True
-                    elif (cell != ZONE_MUR):
+                    elif (cell != zone_type.ZONE_MUR):
                         self._remove_fog(x, y)
 
         self.update_display((

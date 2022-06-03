@@ -12,19 +12,19 @@ ACTION_ATTACK = 1
 ACTION_ACK = 2
 
 CLASSES = {
-    PERSO_VOLEUR: u'voleur',
-    PERSO_BARBARE: u'barbare',
-    PERSO_ELFE: u'elfe',
+    perso_classe.PERSO_VOLEUR: u'voleur',
+    perso_classe.PERSO_BARBARE: u'barbare',
+    perso_classe.PERSO_ELFE: u'elfe',
 }
 
 ATTACKS = {
-    ATTAQUE_NORMALE: u'normale',
-    ATTAQUE_PALANTIR: u'palantir',
-    ATTAQUE_TRAITRISE: u'traitrise',
-    ATTAQUE_BASTOOOON: u'bastoooon',
-    ATTAQUE_FUS_RO_DAH: u'fus ro dah',
-    ATTAQUE_I_SEE: u'I see what you did here',
-    ATTAQUE_LOTO: u'Loto, à qui le tour',
+    attaque_type.ATTAQUE_NORMALE: u'normale',
+    attaque_type.ATTAQUE_PALANTIR: u'palantir',
+    attaque_type.ATTAQUE_TRAITRISE: u'traitrise',
+    attaque_type.ATTAQUE_BASTOOOON: u'bastoooon',
+    attaque_type.ATTAQUE_FUS_RO_DAH: u'fus ro dah',
+    attaque_type.ATTAQUE_I_SEE: u'I see what you did here',
+    attaque_type.ATTAQUE_LOTO: u'Loto, à qui le tour',
 }
 
 action_id = struct.Struct('i')
