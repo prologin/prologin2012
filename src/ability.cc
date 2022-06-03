@@ -60,11 +60,11 @@ erreur VoleurAttaque::check(const GameState& st, unit_info attacker,
     // check range
     if (!unit->isPositionInVision(st.getMap(), target))
     {
-        unit->setVision(VOLEUR_VISION);
+        unit->setVision(VOLEUR_VISION_PORTEE);
         return POSITION_IMPOSSIBLE;
     }
 
-    unit->setVision(VOLEUR_VISION);
+    unit->setVision(VOLEUR_VISION_PORTEE);
 
     return OK;
 }
@@ -239,11 +239,11 @@ erreur Bastoooon::check(const GameState& st, unit_info attacker,
     // check range
     if (!unit->isPositionInVision(st.getMap(), target))
     {
-        unit->setVision(BARBARE_VISION);
+        unit->setVision(BARBARE_VISION_PORTEE);
         return POSITION_IMPOSSIBLE;
     }
 
-    unit->setVision(BARBARE_VISION);
+    unit->setVision(BARBARE_VISION_PORTEE);
 
     return OK;
 }
@@ -381,7 +381,7 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
     {
         position palantir = st.getPalantir(attacker.player_id);
 
-        auto square = map->getSquareVision(palantir, VOLEUR_VISION);
+        auto square = map->getSquareVision(palantir, VOLEUR_VISION_PORTEE);
         if (std::find(square.begin(), square.end(), target) != square.end())
             return OK;
     }
@@ -390,7 +390,7 @@ erreur ElfeAttaque::check(const GameState& st, unit_info attacker,
     {
         position elfe_vision = st.getElfeVision(attacker.player_id);
 
-        auto square = map->getSquareVision(elfe_vision, ELFE_VISION);
+        auto square = map->getSquareVision(elfe_vision, ELFE_VISION_PORTEE);
         if (std::find(square.begin(), square.end(), target) != square.end())
             return OK;
     }

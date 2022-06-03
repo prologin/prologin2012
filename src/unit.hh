@@ -24,7 +24,10 @@ typedef struct unit_info
     int player_id;
     perso_classe classe;
 
-    void debug() { DEBUG("player_id: %d, classe: %d", player_id, classe); }
+    void debug()
+    {
+        DEBUG("player_id: %d, classe: %d", player_id, classe);
+    }
 
 } unit_info;
 
@@ -66,12 +69,15 @@ public:
         , FusRoDahed_(false)
         , orientation_(ORIENTATION_NORD)
         , penombre_()
-    {}
+    {
+    }
 
     // For test purposes only, create a Voleur
     Unit(int player_id, int move_points)
-        : Unit(player_id, move_points, VOLEUR_VISION, VOLEUR_VIE, PERSO_VOLEUR)
-    {}
+        : Unit(player_id, move_points, VOLEUR_VISION_PORTEE, VOLEUR_VIE,
+               PERSO_VOLEUR)
+    {
+    }
 
     virtual ~Unit();
 

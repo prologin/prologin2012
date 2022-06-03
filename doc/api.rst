@@ -12,7 +12,7 @@ Constantes
 ==========
 
 
-.. c:var:: VOLEUR_VISION
+.. c:var:: VOLEUR_VISION_PORTEE
 
   :Valeur: 5
   :Description:
@@ -60,7 +60,7 @@ Constantes
 
     
 
-.. c:var:: BARBARE_VISION
+.. c:var:: BARBARE_VISION_PORTEE
 
   :Valeur: 4
   :Description:
@@ -116,7 +116,7 @@ Constantes
 
     
 
-.. c:var:: ELFE_VISION
+.. c:var:: ELFE_VISION_PORTEE
 
   :Valeur: 4
   :Description:

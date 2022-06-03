@@ -11,7 +11,7 @@ except ImportError:
 
 
 # Vision du Voleur
-VOLEUR_VISION = 5
+VOLEUR_VISION_PORTEE = 5
 
 # Déplacement du Voleur
 VOLEUR_DEPLACEMENT = 10
@@ -29,7 +29,7 @@ VOLEUR_PALANTIR_CD = 3
 VOLEUR_TRAITRISE_CD = 5
 
 # Vision du Barbare
-BARBARE_VISION = 4
+BARBARE_VISION_PORTEE = 4
 
 # Déplacement du Barbare
 BARBARE_DEPLACEMENT = 8
@@ -50,7 +50,7 @@ BARBARE_BASTOOOON_PORTEE = 3
 BARBARE_FUS_RO_DAH_CD = 5
 
 # Vision de l'Elfe
-ELFE_VISION = 4
+ELFE_VISION_PORTEE = 4
 
 # Déplacement de l'Elfe
 ELFE_DEPLACEMENT = 6

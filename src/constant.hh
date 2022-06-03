@@ -16,7 +16,7 @@
 ///
 // Vision du Voleur
 //
-#define VOLEUR_VISION 5
+#define VOLEUR_VISION_PORTEE 5
 
 ///
 // Déplacement du Voleur
@@ -46,7 +46,7 @@
 ///
 // Vision du Barbare
 //
-#define BARBARE_VISION 4
+#define BARBARE_VISION_PORTEE 4
 
 ///
 // Déplacement du Barbare
@@ -81,7 +81,7 @@
 ///
 // Vision de l'Elfe
 //
-#define ELFE_VISION 4
+#define ELFE_VISION_PORTEE 4
 
 ///
 // Déplacement de l'Elfe

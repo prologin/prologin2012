@@ -82,7 +82,7 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
     {
         position palantir = game_state_->getPalantir(equipe_);
 
-        auto square = map->getSquareVision(palantir, VOLEUR_VISION);
+        auto square = map->getSquareVision(palantir, VOLEUR_VISION_PORTEE);
         if (std::find(square.begin(), square.end(), pos) != square.end())
             ok = true;
     }
@@ -91,7 +91,7 @@ std::vector<perso_info> Api::carte_zone_perso(position pos)
     {
         position elfe_vision = game_state_->getElfeVision(equipe_);
 
-        auto square = map->getSquareVision(elfe_vision, ELFE_VISION);
+        auto square = map->getSquareVision(elfe_vision, ELFE_VISION_PORTEE);
         if (std::find(square.begin(), square.end(), pos) != square.end())
             ok = true;
     }
@@ -235,7 +235,7 @@ std::vector<position> Api::palantir_vision()
         return std::vector<position>();
 
     return game_state_->getMap()->getSquareSurroundings(
-        game_state_->getPalantir(mon_equipe()), VOLEUR_VISION);
+        game_state_->getPalantir(mon_equipe()), VOLEUR_VISION_PORTEE);
 }
 
 ///
@@ -248,7 +248,7 @@ std::vector<position> Api::elfe_vision()
         return std::vector<position>();
 
     return game_state_->getMap()->getSquareSurroundings(
-        game_state_->getElfeVision(mon_equipe()), ELFE_VISION);
+        game_state_->getElfeVision(mon_equipe()), ELFE_VISION_PORTEE);
 }
 
 ///

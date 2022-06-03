@@ -212,7 +212,7 @@ std::vector<position> Unit::getPenombre() const
  **/
 
 Voleur::Voleur(int player_id)
-    : Unit(player_id, VOLEUR_DEPLACEMENT, VOLEUR_VISION, VOLEUR_VIE,
+    : Unit(player_id, VOLEUR_DEPLACEMENT, VOLEUR_VISION_PORTEE, VOLEUR_VIE,
            PERSO_VOLEUR)
 {
     abilities_.push_back(new VoleurAttaque());
@@ -258,7 +258,7 @@ int Voleur::getAbilityCooldown(attaque_type id) const
  **/
 
 Barbare::Barbare(int player_id)
-    : Unit(player_id, BARBARE_DEPLACEMENT, BARBARE_VISION, BARBARE_VIE,
+    : Unit(player_id, BARBARE_DEPLACEMENT, BARBARE_VISION_PORTEE, BARBARE_VIE,
            PERSO_BARBARE)
 {
     abilities_.push_back(new BarbareAttaque());
@@ -304,7 +304,8 @@ int Barbare::getAbilityCooldown(attaque_type id) const
  **/
 
 Elfe::Elfe(int player_id)
-    : Unit(player_id, ELFE_DEPLACEMENT, ELFE_VISION, ELFE_VIE, PERSO_ELFE)
+    : Unit(player_id, ELFE_DEPLACEMENT, ELFE_VISION_PORTEE, ELFE_VIE,
+           PERSO_ELFE)
 {
     abilities_.push_back(new ElfeAttaque());
     abilities_.push_back(new ISee());

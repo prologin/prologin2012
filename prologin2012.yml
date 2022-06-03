@@ -3,7 +3,7 @@ name: prologin2012
 constant:
 # Constantes pour les personnages
   -
-    cst_name: VOLEUR_VISION
+    cst_name: VOLEUR_VISION_PORTEE
     cst_val: 5
     cst_comment: Vision du Voleur
   -
@@ -28,7 +28,7 @@ constant:
     cst_comment: Cooldown de l'attaque "Traîtrise" du Voleur
 
   -
-    cst_name: BARBARE_VISION
+    cst_name: BARBARE_VISION_PORTEE
     cst_val: 4
     cst_comment: Vision du Barbare
   -
@@ -57,7 +57,7 @@ constant:
     cst_comment: Cooldown de l'attaque "Fus Ro Dah" du Barbare
 
   -
-    cst_name: ELFE_VISION
+    cst_name: ELFE_VISION_PORTEE
     cst_val: 4
     cst_comment: Vision de l'Elfe
   -

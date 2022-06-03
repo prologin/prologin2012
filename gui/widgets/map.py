@@ -100,9 +100,9 @@ class MapWidget(BaseWidget):
         width = self.game_state.map_width
         height = self.game_state.map_height
         distance = {
-            perso_classe.PERSO_VOLEUR: VOLEUR_VISION,
-            perso_classe.PERSO_BARBARE: BARBARE_VISION,
-            perso_classe.PERSO_ELFE: ELFE_VISION,
+            perso_classe.PERSO_VOLEUR: VOLEUR_VISION_PORTEE,
+            perso_classe.PERSO_BARBARE: BARBARE_VISION_PORTEE,
+            perso_classe.PERSO_ELFE: ELFE_VISION_PORTEE,
         }[unit.class_]
         if self.game_state.map[unit.y][unit.x] == zone_type.ZONE_TOUR:
             for x in range(unit.x - distance, unit.x + distance + 1):
