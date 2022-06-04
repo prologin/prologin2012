@@ -26,7 +26,7 @@ class StateWidget(BaseWidget):
         '''
         surf = self.font.render(text, True, color)
         surf_w, surf_h = surf.get_size()
-        self.surface.blit(surf, ((self.width - surf_w) / 2, height))
+        self.surface.blit(surf, ((self.width - surf_w) // 2, height))
 
     def _display_turn(self):
         self._display_text(

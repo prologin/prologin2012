@@ -28,7 +28,7 @@ def make_button(caption, font):
     button.fill(LIGHT_GREY)
     button.fill(DARK_GREY, (2, 2, but_w - 2, but_h - 2))
     button.fill(GREY, (2, 2, but_w - 4, but_h - 4))
-    button.blit(text, ((but_w - text_w) / 2, (but_h - text_h) / 2))
+    button.blit(text, ((but_w - text_w) // 2, (but_h - text_h) // 2))
     return button
 
 

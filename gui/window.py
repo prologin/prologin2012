@@ -21,7 +21,7 @@ class State:
     def __init__(self):
         self.looping = False
         self.ticks = 0
-        self.loop_delay = 1000 / State.TURN_FPS
+        self.loop_delay = 1000 // State.TURN_FPS
         self.display_help = False
         self.display_scores = False
         self.disabled_widgets = set()

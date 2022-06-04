@@ -16,8 +16,8 @@ class HelpWidget(BaseWidget):
 
     def __init__(self, screen_width, screen_height):
         super(HelpWidget, self).__init__(
-            (screen_width - self.WIDTH) / 2,
-            (screen_height - self.HEIGHT) / 2,
+            (screen_width - self.WIDTH) // 2,
+            (screen_height - self.HEIGHT) // 2,
             self.WIDTH, self.HEIGHT
         )
         self.font = pygame.font.Font(data.get_font('font.ttf'), 13)
@@ -65,12 +65,12 @@ class HelpWidget(BaseWidget):
             for button in key_buttons:
                 self.surface.blit(
                     button,
-                    (x, vshift + (line_height - caption_height) / 2)
+                    (x, vshift + (line_height - caption_height) // 2)
                 )
                 x += button.get_size()[0] + 3 * self.BORDER
             self.surface.blit(
                 caption_text,
-                (caption_x, vshift + (line_height - caption_height) / 2)
+                (caption_x, vshift + (line_height - caption_height) // 2)
             )
 
-            vshift += line_height + self.PADDING / 2
+            vshift += line_height + self.PADDING // 2

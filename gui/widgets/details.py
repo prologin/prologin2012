@@ -91,7 +91,7 @@ class DetailsWidget(ScrolledWidget):
             }[cell],
             True, utils.WHITE
         )
-        self.list_surface.blit(text, (0, self.LINE_HEIGHT / 2))
+        self.list_surface.blit(text, (0, self.LINE_HEIGHT // 2))
 
     def _display_unit(self, unit, i):
         top_shift = i * self.LINE_HEIGHT
@@ -99,12 +99,12 @@ class DetailsWidget(ScrolledWidget):
 
         self.list_surface.blit(data.pix_cls[unit.class_], (
             0,
-            top_shift + (self.LINE_HEIGHT - data.HEIGHT - data.OVERLAY) / 2
+            top_shift + (self.LINE_HEIGHT - data.HEIGHT - data.OVERLAY) // 2
         ))
 
         # Display unit direction
         self.list_surface.blit(self.directions[unit.direction], (
-            data.WIDTH * 3 / 4, top_shift + self.LINE_HEIGHT / 4
+            data.WIDTH * 3 // 4, top_shift + self.LINE_HEIGHT // 4
         ))
 
         # Display life bar
@@ -115,7 +115,7 @@ class DetailsWidget(ScrolledWidget):
         ))
         self.list_surface.fill(utils.GREEN, (
             left_shift, top_shift + 3,
-            bar_w * unit.life / unit.life_max, 4
+            bar_w * unit.life // unit.life_max, 4
         ))
 
         # Display unit class
@@ -135,7 +135,7 @@ class DetailsWidget(ScrolledWidget):
             u'%d / %d' % (unit.life, unit.life_max),
             True, utils.WHITE
         )
-        text_left_shift = (self.width - text.get_size()[0]) / 2
+        text_left_shift = (self.width - text.get_size()[0]) // 2
         self.list_surface.blit(text, (text_left_shift, text_top_shift))
 
         # Display team number

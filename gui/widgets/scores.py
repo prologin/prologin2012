@@ -22,10 +22,10 @@ class ScoresWidget(ScrolledWidget):
             screen_width - 2 * self.SCREEN_PADDING,
             screen_height - 2 * self.SCREEN_PADDING
         )
-        self.scores_by_line = self.width / self.SCORE_WIDTH
+        self.scores_by_line = self.width // self.SCORE_WIDTH
 
     def _determine_length(self, scores_len):
-        return (scores_len + self.scores_by_line - 1) / self.scores_by_line
+        return (scores_len + self.scores_by_line - 1) // self.scores_by_line
 
     def update_scores(self, scores):
         self.set_list_length(self._determine_length(len(scores)))

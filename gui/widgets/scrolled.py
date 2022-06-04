@@ -13,7 +13,7 @@ class ScrolledWidget(BaseWidget):
     def __init__(self, *args):
         # Subclass must define 'self.font' to a valid pygame font.
         super(ScrolledWidget, self).__init__(*args)
-        self.slots = (self.height - 2 * self.PADDING) / self.LINE_HEIGHT
+        self.slots = (self.height - 2 * self.PADDING) // self.LINE_HEIGHT
 
         self.list_surface = None
         self.list_position = (self.PADDING, self.PADDING)
@@ -89,7 +89,7 @@ class ScrolledWidget(BaseWidget):
         ):
             return None
         else:
-            return y / self.LINE_HEIGHT + self.cursor
+            return y // self.LINE_HEIGHT + self.cursor
 
     def handle_click(self, x, y, but1, but2, but3):
         result = super(ScrolledWidget, self).is_click_inside(x, y)
